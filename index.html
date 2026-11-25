@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Block Arena</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header><b id="tr"></b><b id="co"></b></header>
+  <main>
+    <section id="battle" class="tab on">
+      <h1>BLOCK<br>ARENA</h1>
+      <div class="art">🏰 ⚔️ 🏰</div>
+      <button id="play" class="big">В БОЙ</button>
+    </section>
+    <section id="cards" class="tab">
+      <h2>Колода (8)</h2><div id="deck" class="grid"></div>
+      <h2>Коллекция</h2><div id="coll" class="grid"></div>
+      <p class="hint">Выберите карту в коллекции, затем нажмите карту в колоде, чтобы заменить её.</p>
+    </section>
+    <section id="shop" class="tab">
+      <h2>Магазин</h2>
+      <button id="chest" class="big">📦 Сундук — 100 🪙</button>
+      <p id="shopmsg" class="hint">Сундук открывает новую карту.</p>
+    </section>
+    <section id="clan" class="tab"><h2>Клан</h2><p class="hint">Раздел появится позже.</p></section>
+  </main>
+  <nav>
+    <button data-t="shop">🛒<small>Магазин</small></button>
+    <button data-t="cards">🃏<small>Карты</small></button>
+    <button data-t="battle" class="on">⚔️<small>Бой</small></button>
+    <button data-t="clan">🛡️<small>Клан</small></button>
+  </nav>
+  <div id="game" hidden>
+    <div id="hud"><span id="time"></span><span id="crowns"></span></div>
+    <canvas id="cv" width="360" height="560"></canvas>
+    <div id="bar"><i id="el"></i><b id="ev"></b></div>
+    <div id="hand"></div>
+  </div>
+  <div id="res" hidden><div><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
