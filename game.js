@@ -1,5 +1,5 @@
 'use strict';
-// Block Arena — оригинальная игра жанра «колода + эликсир + башни». Весь код и графика собственные.
+// Block Arena — оригинальная игра жанра «колода + эликсир + башни». Сцена и интерфейс используют локальные атласы.
 const W=360,H=560,RY=280,RW=16,BR=[90,270];
 const $=s=>document.querySelector(s),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),rnd=(a,b)=>a+Math.random()*(b-a);
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -25,9 +25,14 @@ let S;try{S=JSON.parse(localStorage.getItem('ba1'))}catch(e){}
 S=S||{tr:0,coin:150,own:[...START],deck:[...START]};
 const save=()=>{try{localStorage.setItem('ba1',JSON.stringify(S))}catch(e){}};
 let pick=null;
-const cardEl=(id,x='')=>`<div class="card ${x}" data-id="${id}"><b>${CARDS[id].c}</b><em>${CARDS[id].ic}</em>${CARDS[id].n}</div>`;
+function cardEl(id, state = '') {
+ const card = CARDS[id], style = ArenaArt.portraitStyle(id);
+ return `<button type="button" class="card ${state}" data-id="${id}" aria-label="${card.n}, эликсир ${card.c}">
+   <b class="cost">${card.c}</b><i class="portrait${style ? '' : ' fallback'}" aria-hidden="true" style="${style}">${style ? '' : card.ic}</i>
+   <span class="card-name">${card.n}</span></button>`;
+}
 function ui(){
- $('#tr').textContent='🏆 '+S.tr;$('#co').textContent='🪙 '+S.coin;
+ $('#tr').textContent=S.tr;$('#co').textContent=S.coin;
  $('#deck').innerHTML=S.deck.map(id=>cardEl(id)).join('');
  $('#coll').innerHTML=Object.keys(CARDS).filter(id=>!S.deck.includes(id)).map(id=>cardEl(id,(S.own.includes(id)?'':'lock ')+(pick==id?'sel':''))).join('');
 }
@@ -44,33 +49,56 @@ $('#chest').onclick=()=>{
  m.textContent='Новая карта: '+CARDS[id].ic+' '+CARDS[id].n};
 
 // ---------- Бой ----------
-const cv=$('#cv'),ctx=cv.getContext('2d');let G=null;
+const cv=$('#cv'),ctx=cv.getContext('2d');let G=null, animation=0;
+let pointer=null;
 const tower=(team,x,y,king)=>({team,x,y,king:!!king,hp:king?2400:1400,max:king?2400:1400,rad:king?22:18,r:130,d:king?60:50,as:king?1:.8,cd:0});
 const crowns=t=>Math.min(3,G.tw.filter(o=>o.team!==t&&o.hp<=0).reduce((s,o)=>s+(o.king?3:1),0));
 
 function spawn(id,team,x,y){const c=CARDS[id];
- for(let i=0;i<c.k;i++)G.u.push({...c,id,team,x:x+(i-(c.k-1)/2)*14+rnd(-3,3),y:y+rnd(-6,6),max:c.hp,cd:.5,rad:c.big?12:8})}
+ for(let i=0;i<c.k;i++)G.u.push({...c,id,team,x:x+(i-(c.k-1)/2)*14+rnd(-3,3),y:y+rnd(-6,6),max:c.hp,cd:.5,rad:c.big?12:8,phase:x+y+i*2,moving:false})}
 
-function blast(x,y,r,d,team,m){G.fx.push({k:'c',x,y,r,l:.3});
+function blast(x,y,r,d,team,m,card){G.fx.push({k:'c',x,y,r,l:.3,card});
  for(const o of[...G.u,...G.tw])if(o.team!==team&&o.hp>0&&Math.hypot(o.x-x,o.y-y)<=r+o.rad)o.hp-=d*(o.king===undefined?1:m)}
 
+function createTowers() {
+ return [tower(0,90,455),tower(0,270,455),tower(0,180,515,1),
+   tower(1,90,105),tower(1,270,105),tower(1,180,45,1)];
+}
 function start(){
  const q=shuffle([...S.deck]);
  G={t:180,e:5,ae:5,q,hand:q.splice(0,4),u:[],fx:[],sel:-1,at:3,done:0,last:performance.now(),
   ai:Object.keys(CARDS).filter(k=>!CARDS[k].sp),
-  tw:[tower(0,90,455),tower(0,270,455),tower(0,180,515,1),tower(1,90,105),tower(1,270,105),tower(1,180,45,1)]};
- $('#game').hidden=false;$('#res').hidden=true;hand();requestAnimationFrame(loop)}
-function hand(){$('#hand').innerHTML=G.hand.map((id,i)=>cardEl(id,G.sel==i?'sel':'')).join('')}
+  tw:createTowers()};
+ pointer=null;
+ $('#game').hidden=false;$('#res').hidden=true;
+ ArenaArt.surface(cv,W,H);hand();draw();upd();
+ animation=requestAnimationFrame(loop)}
+function hand(){
+ $('#hand').innerHTML=G.hand.map((id,i)=>cardEl(id,G.sel==i?'sel':'')).join('');
+ const next=$('#next-card'), id=G.q[0];
+ next.style.cssText=ArenaArt.portraitStyle(id);
+ next.classList.toggle('fallback',!next.style.cssText);
+ next.textContent=next.style.cssText?'':CARDS[id].ic;
+ next.setAttribute('role','img');
+ next.setAttribute('aria-label',CARDS[id].n);
+ next.title=CARDS[id].n;
+}
 $('#hand').onclick=e=>{const c=e.target.closest('.card');if(c&&G&&!G.done){G.sel=[...c.parentNode.children].indexOf(c);hand()}};
+function boardPoint(e) {
+ const r=cv.getBoundingClientRect();
+ return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};
+}
+cv.onpointermove=e=>{pointer=e.pointerType==='touch'?null:boardPoint(e)};
+cv.onpointerleave=()=>{pointer=null};
 cv.onpointerdown=e=>{
  if(!G||G.done||G.sel<0)return;
- const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height,id=G.hand[G.sel],c=CARDS[id];
+ const {x,y}=boardPoint(e),id=G.hand[G.sel],c=CARDS[id];
  if(G.e<c.c||(!c.sp&&y<RY+RW+10))return;
- G.e-=c.c;c.sp?blast(x,y,c.rad,c.d,0,.4):spawn(id,0,Math.max(12,Math.min(W-12,x)),Math.min(H-12,y));
+ G.e-=c.c;c.sp?blast(x,y,c.rad,c.d,0,.4,id):spawn(id,0,Math.max(12,Math.min(W-12,x)),Math.min(H-12,y));
  G.hand[G.sel]=G.q.shift();G.q.push(id);G.sel=-1;hand()};
 
 function loop(now){if(!G)return;const dt=Math.min(.05,(now-G.last)/1000);G.last=now;
- if(!G.done)step(dt);draw();upd();requestAnimationFrame(loop)}
+ if(!G.done)step(dt);draw();upd();if(!G.done)animation=requestAnimationFrame(loop)}
 
 function step(dt){
  G.t-=dt;const rt=G.t<60?1/1.4:1/2.8;G.e=Math.min(10,G.e+dt*rt);G.ae=Math.min(10,G.ae+dt*rt);
@@ -83,7 +111,7 @@ function step(dt){
  if(G.tw[2].hp<=0||G.tw[5].hp<=0||G.t<=0)end()}
 
 function act(u,dt){
- if(u.hp<=0)return;u.cd-=dt;let tg=null,bd=1e9;
+ if(u.hp<=0)return;u.moving=false;u.cd-=dt;let tg=null,bd=1e9;
  if(!u.bld)for(const o of G.u)if(o.team!==u.team&&o.hp>0){const d=dist(u,o)-o.rad;if(d<bd&&d<90){bd=d;tg=o}}
  if(!tg)for(const o of G.tw)if(o.team!==u.team&&o.hp>0){const d=dist(u,o)-o.rad;if(d<bd){bd=d;tg=o}}
  if(!tg)return;
@@ -96,7 +124,7 @@ function act(u,dt){
   if((u.y-RY)*(ty-RY)<0){tx=BR[Math.abs(u.x-BR[0])<Math.abs(u.x-BR[1])?0:1];ty=RY} // идти к мосту
   const d=Math.hypot(tx-u.x,ty-u.y)||1,nx=u.x+(tx-u.x)/d*u.s*dt;let ny=u.y+(ty-u.y)/d*u.s*dt;
   if(Math.abs(ny-RY)<RW&&Math.abs(nx-BR[0])>24&&Math.abs(nx-BR[1])>24)ny=u.y; // в реку нельзя
-  u.x=nx;u.y=ny}}
+  u.moving=nx!==u.x||ny!==u.y;u.x=nx;u.y=ny}}
 
 function tow(t,dt){t.cd-=dt;let tg=null,bd=t.r;
  for(const o of G.u)if(o.team!==t.team&&o.hp>0){const d=dist(t,o);if(d<bd){bd=d;tg=o}}
@@ -113,35 +141,57 @@ function end(){
  $('#rt').textContent=r>0?'ПОБЕДА! 👑':r<0?'ПОРАЖЕНИЕ':'НИЧЬЯ';
  $('#rp').textContent=`Короны ${a}:${b} · ${r>0?'+30 🏆 +60 🪙':r<0?'−20 🏆 +20 🪙':'+20 🪙'}`;
  $('#res').hidden=false}
-$('#rb').onclick=()=>{G=null;$('#game').hidden=true;$('#res').hidden=true};
+$('#rb').onclick=()=>{cancelAnimationFrame(animation);G=null;$('#game').hidden=true;$('#res').hidden=true};
 $('#play').onclick=start;
 
-// ---------- Отрисовка (блочные спрайты рисуются прямоугольниками) ----------
-const bar=(x,y,w,p,c)=>{ctx.fillStyle='#000';ctx.fillRect(x-w/2-1,y-1,w+2,6);ctx.fillStyle=c;ctx.fillRect(x-w/2,y,w*Math.max(0,p),4)};
-function drawT(t){const r=t.rad,c=t.team?'#c0392b':'#2e6fd9';
- if(t.hp<=0){ctx.fillStyle='#555';ctx.fillRect(t.x-r,t.y-3,r*2,6);return}
- ctx.fillStyle='#8a8f96';ctx.fillRect(t.x-r,t.y-r,r*2,r*2);ctx.fillStyle='#6d727a';ctx.fillRect(t.x-r+4,t.y-r+4,r*2-8,r*2-8);
- ctx.fillStyle=c;for(const dx of[-r,-4,r-8])ctx.fillRect(t.x+dx,t.y-r-5,8,6);
- if(t.king){ctx.fillStyle='#ffd24a';ctx.fillRect(t.x-6,t.y-4,12,8)}
- bar(t.x,t.y-r-12,40,t.hp/t.max,c)}
-function drawU(u){const s=u.big?1.5:1,x=u.x,y=u.y,tc=u.team?'#e03c3c':'#3c7be0',
- f=(c,a,b,w,h)=>{ctx.fillStyle=c;ctx.fillRect(x+a*s,y+b*s,w*s,h*s)};
- f('rgba(0,0,0,.25)',-7,6,14,4);f(u.col,-5,-2,10,10);f(u.hd,-5,-11,10,9);f('#222',-3,-8,2,2);f('#222',1,-8,2,2);f(tc,-5,8,10,2);
- if(u.hp<u.max)bar(x,y-16*s,16,u.hp/u.max,tc)}
-function draw(){
- for(let y=0;y<28;y++)for(let x=0;x<18;x++){ctx.fillStyle=(x+y)%2?'#5cae3f':'#52a437';ctx.fillRect(x*20,y*20,20,20)}
- ctx.fillStyle='#3b7bd9';ctx.fillRect(0,RY-RW,W,RW*2);ctx.fillStyle='#6aa6f5';
- for(let x=-30+(G.t*12)%30;x<W;x+=30){ctx.fillRect(x,RY-8,14,3);ctx.fillRect(x+10,RY+4,14,3)}
- BR.forEach(b=>{ctx.fillStyle='#a8763c';ctx.fillRect(b-24,RY-RW-2,48,RW*2+4);ctx.fillStyle='#7d5428';for(let y=RY-RW;y<RY+RW;y+=8)ctx.fillRect(b-24,y,48,2)});
- if(G.sel>=0&&!CARDS[G.hand[G.sel]].sp){ctx.fillStyle='rgba(255,255,255,.14)';ctx.fillRect(0,RY+RW,W,H-RY-RW)}
- G.tw.forEach(drawT);[...G.u].sort((a,b)=>a.y-b.y).forEach(drawU);
- for(const f of G.fx){
-  if(f.k=='c'){ctx.fillStyle='rgba(255,150,40,.45)';ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,7);ctx.fill()}
-  else{ctx.strokeStyle='#ffe066';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(f.a.x,f.a.y);ctx.lineTo(f.b.x,f.b.y);ctx.stroke()}}}
-function upd(){const t=Math.max(0,G.t|0);
- $('#time').textContent=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}${G.t<60?' ×2':''}  След: ${CARDS[G.q[0]].ic}`;
- $('#crowns').textContent=`👑 ${crowns(0)}:${crowns(1)}`;
- $('#el').style.width=G.e*10+'%';$('#ev').textContent='💧 '+(G.e|0);
- [...$('#hand').children].forEach((el,i)=>el.classList.toggle('lock',CARDS[G.hand[i]].c>G.e))}
-
+// ---------- Поле, фигуры и интерфейс боя ----------
+function deployment() {
+ if(G.sel<0)return;
+ const card=CARDS[G.hand[G.sel]], boundary=RY+RW+10;
+ ctx.save();
+ if(!card.sp) {
+  ctx.fillStyle='#51292e30';
+  ctx.fillRect(0,0,W,boundary);
+  ctx.setLineDash([4,4]);
+  ctx.strokeStyle='#fff4cbbf';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,boundary);ctx.lineTo(W,boundary);ctx.stroke();
+ }
+ if(pointer && G.e>=card.c && (card.sp || pointer.y>=boundary)) {
+  ctx.beginPath();
+  ctx.arc(pointer.x,pointer.y,card.sp?card.rad:12,0,Math.PI*2);
+  ctx.fillStyle='#fff4c52c';ctx.fill();
+  ctx.strokeStyle='#fff9d9';ctx.lineWidth=1.5;ctx.stroke();
+ }
+ ctx.restore();
+}
+function draw() {
+ const elapsed=180-G.t;
+ ctx.drawImage(ArenaArt.ground,0,0,W,H);
+ ArenaArt.water(ctx,elapsed,W,RY,RW,BR);
+ deployment();
+ const objects=[...G.tw,...G.u].sort((a,b)=>a.y-b.y);
+ for(const o of objects) {
+  if(o.king===undefined) ArenaArt.troop(ctx,o,elapsed);
+  else ArenaArt.tower(ctx,o);
+ }
+ for(const fx of G.fx)ArenaArt.effect(ctx,fx);
+}
+const hud={time:$('#time'),double:$('#double'),home:$('#home-score'),away:$('#away-score'),
+ fill:$('#el'),energy:$('#ev'),hand:$('#hand')};
+function value(el,text){if(el.textContent!==String(text))el.textContent=text}
+function upd(){
+ const t=Math.max(0,Math.ceil(G.t));
+ value(hud.time,`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`);
+ hud.double.hidden=G.t>=60;
+ value(hud.home,crowns(0));value(hud.away,crowns(1));
+ hud.fill.style.width=(G.e*10).toFixed(2)+'%';value(hud.energy,Math.floor(G.e));
+ for(let i=0;i<G.hand.length;i++)hud.hand.children[i].classList.toggle('lock',CARDS[G.hand[i]].c>G.e);
+}
+new ResizeObserver(()=>{
+ if(G){ArenaArt.surface(cv,W,H);draw()}
+}).observe(cv);
 ui();
+ArenaArt.ready.then(()=>{
+ ArenaArt.prepareGround(W,H,RY,RW,BR,createTowers());
+ $('#play').disabled=false;
+}).catch(()=>{$('#load-error').hidden=false});

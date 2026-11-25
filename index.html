@@ -3,44 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172d29">
 <title>Block Arena</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
-  <header><b id="tr"></b><b id="co"></b></header>
+  <header class="wallet">
+    <b aria-label="Трофеи"><i class="icon trophy" aria-hidden="true"></i><span id="tr"></span></b>
+    <b aria-label="Монеты"><i class="icon coin" aria-hidden="true"></i><span id="co"></span></b>
+  </header>
   <main>
     <section id="battle" class="tab on">
-      <h1>BLOCK<br>ARENA</h1>
-      <div class="art">🏰 ⚔️ 🏰</div>
-      <button id="play" class="big">В БОЙ</button>
+      <div class="lobby-scene">
+        <h1>Block <span>Arena</span></h1>
+        <button id="play" class="big" disabled>В бой</button>
+        <p id="load-error" role="alert" hidden>Не удалось загрузить арену. Обновите страницу.</p>
+      </div>
     </section>
     <section id="cards" class="tab">
-      <h2>Колода (8)</h2><div id="deck" class="grid"></div>
+      <h2>Колода <small>8</small></h2><div id="deck" class="grid"></div>
       <h2>Коллекция</h2><div id="coll" class="grid"></div>
       <p class="hint">Выберите карту в коллекции, затем нажмите карту в колоде, чтобы заменить её.</p>
     </section>
     <section id="shop" class="tab">
       <h2>Магазин</h2>
-      <button id="chest" class="big">📦 Сундук — 100 🪙</button>
+      <button id="chest" class="big">Сундук · 100 <i class="icon coin" aria-label="монет"></i></button>
       <p id="shopmsg" class="hint">Сундук открывает новую карту.</p>
     </section>
     <section id="clan" class="tab"><h2>Клан</h2><p class="hint">Раздел появится позже.</p></section>
   </main>
-  <nav>
-    <button data-t="shop">🛒<small>Магазин</small></button>
-    <button data-t="cards">🃏<small>Карты</small></button>
-    <button data-t="battle" class="on">⚔️<small>Бой</small></button>
-    <button data-t="clan">🛡️<small>Клан</small></button>
+  <nav aria-label="Разделы игры">
+    <button data-t="shop"><i class="icon chest" aria-hidden="true"></i>Магазин</button>
+    <button data-t="cards"><i class="icon deck" aria-hidden="true"></i>Карты</button>
+    <button data-t="battle" class="on"><i class="icon crown" aria-hidden="true"></i>Бой</button>
+    <button data-t="clan"><i class="icon shield" aria-hidden="true"></i>Клан</button>
   </nav>
   <div id="game" hidden>
-    <div id="hud"><span id="time"></span><span id="crowns"></span></div>
-    <canvas id="cv" width="360" height="560"></canvas>
-    <div id="bar"><i id="el"></i><b id="ev"></b></div>
-    <div id="hand"></div>
+    <div id="hud">
+      <div class="score home"><i class="icon crown"></i><span>Вы</span><b id="home-score">0</b></div>
+      <div class="timer"><i class="icon clock"></i><b id="time">3:00</b><small id="double" hidden>×2</small></div>
+      <div class="score away"><b id="away-score">0</b><span>Бот</span><i class="icon crown"></i></div>
+    </div>
+    <div id="field"><canvas id="cv" width="360" height="560" aria-label="Поле боя"></canvas></div>
+    <div id="tray">
+      <div id="cards-row">
+        <div class="next"><span>Далее</span><i id="next-card" class="portrait"></i></div>
+        <div id="hand" aria-label="Карты в руке"></div>
+      </div>
+      <div class="resource"><b id="ev"></b><span>Эликсир</span><div id="bar"><i id="el"></i></div></div>
+    </div>
   </div>
-  <div id="res" hidden><div><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
+  <div id="res" hidden><div><i class="icon crown"></i><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
 </div>
+<script src="arena-art.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
