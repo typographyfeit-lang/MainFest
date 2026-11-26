@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Block Arena</title>
+<title>Block Arena — Crystal Sanctuary</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <main>
     <section id="battle" class="tab on">
       <h1>BLOCK<br>ARENA</h1>
-      <div class="art">🏰 ⚔️ 🏰</div>
+      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span></div>
       <button id="play" class="big">В БОЙ</button>
     </section>
     <section id="cards" class="tab">
@@ -35,13 +35,17 @@
   </nav>
   <div id="game" hidden>
     <div id="hud"><span id="time"></span><span id="crowns"></span></div>
-    <canvas id="cv" width="360" height="560"></canvas>
+    <canvas id="cv" width="360" height="560" aria-label="Игровая арена"></canvas>
     <div id="bar"><i id="el"></i><b id="ev"></b></div>
     <div id="hand"></div>
   </div>
   <div id="res" hidden><div><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="graphics/art.js"></script>
+<script src="graphics/environment.js"></script>
+<script src="graphics/towers.js"></script>
+<script src="graphics/characters.js"></script>
 <script src="render3d.js"></script>
 <script src="game.js"></script>
 </body>

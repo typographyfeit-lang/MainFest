@@ -1,0 +1,55 @@
+'use strict';
+const ArenaTowers3D=ArenaArt3D?(()=>{
+  const A=ArenaArt3D,{T,G,C,TAU}=A;
+  const stones=['#9a8591','#b09a9c','#8a7688','#aa9298','#927d8d'];
+  const arcGeo=new T.TorusGeometry(1,.105,6,28,Math.PI*.81);
+  function build(t){
+    const root=new T.Group();root.position.set(t.x,0,t.y);const intact=new T.Group(),ruins=new T.Group();root.add(intact,ruins);ruins.visible=false;
+    const batch=A.batch(intact),team=t.team,tc=C.team[team],cloth=A.material(C.cloth[team],'cloth'),trim=A.material(C.trim[team],'cloth'),emit=A.material(tc,'glow'),dark=A.material('#3b2c43');
+    const stone=A.stone,rand=A.rng(t.x*127+t.y*77),color=()=>stones[Math.floor(rand()*stones.length)],banners=[];
+    const bx=(x,y,z,w,h,d,col=color(),ry=0)=>batch.add(G.bevel,stone,x,y,z,w,h,d,0,ry,0,col);
+    const sm=(geo,mat,x,y,z,w,h,d,rx=0,ry=0,rz=0,shadow=true)=>batch.add(geo,mat,x,y,z,w,h,d,rx,ry,rz,null,shadow);
+    let orb,guardian,staff,ring,attack=0,peak;
+    if(t.king){
+      peak=105;
+      sm(G.cyl,dark,0,3,0,35,6,35);sm(G.cyl,A.material('#766375'),0,23,0,29,38,29);sm(G.cyl,A.material('#b39aa0'),0,45,0,34,7,34);
+      for(let j=0;j<4;j++)for(let i=0;i<12;i++){const a=(i+(j%2)*.5)*TAU/12;const rad=j===0?32:29;bx(Math.sin(a)*rad,6+j*9,Math.cos(a)*rad,rad*.49,8.6,7,color(),a)}
+      for(let i=0;i<14;i++){const a=i*TAU/14;bx(Math.sin(a)*31,49,Math.cos(a)*31,13.2,8,12.2,color(),a)}
+      sm(G.cyl,trim,0,52,0,20,3,20);sm(G.cyl,A.gold,0,54,0,20,2,20);sm(G.cyl,emit,0,55.2,0,14,1,14,0,0,0,false);
+      // Visible arched windows around the circular citadel.
+      for(const a of [-2.45,-1.12,1.12,2.45]){const x=Math.sin(a)*30.7,z=Math.cos(a)*30.7;sm(G.bevel,dark,x,25,z,12,21,3.6,0,a);sm(G.bevel,emit,x*1.045,25,z*1.045,7.3,16,1.8,0,a,0,false);sm(G.sphere,emit,x*1.048,33,z*1.048,3.65,4.2,1.05,0,a,0,false);for(const dy of [22,29])sm(G.box,trim,x*1.075,dy,z*1.075,7.4,.9,1,0,a,0,false);A.glow(intact,tc,x*1.12,25,z*1.12,19,.22)}
+      // Two sculpted open golden arcs framing the suspended core.
+      for(const dir of [-1,1]){A.mesh(intact,arcGeo,A.gold,0,63,0,24,24,24,-Math.PI/2,0,dir===1?Math.PI*.1:Math.PI*1.1);const x=dir*23;sm(G.cyl,A.gold,x,58,0,2.6,12,2.6);sm(G.bevel,A.goldLight,x,67,0,5,5,7,0,0,dir*.27)}
+      ring=A.mesh(intact,G.torus,A.material(tc,'glow'),0,56.8,0,17,17,17,-Math.PI/2,0,0,false);
+      orb=A.crystal(intact,team,0,83,0,23,39,true);
+      A.glow(intact,tc,0,58,0,52,.46);
+      // Both teams' banners face the fixed camera, like the art reference.
+      banners.push(A.banner(intact,team,0,27,33.2,25,36));sm(G.cyl,A.gold,0,46,35,1.8,30,1.8,0,0,Math.PI/2);
+      for(const x of [-20,20])sm(G.bevel,A.gold,x,9,26,4,6,5);
+    }else{
+      peak=77;
+      bx(0,3,0,53,6,53,'#776579');bx(0,7,0,49,3,49,'#aa949d');
+      sm(G.box,dark,0,23,0,41,30,41);
+      for(let j=0;j<3;j++)for(const side of [-1,1])for(let i=0;i<3;i++){const q=(i-1)*13;bx(q,11+j*9,side*21,12.6,8.6,6);bx(side*21,11+j*9,q,6,8.6,12.6)}
+      bx(0,36,0,49,6,49,'#ad979d');sm(G.box,trim,0,40,0,31,2,31);
+      for(const x of [-21,21])for(const z of [-21,21]){bx(x,42,z,13,12,13,'#a48c99');bx(x,49,z,13.7,4.3,13.7,'#bca7ad')}
+      for(const x of [-20,20]){sm(G.bevel,dark,x,19,24.1,8,17,2.2);sm(G.bevel,emit,x,19,25.5,4.5,12,1.2,0,0,0,false);A.glow(intact,tc,x,19,26,15,.22)}
+      banners.push(A.banner(intact,team,0,24,26.7,19,29));sm(G.cyl,A.gold,0,39.5,27.4,1.35,23,1.35,0,0,Math.PI/2);
+      // Guardian is a purely visual tower part, not a game unit.
+      guardian=new T.Group();guardian.position.set(0,41,1);intact.add(guardian);const g=A.batch(guardian);
+      g.add(G.sphere,cloth,0,7,0,9.3,9.2,7);g.add(G.sphere,trim,0,2,0,10,3.5,8);g.add(G.sphere,cloth,0,18,0,10.2,11,8.3);g.add(G.cone,cloth,0,25,-1,8,9,7,0,0,-.13);g.add(G.sphere,A.gold,0,16,6.2,7.2,7.6,2.25);g.add(G.sphere,A.material('#14101f','skin'),0,16.1,7.1,6.2,6.5,2.1);for(const s of [-1,1]){g.add(G.sphere,A.material('#f4faff','glow'),s*2.4,17,9.02,1.4,1.7,.65,0,0,0,null,false);g.add(G.sphere,cloth,s*8.2,7,2.8,3.5,5,3.8,0,0,s*.35)}g.add(G.oct,A.gold,0,5,7.1,2.2,2.5,1.1);g.flush();
+      staff=new T.Group();staff.position.set(10,8,4);guardian.add(staff);A.mesh(staff,G.cyl,A.material('#714b30','wood'),0,9,0,1.25,26,1.25);A.mesh(staff,G.cyl,A.gold,0,22,0,2.5,2.8,2.5);orb=A.crystal(staff,team,0,27,0,9,12,true);
+    }
+    batch.flush();
+    A.contact(root,0,0,t.king?89:65,t.king?79:58,.085);
+    const rubble=A.batch(ruins);for(let i=0;i<13;i++){let a=i*2.4,rad=(t.king?26:20)*rand();rubble.add(G.bevel,stone,Math.cos(a)*rad,2+rand()*3,Math.sin(a)*rad,7+rand()*7,4+rand()*5,8+rand()*6,rand()*.5,a,rand()*.5,color())}rubble.flush();
+    const hp=A.health(root,team,t.king?40:35,peak+5);let dead=false;
+    return {t,root,peak,update(time,dt,cam,hasAttack){if(t.hp<=0){if(!dead){dead=true;intact.visible=false;ruins.visible=true}A.updateHealth(hp,0,cam,false);return}
+      if(hasAttack)attack=.23;attack=Math.max(0,attack-dt);
+      orb.root.position.y=orb.baseY+Math.sin(time*2.2+t.x*.02)*(t.king?1.8:.55);orb.root.rotation.y=time*(t.king?.28:.7);if(ring)ring.scale.setScalar(17+Math.sin(time*2)*.7);if(guardian){guardian.rotation.y=Math.sin(time*.9+t.x)*.08;staff.rotation.x=-Math.sin(attack/.23*Math.PI)*.8;staff.rotation.z=-.13-Math.sin(attack/.23*Math.PI)*.25}
+      for(const m of banners)A.waveBanner(m,time+t.x*.01);
+      A.updateHealth(hp,t.hp/t.max,cam,t.hp<t.max);
+    },isDead:()=>dead};
+  }
+  return {build};
+})():null;
