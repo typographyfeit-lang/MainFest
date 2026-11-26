@@ -1,9 +1,18 @@
-BLOCK ARENA 2.8 — ULTRA GRAPHICS EDITION
-1. Распаковать ZIP в приложении «Файлы».
-2. Открыть https://github.com/typographyfeit-lang/MainFest/upload/main
-3. Загрузить ВСЕ распакованные файлы (не архив и не папку) в корень репозитория. Подтвердить замену старых файлов. Особенно важны index.html, hd-model-data.js, hd-models.js, render3d.js, game.js, art.js, towers.js, environment.js, style.css.
-4. Нажать Commit changes, дождаться успешного развёртывания GitHub Pages.
-5. Открыть https://typographyfeit-lang.github.io/MainFest/?v=28&quality=high
-6. Для проверки FPS: https://typographyfeit-lang.github.io/MainFest/?v=28&debug=1
-7. При низкой производительности открыть https://typographyfeit-lang.github.io/MainFest/?v=28&quality=low
-Не редактировать index.html вручную. GLB продублированы в hd-model-data.js намеренно: это обеспечивает синхронную загрузку оригинальных моделей без стороннего загрузчика. Сетевой CDN Three.js всё ещё требуется. Сохранения ba1 совместимы с 2.7.
+BLOCK ARENA 2.9 — CINEMATIC GRAPHICS & ANIMATION
+
+1. Распакуйте ZIP в приложении «Файлы».
+2. https://github.com/typographyfeit-lang/MainFest/upload/main
+3. Загрузите все файлы из корня архива, включая 10 моделей .glb.
+4. Commit changes. После успешного GitHub Pages deployment откройте игру.
+
+Максимальная графика:
+https://typographyfeit-lang.github.io/MainFest/?v=29&quality=high
+Автоматическая графика + FPS:
+https://typographyfeit-lang.github.io/MainFest/?v=29&debug=1
+Облегчённая графика:
+https://typographyfeit-lang.github.io/MainFest/?v=29&quality=low
+
+В index.html вручную ничего менять не надо. Старый hd-model-data.js не используется.
+Первое нажатие «В БОЙ» может ожидать загрузку моделей; при ошибке нажмите снова.
+Локальный запуск: python3 -m http.server 8000, http://localhost:8000.
+Three.js r128 требует доступа к CDN. Настоящий WebGL и FPS на телефоне ещё не проверены.

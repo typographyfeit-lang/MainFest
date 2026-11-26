@@ -24,11 +24,11 @@ def run():
                 page.goto(base,wait_until='load',timeout=30000)
                 assert page.evaluate('typeof V !== "undefined" && V.ok===true'),f'WebGL renderer failed: {errors}'
                 assert page.evaluate('THREE.REVISION')=='128','Expected Three.js r128'
-                page.locator('#play').click();page.evaluate('G.paused=true') # freeze simulation, not the rendering loop
+                page.locator('#play').click();page.wait_for_function('G !== null',timeout=30000);page.evaluate('G.paused=true') # freeze simulation, not the rendering loop
                 page.wait_for_timeout(2200)
                 result=page.evaluate('''()=>{
                   const assert=(v,m)=>{if(!v)throw Error(m)};
-                  assert(G.tw.length===6,'tower count');
+                  assert(G.tw.length===6,'tower count');assert(Object.keys(V.stats().characterModels).length===8,'all eight skeletal GLB loaded');
                   for(const t of G.tw){for(const h of [0,t.king?122:91]){const p=V.project(t.x,t.y,h);assert(Math.abs(p.ndcX)<1&&Math.abs(p.ndcY)<1&&p.ndcZ<1,'tower clipped')}}
                   for(const [x,z] of [[90,105],[270,455],[180,280],[40,350],[320,420]]){const p=V.project(x,z),q=V.pick(p);assert(q&&Math.hypot(q.x-x,q.y-z)<.01,'raycast round-trip')}
                   const rect=cv.getBoundingClientRect();assert(rect.width<=innerWidth&&rect.height>0&&document.documentElement.scrollWidth<=innerWidth,'layout');

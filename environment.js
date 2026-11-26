@@ -25,6 +25,10 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     const mossTex=A.texture(128,128,(g,w,h)=>{const q=A.rng(7209);for(let i=0;i<110;i++){const a=q()*TAU,d=Math.sqrt(q())*49,x=64+Math.cos(a)*d,y=64+Math.sin(a)*d;g.fillStyle=['#68794388','#87944980','#53633980','#a0a35b66'][i%4];g.beginPath();g.ellipse(x,y,2+q()*7,1.5+q()*4,a,0,TAU);g.fill()} });
     const mossMat=new T.MeshStandardMaterial({map:mossTex,transparent:true,depthWrite:false,roughness:1,polygonOffset:true,polygonOffsetFactor:-1});
     const mr=A.rng(1452);for(let i=0;i<46;i++){const side=i%2?1:-1,x=side<0?8+mr()*18:352-mr()*18,z=15+mr()*530;if(Math.abs(z-280)<37)continue;add(G.plane,mossMat,x,.10,z,8+mr()*16,5+mr()*10,1,-Math.PI/2,0,mr()*TAU,null,false)}
+    // Painted ambient occlusion around the stone perimeter, one shared draw call.
+    // The interior stays readable; this is an authored AO approximation, not a lightmap bake.
+    const aoTex=A.texture(512,768,(g,w,h)=>{const im=g.createImageData(w,h),d=im.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const u=x/w,v=y/h,side=Math.min(u,1-u),end=Math.min(v,1-v),river=Math.abs(v-.5);let alpha=78*Math.exp(-side*34)+50*Math.exp(-end*40);if(river<.04)alpha*=.40;const k=(y*w+x)*4;d[k]=34;d[k+1]=22;d[k+2]=47;d[k+3]=Math.min(110,alpha)}g.putImageData(im,0,0)});
+    A.mesh(env,G.plane,new T.MeshBasicMaterial({map:aoTex,transparent:true,depthWrite:false,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-1}),180,.07,280,360,560,1,-Math.PI/2,0,0,false);
     // Exact navigable channel: z=264..296; no central bridge.
     const waterTex=A.texture(512,256,(g,w,h)=>{
       const q=A.rng(19),grad=g.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#10456d');grad.addColorStop(.18,'#166f9e');grad.addColorStop(.47,'#208fb3');grad.addColorStop(.72,'#1c85ae');grad.addColorStop(1,'#103f69');g.fillStyle=grad;g.fillRect(0,0,w,h);
@@ -33,7 +37,8 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
       for(let i=0;i<85;i++){const x=q()*w,y=q()*h,len=8+q()*29;g.strokeStyle=i%6?'#92e9ff38':'#e5ffffa0';g.lineWidth=.65+q()*1.8;g.beginPath();g.moveTo(x,y);g.bezierCurveTo(x+len*.24,y-3.5,x+len*.68,y+4,x+len,y);g.stroke()}
       for(const y of [2,h-3]){g.fillStyle='#c5f7ff40';g.fillRect(0,y,w,1.2)}
     },true);waterTex.repeat.set(3,1);
-    const waterMat=new T.MeshStandardMaterial({map:waterTex,color:A.lin('#75cfe8'),emissive:A.lin('#0876a9'),emissiveIntensity:.38,roughness:.34,metalness:.02});
+    const waterHeight=A.texture(256,64,(g,w,h)=>{const im=g.createImageData(w,h),d=im.data;for(let j=0;j<h;j++)for(let i=0;i<w;i++){const a=127+23*Math.sin(i/w*TAU*6+Math.sin(j/h*TAU*3)*1.3)+15*Math.cos(j/h*TAU*7+i/w*TAU*3);const k=(j*w+i)*4;d[k]=d[k+1]=d[k+2]=a;d[k+3]=255}g.putImageData(im,0,0)},true);waterHeight.encoding=T.LinearEncoding;waterHeight.repeat.set(4,1);
+    const waterMat=new T.MeshStandardMaterial({map:waterTex,color:A.lin('#75cfe8'),emissive:A.lin('#0876a9'),emissiveIntensity:.38,roughness:.30,metalness:.04,...(low?{}:{bumpMap:waterHeight,bumpScale:1.25})});
     A.mesh(env,G.plane,waterMat,180,-.65,280,392,32,1,-Math.PI/2,0,0,false);
     const caustics=A.texture(512,128,(g,w,h)=>{const q=A.rng(313);g.lineWidth=1.15;for(let i=0;i<56;i++){const x=q()*w,y=q()*h,r=4+q()*12;g.strokeStyle=i%4?'#79def24d':'#a4f8ff83';g.beginPath();g.moveTo(x-r,y);g.quadraticCurveTo(x,y-r*.5,x+r,y+1);g.quadraticCurveTo(x,y+r*.6,x-r,y);g.stroke()}},true);caustics.repeat.set(4,1);
     const causticMat=new T.MeshBasicMaterial({map:caustics,transparent:true,opacity:.44,depthWrite:false,toneMapped:false});A.mesh(env,G.plane,causticMat,180,-.57,280,392,32,1,-Math.PI/2,0,0,false);
@@ -82,7 +87,7 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     for(const x of [45,315])for(const z of [9,551])A.lightPool(env,'#ffad55',x,z,43,33,.12,.17);
     if(!low)for(const x of [-11,371])for(const z of [75,210,350,485])A.lightPool(env,'#8160af',x,z,45,85,.08,.19);
     b.flush();
-    return {root:env,update(t){waterTex.offset.x=(t*.018)%1;caustics.offset.x=(t*.035)%1;causticMat.opacity=.39+Math.sin(t*.8)*.08;sealMat.opacity=.79+Math.sin(t*1.3)*.13;for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7}};
+    return {root:env,update(t){waterTex.offset.x=(t*.018)%1;waterHeight.offset.x=(t*.035)%1;waterHeight.offset.y=(t*.008)%1;caustics.offset.x=(t*.035)%1;causticMat.opacity=.39+Math.sin(t*.8)*.08;sealMat.opacity=.79+Math.sin(t*1.3)*.13;for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7}};
   }
   return {build};
 })():null;

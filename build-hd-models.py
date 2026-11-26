@@ -1,5 +1,5 @@
 """Original tower meshes: beveled masonry, custom radial wedges, layered trim, baked vertex AO.
-Generates glTF 2.0 GLB and an embedded copy for the synchronous browser loader.
+Generates original glTF 2.0 GLB; game reads binary files directly.
 No external assets or dependencies. Run from any directory: python3 build-hd-models.py.
 """
 import math, random, struct, json, base64, pathlib
@@ -111,6 +111,5 @@ def guardian():
 if __name__=='__main__':
  assets={};report={}
  for name,model in [('citadel-hd',citadel()),('guardian-hd',guardian())]:
-  data,counts=model.export(name);assets[name]=base64.b64encode(data).decode();report[name]={'triangles':sum(counts.values()),'by_material':counts,'bytes':len(data)}
- (P/'hd-model-data.js').write_text('// Generated from the original GLB files by build-hd-models.py.\nconst ArenaHDData='+json.dumps(assets,separators=(',',':'))+';\n')
+  data,counts=model.export(name);report[name]={'triangles':sum(counts.values()),'by_material':counts,'bytes':len(data)}
  (P/'model-budget.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))

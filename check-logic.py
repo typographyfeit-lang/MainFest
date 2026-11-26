@@ -1,4 +1,4 @@
-"""Regression test of game.js 2.8 + HTML/CSS; deliberately mocks V (no WebGL claims)."""
+"""Regression test of game.js 2.9 + HTML/CSS; deliberately mocks V (no WebGL claims)."""
 import json, os, pathlib
 from playwright.sync_api import sync_playwright
 
@@ -18,17 +18,17 @@ def run():
         for w in [320,375,390,430,480]:
             page=browser.new_page(viewport={'width':w,'height':int(w*2.12)},device_scale_factor=1)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-            page.set_content(html,wait_until='load');page.locator('#play').click()
+            page.set_content(html,wait_until='load');page.locator('#play').click();page.wait_for_function('G !== null')
             res=page.evaluate('''() => {
                 const assert=(v,m)=>{if(!v)throw Error(m)};
                 assert(G.tw.length===6,'tower count');
                 assert(JSON.stringify(G.tw.map(t=>[t.x,t.y,t.hp,t.rad]))===JSON.stringify([[90,455,1400,24],[270,455,1400,24],[180,515,2400,30],[90,105,1400,24],[270,105,1400,24],[180,45,2400,30]]),'tower coordinates and stats');
                 assert(G.hand.length===4&&G.q.length===4,'deck');assert([...document.querySelectorAll('#hand .card em')].every(e=>getComputedStyle(e).backgroundImage.includes('data:image/svg+xml')),'illustrated cards');const audio=document.querySelector('#sound');const old=audio.getAttribute('aria-pressed');audio.click();assert(audio.getAttribute('aria-pressed')!==old,'audio toggle');audio.click();
                 assert(G.t>179&&G.t<=180,'timer');
-                G.hand[0]='guard';G.sel=0;G.e=5;window.__pick={x:90,y:140};cv.onpointerdown({});assert(G.u.length===0&&G.e===5,'enemy placement prohibited');
-                window.__pick={x:90,y:400};cv.onpointerdown({});assert(G.u.length===1&&G.u[0].id==='guard'&&G.e===2,'unit placement and elixir');
-                G.hand[0]='meteor';G.sel=0;G.e=5;window.__pick={x:-10,y:105};cv.onpointerdown({});assert(G.e===5&&G.sel===0,'outside spell rejected');window.__pick={x:90,y:105};cv.onpointerdown({});assert(G.tw[3].hp===1300&&G.e===1,'spell damage and cost');
-                G.e=0;G.hand[0]='guard';G.sel=0;window.__pick={x:90,y:400};cv.onpointerdown({});assert(G.u.length===1,'insufficient elixir');
+                G.hand[0]='guard';G.sel=0;G.e=5;window.__pick={x:90,y:140};cv.onpointerdown({});cv.onpointerup({});assert(G.u.length===0&&G.e===5,'enemy placement prohibited');
+                window.__pick={x:90,y:400};cv.onpointerdown({});assert(G.u.length===0&&G.e===5,'preview does not spend');cv.onpointerup({});assert(G.u.length===1&&G.u[0].id==='guard'&&G.e===2,'unit placement and elixir');
+                G.hand[0]='meteor';G.sel=0;G.e=5;window.__pick={x:-10,y:105};cv.onpointerdown({});cv.onpointerup({});assert(G.e===5&&G.sel===0,'outside spell rejected');window.__pick={x:90,y:105};cv.onpointerdown({});cv.onpointerup({});assert(G.tw[3].hp===1300&&G.e===1,'spell damage and cost');
+                G.e=5;G.hand[0]='guard';G.sel=0;cv.onpointerdown({});cancelGesture();cv.onpointerup({});assert(G.e===5&&G.u.length===1,'cancel placement');G.e=0;G.hand[0]='guard';G.sel=0;window.__pick={x:90,y:400};cv.onpointerdown({});cv.onpointerup({});assert(G.u.length===1,'insufficient elixir');
                 const rr=cv.getBoundingClientRect(), hud=document.querySelector('#hud').getBoundingClientRect(), hand=document.querySelector('#hand').getBoundingClientRect();
                 assert(rr.width<=innerWidth&&rr.height>0&&rr.top>=hud.bottom-.5&&rr.bottom<=hand.top,'canvas layout');
                 assert(document.documentElement.scrollWidth<=innerWidth,'no horizontal overflow');

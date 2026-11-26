@@ -44,7 +44,7 @@ $('#chest').onclick=()=>{
  m.textContent='Новая карта: '+CARDS[id].ic+' '+CARDS[id].n};
 
 // ---------- Бой ----------
-const cv=$('#cv');let G=null,raf=0;
+const cv=$('#cv');let G=null,raf=0,gesture=null;
 const FIXED=1/30;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const laneX=x=>BR[Math.abs(x-BR[0])<Math.abs(x-BR[1])?0:1];
@@ -63,33 +63,40 @@ const crowns=t=>Math.min(3,G.tw.filter(o=>o.team!==t&&o.hp<=0).reduce((s,o)=>s+(
 function spawn(id,team,x,y){const c=CARDS[id];
  for(let i=0;i<c.k;i++){const u={...c,id,team,x:x+(i-(c.k-1)/2)*20+rnd(-3,3),y:y+rnd(-6,6),max:c.hp,cd:.5,rad:c.big?19:c.k>2?10:12};constrain(u);u.y=team?Math.min(u.y,RY-RW-10):Math.max(u.y,RY+RW+10);G.u.push(u)}}
 
-function blast(x,y,r,d,team,m){G.fx.push({k:'c',x,y,r,l:.3});
+function blast(x,y,r,d,team,m,card='impact'){G.fx.push({k:'c',x,y,r,l:.3,card,team});
  for(const o of[...G.u,...G.tw])if(o.team!==team&&o.hp>0&&Math.hypot(o.x-x,o.y-y)<=r+o.rad)o.hp-=d*(o.king===undefined?1:m)}
 
 function start(){
- if(raf)cancelAnimationFrame(raf);raf=0;
+ if(raf)cancelAnimationFrame(raf);raf=0;gesture=null;
  const q=shuffle([...S.deck]);
  G={t:180,e:5,ae:5,q,hand:q.splice(0,4),u:[],fx:[],sel:-1,at:3,done:0,last:performance.now(),acc:0,finishAge:0,hud:{},
   ai:Object.keys(CARDS).filter(k=>!CARDS[k].sp),
   tw:[tower(0,90,455),tower(0,270,455),tower(0,180,515,1),tower(1,90,105),tower(1,270,105),tower(1,180,45,1)]};
  $('#game').hidden=false;$('#res').hidden=true;hand();V.begin(G);upd();raf=requestAnimationFrame(loop)}
 function hand(){$('#hand').innerHTML=G.hand.map((id,i)=>cardEl(id,G.sel==i?'sel':'')).join('');G.hud.lockKey=null;}
-$('#hand').onclick=e=>{const c=e.target.closest('.card');if(c&&G&&!G.done){G.sel=[...c.parentNode.children].indexOf(c);if(V.preview)V.preview(null);hand()}};
+$('#hand').onclick=e=>{const c=e.target.closest('.card');if(c&&G&&!G.done){gesture=null;G.sel=[...c.parentNode.children].indexOf(c);if(V.preview)V.preview(null);hand()}};
+// A touch starts a preview; releasing confirms the placement. Cancellation is free.
 cv.onpointerdown=e=>{
- if(!G||G.done||G.sel<0)return;
- const p=V.pick(e);if(!p)return;const x=p.x,y=p.y,id=G.hand[G.sel],c=CARDS[id];
- if(!placement(p,c))return;
- G.e-=c.c;c.sp?blast(x,y,c.rad,c.d,0,.4):spawn(id,0,Math.max(12,Math.min(W-12,x)),Math.min(H-12,y));
- G.hand[G.sel]=G.q.shift();G.q.push(id);G.sel=-1;if(V.preview)V.preview(null);hand()};
-
-cv.addEventListener('pointermove',e=>{if(!G||G.done||G.sel<0||!V.preview)return;const c=CARDS[G.hand[G.sel]],p=V.pick(e);V.preview(p,c,placement(p,c))},{passive:true});
-cv.addEventListener('pointerleave',()=>{if(V.preview)V.preview(null)},{passive:true});
-document.addEventListener('visibilitychange',()=>{if(G){G.last=performance.now();G.acc=0}});
+ if(!G||G.done||G.sel<0||gesture||e.button>0)return;
+ const c=CARDS[G.hand[G.sel]],p=V.pick(e);gesture={id:e.pointerId,slot:G.sel};
+ if(V.preview)V.preview(p,c,placement(p,c));if(e.pointerId!==undefined&&cv.setPointerCapture)try{cv.setPointerCapture(e.pointerId)}catch(_){}
+};
+cv.onpointerup=e=>{
+ if(!gesture||gesture.id!==e.pointerId)return;const g=gesture;gesture=null;
+ if(V.preview)V.preview(null);if(!G||G.done||G.sel!==g.slot||G.sel<0)return;
+ const p=V.pick(e);if(!p)return;const x=p.x,y=p.y,id=G.hand[G.sel],c=CARDS[id];if(!placement(p,c))return;
+ G.e-=c.c;c.sp?blast(x,y,c.rad,c.d,0,.4,id):spawn(id,0,Math.max(12,Math.min(W-12,x)),Math.min(H-12,y));
+ G.hand[G.sel]=G.q.shift();G.q.push(id);G.sel=-1;hand();
+};
+cv.addEventListener('pointermove',e=>{if(!G||G.done||G.sel<0||!V.preview||gesture&&gesture.id!==e.pointerId)return;const c=CARDS[G.hand[G.sel]],p=V.pick(e);V.preview(p,c,placement(p,c))},{passive:true});
+function cancelGesture(){gesture=null;if(V.preview)V.preview(null)}
+cv.addEventListener('pointercancel',cancelGesture);cv.addEventListener('lostpointercapture',cancelGesture);cv.addEventListener('pointerleave',()=>{if(!gesture&&V.preview)V.preview(null)},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(G){cancelGesture();G.last=performance.now();G.acc=0}});
 function loop(now){raf=0;if(!G)return;const dt=Math.max(0,Math.min(.5,(now-G.last)/1000));G.last=now;
  if(document.hidden){G.acc=0;raf=requestAnimationFrame(loop);return}
  // A fixed 30 Hz simulation is independent of drawing speed. Large tab suspensions are paused.
  if(!G.done&&!G.paused){G.acc+=dt;while(G.acc+1e-9>=FIXED&&!G.done){step(FIXED);G.acc-=FIXED}}
- V.frame(G);upd();if(G.done){G.finishAge+=dt;if(G.finishAge>=.35)return}raf=requestAnimationFrame(loop)}
+ V.frame(G);upd();if(G.done){G.finishAge+=dt;if(G.finishAge>=.7)return}raf=requestAnimationFrame(loop)}
 
 function step(dt){
  G.t-=dt;const rt=G.t<60?1/1.4:1/2.8;G.e=Math.min(10,G.e+dt*rt);G.ae=Math.min(10,G.ae+dt*rt);
@@ -106,10 +113,11 @@ function act(u,dt){
  if(!u.bld)for(const o of G.u)if(o.team!==u.team&&o.hp>0){const d=dist(u,o)-o.rad;if(d<bd&&d<90){bd=d;tg=o}}
  if(!tg)for(const o of G.tw)if(o.team!==u.team&&o.hp>0){const d=dist(u,o)-o.rad;if(d<bd){bd=d;tg=o}}
  if(!tg)return;
+ u.targetX=tg.x;u.targetY=tg.y;u.attacking=bd<=u.r;
  if(bd<=u.r){
-  if(u.cd>0)return;u.cd=u.as;
-  if(u.boom){blast(u.x,u.y,u.boom,u.d,u.team,1);u.hp=0}
-  else{u.spl?blast(tg.x,tg.y,u.spl,u.d,u.team,1):tg.hp-=u.d;if(u.r>40)G.fx.push({k:'l',a:u,b:tg,l:.1})}
+  if(u.cd>0)return;u.cd=u.as;u.attackSeq=(u.attackSeq||0)+1;
+  if(u.boom){blast(u.x,u.y,u.boom,u.d,u.team,1,'imp');u.hp=0}
+  else{u.spl?blast(tg.x,tg.y,u.spl,u.d,u.team,1,'mage'):tg.hp-=u.d;if(u.r>40)G.fx.push({k:'l',a:u,b:tg,l:.1});else G.fx.push({k:'m',a:u,b:tg,l:.16})}
  }else{
   let tx=tg.x,ty=tg.y;
   if((u.y-RY)*(ty-RY)<0||Math.abs(u.y-RY)<RW&&Math.abs(ty-RY)>=RW){tx=laneX(u.x);ty=RY+Math.sign(tg.y-RY)*(RW+2)} // пройти мост до противоположного берега
@@ -129,12 +137,18 @@ function end(){
  if(G.done)return;
  const a=crowns(0),b=crowns(1),hp=t=>G.tw.filter(o=>o.team===t).reduce((s,o)=>s+Math.max(0,o.hp),0);
  const r=a!==b?(a>b?1:-1):hp(0)!==hp(1)?(hp(0)>hp(1)?1:-1):0;
- G.done=1;S.tr=Math.max(0,S.tr+(r>0?30:r<0?-20:0));S.coin+=r>0?60:20;save();ui();
+ G.done=1;cancelGesture();S.tr=Math.max(0,S.tr+(r>0?30:r<0?-20:0));S.coin+=r>0?60:20;save();ui();
  $('#rt').textContent=r>0?'ПОБЕДА! 👑':r<0?'ПОРАЖЕНИЕ':'НИЧЬЯ';
  $('#rp').textContent=`Короны ${a}:${b} · ${r>0?'+30 🏆 +60 🪙':r<0?'−20 🏆 +20 🪙':'+20 🪙'}`;
  $('#res').hidden=false}
-$('#rb').onclick=()=>{if(raf)cancelAnimationFrame(raf);raf=0;if(V.stop)V.stop();G=null;$('#game').hidden=true;$('#res').hidden=true};
-$('#play').onclick=()=>V.ok?start():alert('3D-движок не загрузился: нужен интернет и WebGL');
+$('#rb').onclick=()=>{cancelGesture();if(raf)cancelAnimationFrame(raf);raf=0;if(V.stop)V.stop();G=null;$('#game').hidden=true;$('#res').hidden=true};
+let assetsReady=false,assetsLoading=null;
+function prepareAssets(){if(assetsReady)return Promise.resolve();if(!assetsLoading)assetsLoading=Promise.resolve().then(()=>V.prepare?V.prepare():null).then(()=>{assetsReady=true}).catch(e=>{assetsLoading=null;throw e});return assetsLoading}
+const playButton=$('#play'),loadStatus=$('#loadstatus');
+function status(text){if(loadStatus)loadStatus.textContent=text}
+playButton.onclick=async()=>{if(!V.ok){status('3D-движок не загрузился. Проверьте интернет и WebGL.');return}playButton.disabled=true;try{status(assetsReady?'':'Загрузка 3D-моделей…');await prepareAssets();status('');start()}catch(e){console.error('Asset loading:',e);if(G){if(raf)cancelAnimationFrame(raf);raf=0;if(V.stop)V.stop();G=null;$('#game').hidden=true;$('#res').hidden=true}status('Не удалось загрузить модели. Обновите страницу или нажмите «В БОЙ» ещё раз.')}finally{playButton.disabled=false}};
+// Preload as the lobby is visible; clicking play waits for the same promise.
+if(V.ok&&V.prepare)prepareAssets().then(()=>status('')).catch(()=>status('Модели не загружены. Нажмите «В БОЙ», чтобы повторить.'));
 
 function upd(){const t=Math.max(0,G.t|0),h=G.hud;
  const time=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}${G.t<60?' ×2':''}  След: ${CARDS[G.q[0]].ic}`,score=`👑 ${crowns(0)}:${crowns(1)}`,meter=Math.round(G.e*100)/10,elixir=G.e|0;

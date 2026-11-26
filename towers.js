@@ -8,7 +8,7 @@ const ArenaTowers3D=ArenaArt3D?(()=>{
     const stone=A.stone,rand=A.rng(t.x*127+t.y*77),color=()=>stones[Math.floor(rand()*stones.length)],banners=[];
     const bx=(x,y,z,w,h,d,col=color(),ry=0)=>batch.add(G.bevel,stone,x,y,z,w,h,d,0,ry,0,col);
     const sm=(geo,mat,x,y,z,w,h,d,rx=0,ry=0,rz=0,shadow=true)=>batch.add(geo,mat,x,y,z,w,h,d,rx,ry,rz,null,shadow);
-    let orb,guardian,staff,ring,attack=0,peak;
+    let orb,guardian,staff,ring,coreLight,attack=0,peak;const high=new URLSearchParams(location.search).get('quality')==='high';
     if(t.king){
       peak=117;intact.scale.set(1.12,1.10,1.12);ruins.scale.setScalar(1.10);
       ArenaHDModels.add(intact,'citadel-hd');
@@ -18,6 +18,8 @@ const ArenaTowers3D=ArenaArt3D?(()=>{
       // The golden crown is part of the GLB architecture; only magic is animated.
       ring=A.mesh(intact,G.torus,A.material(tc,'glow'),0,56.8,0,17,17,17,-Math.PI/2,0,0,false);
       orb=A.crystal(intact,team,0,83,0,25,40,true);
+      // In High, a real short-range non-shadow point light colors the upper masonry.
+      if(high&&T.PointLight){coreLight=new T.PointLight(A.lin(tc),.58,76,2);coreLight.position.set(0,70,0);intact.add(coreLight)}
       A.lightPool(intact,tc,0,0,63,59,.19,55.4);
       A.glow(intact,tc,0,58,0,36,.28);
       // Both teams' banners face the fixed camera, like the art reference.
@@ -40,7 +42,7 @@ const ArenaTowers3D=ArenaArt3D?(()=>{
     const hp=A.health(root,team,t.king?40:35,peak+5);let dead=false;
     return {t,root,peak,update(time,dt,cam,hasAttack){if(t.hp<=0){if(!dead){dead=true;intact.visible=false;ruins.visible=true}A.updateHealth(hp,0,cam,false);return}
       if(hasAttack)attack=.23;attack=Math.max(0,attack-dt);
-      light.material.opacity=(t.king?.19:.13)*(1+.15*Math.sin(time*2+t.x));
+      light.material.opacity=(t.king?.19:.13)*(1+.15*Math.sin(time*2+t.x));if(coreLight)coreLight.intensity=.58+.09*Math.sin(time*2+t.x);
       orb.root.position.y=orb.baseY+Math.sin(time*2.2+t.x*.02)*(t.king?1.8:.55);orb.root.rotation.y=time*(t.king?.28:.7);if(ring)ring.scale.setScalar(17+Math.sin(time*2)*.7);if(guardian){guardian.rotation.y=Math.sin(time*.9+t.x)*.08;staff.rotation.x=-Math.sin(attack/.23*Math.PI)*.8;staff.rotation.z=-.13-Math.sin(attack/.23*Math.PI)*.25}
       for(const m of banners)A.waveBanner(m,time+t.x*.01);
       A.updateHealth(hp,t.hp/t.max,cam,t.hp<t.max);

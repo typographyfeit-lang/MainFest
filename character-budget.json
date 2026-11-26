@@ -1,0 +1,106 @@
+{
+  "guard": {
+    "triangles": 1484,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 151848
+  },
+  "archer": {
+    "triangles": 1358,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 118784
+  },
+  "colossus": {
+    "triangles": 1268,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 137528
+  },
+  "imp": {
+    "triangles": 1172,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 108152
+  },
+  "mage": {
+    "triangles": 1272,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 114836
+  },
+  "hounds": {
+    "triangles": 940,
+    "bones": 8,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 84460
+  },
+  "swarm": {
+    "triangles": 196,
+    "bones": 5,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 37160
+  },
+  "brute": {
+    "triangles": 1260,
+    "bones": 7,
+    "clips": [
+      "Idle",
+      "Walk",
+      "Attack",
+      "Hit",
+      "Death",
+      "Spawn"
+    ],
+    "bytes": 133628
+  }
+}
