@@ -4,17 +4,27 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
   function build(scene){
     const env=new T.Group();scene.add(env);const b=A.batch(env),r=A.rng(714),stone=A.stone;
     const choose=a=>a[Math.floor(r()*a.length)];
-    const tiles=['#857286','#76657e','#8c798c','#7b6c82','#917e8b','#6d6077','#806d7d','#776478','#887486','#827482'];
-    const wall=['#8c7a8b','#9c8790','#776780','#a08b94','#837183','#6e6079'];
+    const tiles=['#94788d','#806b85','#968092','#86758c','#a08594','#756480','#8c7385','#836c83','#947a8c','#8c7a91'];
+    const wall=['#98828f','#aa919b','#82718a','#b29aa1','#938092','#786984'];
     const moss=A.material('#768247','skin'),leaf=A.material('#879345','skin'),darkLeaf=A.material('#435c39','skin'),pink=A.material('#e277b6','skin');
     const add=(geo,mat,x,y,z,w,h,d,rx=0,ry=0,rz=0,color=null,shadow=true)=>b.add(geo,mat,x,y,z,w,h,d,rx,ry,rz,color,shadow);
     A.mesh(env,G.box,A.material('#4d4055'),180,-4,280,360,6,560,0,0,0,false);
     A.mesh(env,G.box,A.material('#31293e'),180,-9,280,420,8,625,0,0,0,false);
     // Independently colored pavers, with a flat playable surface at y=0.
-    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;if(Math.abs(z-280)<25)continue;add(G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,0,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
+    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;if(Math.abs(z-280)<25)continue;add(G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,(i+j)%2*Math.PI,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
+    // Thin, irregular moss patches near the perimeter; dedicated seed keeps other decor unchanged.
+    const mossTex=A.texture(128,128,(g,w,h)=>{const q=A.rng(7209);for(let i=0;i<110;i++){const a=q()*TAU,d=Math.sqrt(q())*49,x=64+Math.cos(a)*d,y=64+Math.sin(a)*d;g.fillStyle=['#68794388','#87944980','#53633980','#a0a35b66'][i%4];g.beginPath();g.ellipse(x,y,2+q()*7,1.5+q()*4,a,0,TAU);g.fill()} });
+    const mossMat=new T.MeshStandardMaterial({map:mossTex,transparent:true,depthWrite:false,roughness:1,polygonOffset:true,polygonOffsetFactor:-1});
+    const mr=A.rng(1452);for(let i=0;i<46;i++){const side=i%2?1:-1,x=side<0?8+mr()*18:352-mr()*18,z=15+mr()*530;if(Math.abs(z-280)<37)continue;add(G.plane,mossMat,x,.10,z,8+mr()*16,5+mr()*10,1,-Math.PI/2,0,mr()*TAU,null,false)}
     // Exact navigable channel: z=264..296; no central bridge.
-    const waterTex=A.texture(512,128,(g,w,h)=>{const q=A.rng(19),grad=g.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#0b567e');grad.addColorStop(.5,'#1e9bbd');grad.addColorStop(1,'#095178');g.fillStyle=grad;g.fillRect(0,0,w,h);for(let i=0;i<65;i++){const x=q()*w,y=q()*h;g.strokeStyle=i%4?'#8ae5ff35':'#d6ffff85';g.lineWidth=.7+q()*2;g.beginPath();g.moveTo(x,y);g.bezierCurveTo(x+6,y-4,x+18,y+4,x+26,y);g.stroke()}for(let i=0;i<24;i++){const x=q()*w,y=q()*h;g.fillStyle='#7be6ff22';g.beginPath();g.ellipse(x,y,5+q()*12,2+q()*3,0,0,TAU);g.fill()}},true);waterTex.repeat.set(3,1);
-    const waterMat=new T.MeshStandardMaterial({map:waterTex,color:'#8cddff',emissive:'#0b6c91',emissiveIntensity:.25,roughness:.48,metalness:.05});
+    const waterTex=A.texture(512,256,(g,w,h)=>{
+      const q=A.rng(19),grad=g.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#10456d');grad.addColorStop(.18,'#166f9e');grad.addColorStop(.47,'#208fb3');grad.addColorStop(.72,'#1c85ae');grad.addColorStop(1,'#103f69');g.fillStyle=grad;g.fillRect(0,0,w,h);
+      // Broad painterly caustics and small curved wavelets. All texture motion is cosmetic.
+      for(let i=0;i<58;i++){const x=q()*w,y=q()*h,rx=12+q()*33,ry=4+q()*13;g.save();g.translate(x,y);g.scale(1,ry/rx);const p=g.createRadialGradient(0,0,0,0,0,rx);p.addColorStop(0,'#86f8e54b');p.addColorStop(.55,'#49d8ed26');p.addColorStop(1,'#49d8ed00');g.fillStyle=p;g.fillRect(-rx,-rx,2*rx,2*rx);g.restore()}
+      for(let i=0;i<85;i++){const x=q()*w,y=q()*h,len=8+q()*29;g.strokeStyle=i%6?'#92e9ff38':'#e5ffffa0';g.lineWidth=.65+q()*1.8;g.beginPath();g.moveTo(x,y);g.bezierCurveTo(x+len*.24,y-3.5,x+len*.68,y+4,x+len,y);g.stroke()}
+      for(const y of [2,h-3]){g.fillStyle='#c5f7ff40';g.fillRect(0,y,w,1.2)}
+    },true);waterTex.repeat.set(3,1);
+    const waterMat=new T.MeshStandardMaterial({map:waterTex,color:'#b4efff',emissive:'#086f9d',emissiveIntensity:.31,roughness:.37,metalness:.04});
     A.mesh(env,G.plane,waterMat,180,-.65,280,392,32,1,-Math.PI/2,0,0,false);
     for(let i=0;i<24;i++)for(const z of [261,299])add(G.bevel,stone,7.5+15*i,.6,z,14.5,4.2,5.5,0,0,0,choose(wall));
     // Bridges: retain x ±34 as visual walkable deck. Posts sit outside the deck.
@@ -25,14 +35,14 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
       for(const s of [-1,1]){add(G.bevel,woodDark,x+s*34,3.8,280,3.6,3.4,43);for(const dz of [-21,21]){add(G.bevel,woodDark,x+s*35,5,280+dz,7.2,10,7.2);add(G.bevel,A.gold,x+s*35,10.3,280+dz,8.5,2.5,8.5);add(G.box,A.goldLight,x+s*35,11.65,280+dz,4.2,.35,4.2,0,Math.PI/4,0)}}
     }
     // Gold tracks painted onto a single transparent plane, not physical colliders.
-    const runes=A.texture(1024,1600,(g,w,h)=>{const sx=w/360,sy=h/560;g.scale(sx,sy);g.lineCap='round';g.lineJoin='round';const gold='#ffca6d';function ln(x1,y1,x2,y2,width=1){g.strokeStyle=gold;g.lineWidth=width;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke()}
+    const runes=A.texture(1024,1600,(g,w,h)=>{const sx=w/360,sy=h/560;g.scale(sx,sy);g.lineCap='round';g.lineJoin='round';const gold='#ffd17a';g.shadowColor='#ff9c3d88';g.shadowBlur=5;function ln(x1,y1,x2,y2,width=1){g.strokeStyle=gold;g.lineWidth=width;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke()}
       for(const x of [90,270])for(const [a,e] of [[105,258],[302,455]]){for(const dx of [-7,7])ln(x+dx,a,x+dx,e,1.25);for(let z=a+13;z<e-4;z+=19){g.strokeStyle=gold;g.lineWidth=1.1;g.beginPath();g.moveTo(x,z-4);g.lineTo(x+4.5,z);g.lineTo(x,z+4);g.lineTo(x-4.5,z);g.closePath();g.stroke()}}
       for(const [a,e] of [[46,243],[317,515]]){ln(180,a,180,e,1.8);for(let z=a+17;z<e-4;z+=21){g.strokeStyle=gold;g.lineWidth=1.3;g.beginPath();g.moveTo(180,z-6);g.lineTo(188,z);g.lineTo(180,z+6);g.lineTo(172,z);g.closePath();g.stroke();g.beginPath();g.moveTo(180,z-2.7);g.lineTo(184,z);g.lineTo(180,z+2.7);g.lineTo(176,z);g.closePath();g.stroke()}}
     });
     A.mesh(env,G.plane,new T.MeshBasicMaterial({map:runes,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1}),180,.13,280,360,560,1,-Math.PI/2,0,0,false);
     // Floating seal: deliberately separated from banks so it does not look like a traversable third bridge.
     const seal=new T.Group();seal.position.set(180,1.3,280);env.add(seal);
-    const sealTex=A.texture(256,256,(g,w,h)=>{g.translate(128,128);g.strokeStyle='#ffd078';g.lineWidth=6;for(const rad of [92,110]){g.beginPath();g.arc(0,0,rad,0,TAU);g.stroke()}g.lineWidth=8;g.lineCap='round';g.beginPath();for(let i=0;i<=200;i++){const a=i/200*TAU*1.65,rr=3+i/200*65,x=rr*Math.cos(a),y=rr*Math.sin(a);if(i===0)g.moveTo(x,y);else g.lineTo(x,y)}g.stroke();for(let i=0;i<8;i++){const a=i*TAU/8;g.save();g.rotate(a);g.lineWidth=4;g.beginPath();g.moveTo(112,0);g.lineTo(124,-8);g.lineTo(135,0);g.lineTo(124,8);g.closePath();g.stroke();g.restore()}});
+    const sealTex=A.texture(512,512,(g,w,h)=>{g.scale(2,2);g.translate(128,128);g.shadowColor='#ffad4499';g.shadowBlur=8;g.strokeStyle='#ffd078';g.lineWidth=6;for(const rad of [92,110]){g.beginPath();g.arc(0,0,rad,0,TAU);g.stroke()}g.lineWidth=8;g.lineCap='round';g.beginPath();for(let i=0;i<=200;i++){const a=i/200*TAU*1.65,rr=3+i/200*65,x=rr*Math.cos(a),y=rr*Math.sin(a);if(i===0)g.moveTo(x,y);else g.lineTo(x,y)}g.stroke();for(let i=0;i<8;i++){const a=i*TAU/8;g.save();g.rotate(a);g.lineWidth=4;g.beginPath();g.moveTo(112,0);g.lineTo(124,-8);g.lineTo(135,0);g.lineTo(124,8);g.closePath();g.stroke();g.restore()}});
     const sealMat=new T.MeshBasicMaterial({map:sealTex,transparent:true,depthWrite:false,opacity:.94,side:T.DoubleSide});
     // Floating, interrupted stone rim: gaps toward both banks keep the central crossing visibly closed.
     const rim=new T.TorusGeometry(28,2.05,5,26,Math.PI*.75);
