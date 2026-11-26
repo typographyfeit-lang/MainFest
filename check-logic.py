@@ -28,6 +28,15 @@ with sync_playwright() as p:
     G.u=[];const center=unit(0,180,350);for(let i=0;i<100;i++)act(center,1/30);assert(dist(center,SHRINE)<54,'center auto route');const flank=unit(0,96,350);flank.path='left';for(let i=0;i<100;i++)act(flank,1/30);assert(flank.x<130&&flank.y<260,'flank route');const touch=unit(0,53,391);constrain(touch,53,425);assert(dist(touch,G.tw[0])>=28,'structure collision');const rear=unit(0,180,548);rear.rad=12;constrain(rear,180,560);for(let i=0;i<240;i++)act(rear,1/30);assert(rear.y<420,'bypass own core');
     // Timeout uses only core health, not obelisk count; no duplicate rewards.
     G.tw[0].hp=0;G.tw[1].hp=0;core(0).hp=2200;core(1).hp=2000;G.t=.01;const coins=S.coin;step(FIXED);assert(G.done&&G.result===1&&S.coin===coins+60,'timeout core ratio');end();assert(S.coin===coins+60,'reward once');assert(JSON.parse(localStorage.getItem(SAVE)).coin===S.coin,'save');document.querySelector('#rb').click();assert(G===null,'exit');start();cancelAnimationFrame(raf);raf=0;assert(G.u.length===0&&G.shrine.next===30&&G.hand.length===4,'restart');
+    // 3.1: pause, final minute, fortified core, rune levels, backup code, varied bot squads.
+    G.at=1000;G.paused=true;assert(!playRune(0,G.hand[0],{x:180,y:400}),'pause blocks runes');G.paused=false;
+    setPaused(true);assert(!document.querySelector('#pausemenu').hidden&&G.menu,'pause menu');setPaused(false);assert(document.querySelector('#pausemenu').hidden&&!G.paused,'resume');
+    const id0=G.hand.find(id=>!CARDS[id].sp);assert(playRune(0,id0,{x:180,y:400}),'summon');const before=G.cool[0][id0];G.t=FINAL-1;step(FIXED);assert(Math.abs((before-G.cool[0][id0])-2*FIXED)<1e-6,'final minute doubles recharge');
+    const k=core(1),as=k.as,dmg=k.d,range=k.r;G.tw[3].hp=0;step(FIXED);assert(G.rage[1]>0&&k.as<as&&k.d>dmg&&k.r>range,'obelisk loss fortifies its core');
+    S.lv[id0]=3;assert(Math.abs(levelMult(levelOf(id0))-1.14)<1e-9,'rune level multiplier');
+    const code=exportCode(),back=importCode(code);assert(back&&back.lv[id0]===3&&back.coin===S.coin,'backup code round trip');assert(importCode(code.replace(/[.][a-z0-9]+$/,'.0'))===null,'checksum rejects edits');
+    const decks=new Set();for(let i=0;i<40;i++)decks.add(pickAiDeck().join());assert(decks.size>=3,'bot squads vary');
+    S.lv[id0]=1;document.querySelector('#rb').click();assert(G===null,'leave');
     return {width:innerWidth,canvas:[Math.round(r.width),Math.round(r.height)],status:'PASS'};}''')
   assert not errs,errs;results.append(res);pg.close()
  b.close()

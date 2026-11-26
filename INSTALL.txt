@@ -1,13 +1,32 @@
-CRYSTAL DOMINION 3.0 — УСТАНОВКА
+CRYSTAL DOMINION 3.1 — УСТАНОВКА
 
-1. Распакуйте crystal-dominion-3.0.zip.
-2. Откройте https://github.com/typographyfeit-lang/MainFest/upload/main
-3. Загрузите ВСЕ файлы из архива в корень (без папки). Согласитесь заменить одноимённые.
-4. Commit changes. Проверьте завершение GitHub Pages Actions.
-5. Откройте https://typographyfeit-lang.github.io/MainFest/?v=30
-   High: https://typographyfeit-lang.github.io/MainFest/?v=30&quality=high
-   Диагностика: https://typographyfeit-lang.github.io/MainFest/?v=30&debug=1
+1. Распакуйте crystal-dominion-3.1.zip (на iPhone: приложение «Файлы», нажать на архив).
+2. Рекомендуется сначала проверить в отдельной ветке: на GitHub откройте MainFest,
+   Branch → создать ветку, например update-3.1, и загружайте в неё.
+3. Откройте https://github.com/typographyfeit-lang/MainFest/upload/<ветка>
+   (для main: https://github.com/typographyfeit-lang/MainFest/upload/main).
+4. Загрузите ВСЕ 27 файлов из архива в корень (без папки), согласитесь заменить одноимённые.
+   Commit changes. Модели .glb и cards-v27.svg уже лежат в репозитории и не менялись.
+5. Если загружали в ветку: Pull request → проверить → Merge в main.
+   GitHub Pages публикует main; дождитесь завершения Actions (обычно 1–2 минуты).
+6. Откройте https://typographyfeit-lang.github.io/MainFest/?v=31
+   Высокое качество: ?v=31&quality=high · Диагностика: ?v=31&debug=1
 
-Редактировать index.html или удалять старые ресурсы не требуется.
-Старый прогресс импортируется на том же устройстве/сайте. Ключ ba1 сохраняется.
-Для запуска нужен доступ к Three.js CDN и WebGL. Реальный рендер ещё не проверен.
+Если видна старая версия: обновите страницу ещё раз (игра кэширует файлы для офлайн-режима,
+новая версия подхватывается при следующем запуске).
+
+Прогресс 3.0 сохраняется (тот же ключ на том же устройстве). Старый ключ ba1 не трогается.
+Three.js теперь лежит в репозитории, интернет-CDN больше не нужен.
+
+ФАЙЛЫ АРХИВА
+Изменены: index.html, style.css, game.js, render3d.js, characters.js, character-models.js,
+  towers.js, environment.js, art.js, audio.js, binary-models.js, README.md, INSTALL.txt,
+  TEST_REPORT.md, check-logic.py, check-runtime.py, check-webgl.py, test-three-stub.js
+Новые: three.min.js, THREE-LICENSE.txt, three-fallback.js, pwa.js, sw.js,
+  manifest.webmanifest, icon-180.png, icon-192.png, icon-512.png
+
+НЕОБЯЗАТЕЛЬНАЯ УБОРКА
+Эти файлы игра и тесты не используют (≈3,3 МБ), их можно удалить на GitHub (файл → … → Delete):
+  index(1).html, hd-model-data.js, arena-art.js, lobby.webp, arena.webp, cards.webp,
+  towers.webp, units.webp, arena-preview.webp, texture-preview.png
+guardian-hd.glb оставьте: его проверяет check-models.py.

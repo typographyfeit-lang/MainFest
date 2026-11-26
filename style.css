@@ -64,3 +64,80 @@ header{background:linear-gradient(#32243f,#1c1528);border-bottom-color:#956b3d}
 
 /* Crystal Dominion 3.0 */
 h1{font-size:clamp(28px,9vw,46px);letter-spacing:.035em}.art{margin:14px 0 12px;min-height:133px;gap:4px}.sigil{width:106px;height:106px}.sigil:after{width:43px;height:73px}.rules{text-align:left;display:grid;gap:7px;margin:9px auto 14px;max-width:350px;font-size:13px;color:#efdbcc}.rules p{display:flex;gap:8px;align-items:flex-start}.rules b{flex:0 0 19px;text-align:center;color:#ffe2a0;background:#5b3e63;border-radius:50%;font-size:12px;line-height:19px}.difficulty{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0;font-size:13px;color:#f1dbb7}.difficulty select{font:inherit;border:1px solid #c6a16f;background:#30233d;color:#fff;padding:7px;border-radius:7px;min-width:120px}.big{font-size:19px}.card{font-family:inherit;font-weight:700}.rune-name{display:block}.rune b{border-radius:6px;font-size:10px;background:linear-gradient(#c3a66c,#684b2b);color:#fff3cd;border-color:#f0d18f}.ready-label{display:block;font-size:11px;color:#a6f3ce;padding:3px 0 1px}.card.lock .ready-label{color:#f5d6ab}.cooldown-track{display:block;height:4px;background:#160f25;border-radius:3px;overflow:hidden;margin:1px 4px 0}.cooldown-track i{display:block;height:100%;width:100%;background:#e1be76}.card.lock{opacity:.66}.card.lock em{filter:saturate(.45)}.card.sel{outline-color:#72e4ef}#hand{padding:8px 7px 6px}#hand .card{font-size:10px;min-height:78px}#hand .card em{max-width:clamp(37px,13vw,58px)}#hud{min-height:42px;padding:5px 6px;gap:6px;justify-content:space-between}.core-stat{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}.core-stat span{display:flex;justify-content:space-between;gap:3px;font-size:10px;white-space:nowrap}.core-stat>i{display:block;height:6px;background:#160e21;border-radius:5px;overflow:hidden}.core-stat>i>i{display:block;height:100%;width:100%;background:#37d4ee}.core-stat.enemy>i>i{background:#c17bfc}#time{flex:0 0 auto;font-size:17px;letter-spacing:-.03em;color:#fff1d1}#sound{font-size:9px;min-width:48px;min-height:26px}#bar{margin:4px 6px 3px;height:21px;flex:0 0 21px;border-color:#a18b60}#el{background:#806138;box-shadow:none}#bar[data-owner="0"] #el{background:#237b9e}#bar[data-owner="1"] #el{background:#8348a8}#bar b{font-size:11px;line-height:19px}#perf{top:calc(env(safe-area-inset-top) + 72px)}#unlock-list{display:grid;gap:9px;margin:16px auto;max-width:320px}.unlock-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border:1px solid #8a6c66;border-radius:9px;background:#362844}.unlock-item .card{width:86px;flex:none}.unlock-item>button:last-child{border:1px solid #c9a76b;background:#594034;border-radius:7px;padding:10px;color:#fff0c9;font:700 12px system-ui}.unlock-item>button:disabled{opacity:.5}#record{margin:14px 0;color:#f8d99c}.tab .grid .card{min-height:86px}@media(max-height:650px){.art{min-height:100px;margin:6px 0}.sigil{height:82px;width:82px}.sigil:after{height:53px;width:33px}.rules{gap:4px;font-size:12px}.difficulty{margin:4px 0}#hand .card{min-height:68px}#hand .card em{max-width:40px}}
+
+/* ------------------------------------------------------------------ Crystal Dominion 3.1 */
+/* Header: wins, sound toggle, shards. */
+header{align-items:center;gap:8px;padding:6px 12px;font-size:15px}
+header .snd{min-width:44px;min-height:38px;border:1px solid #8d6b49;border-radius:10px;background:#2c2139;color:#ffe0a5;font-size:18px;line-height:1}
+header .snd[aria-pressed="false"]{opacity:.6}
+
+/* Battle HUD: bigger text and a real pause button. */
+#hud{min-height:48px;padding:5px 8px;gap:8px}
+.core-stat span{font-size:12px}
+.core-stat>i{height:7px}
+#time{font-size:20px;min-width:52px;text-align:center;transition:color .3s}
+#time.final{color:#ffd36e;text-shadow:0 0 10px #ffb44e;animation:finalPulse 1s ease-in-out infinite}
+@keyframes finalPulse{50%{transform:scale(1.08)}}
+#pause{flex:0 0 44px;width:44px;height:40px;border:1px solid #b08b5d;border-radius:10px;background:linear-gradient(#45334f,#291f36);color:#ffe3ad;font:800 14px/1 system-ui,sans-serif;letter-spacing:-1px}
+#pause:disabled{opacity:.4}
+#bar b{font-size:12px}
+
+/* Arena stage: canvas plus overlays (banner, hints, vignette). */
+#stage{position:relative;flex:1 1 0;min-height:0;width:100%;overflow:hidden}
+#stage #cv{position:absolute;inset:0;width:100%;height:100%}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 62% at 50% 52%,transparent 58%,#0d0816a8 100%)}
+#banner{position:absolute;left:50%;top:10px;z-index:4;max-width:calc(100% - 24px);padding:8px 14px;border-radius:12px;background:#1a1226e6;border:1px solid #c9a46a;color:#ffe9bf;font:800 14px/1.25 system-ui,sans-serif;text-align:center;box-shadow:0 6px 20px #0008;opacity:0;transform:translate(-50%,-14px) scale(.96);transition:opacity .25s,transform .25s;pointer-events:none}
+#banner.on{opacity:1;transform:translate(-50%,0) scale(1)}
+#banner.gold{border-color:#ffd36e;color:#ffe7a8;box-shadow:0 0 22px #ffb44e66,0 6px 20px #0008}
+#banner.own{border-color:#5fe4ff;color:#cff8ff;box-shadow:0 0 22px #24d9ff55,0 6px 20px #0008}
+#banner.enemy{border-color:#c27bff;color:#f0d9ff;box-shadow:0 0 22px #bd42ff55,0 6px 20px #0008}
+#toast{position:absolute;left:50%;bottom:10px;z-index:4;max-width:calc(100% - 24px);padding:8px 14px;border-radius:20px;background:#140d1ef0;border:1px solid #8f6f52;color:#ffe3b8;font:700 13px/1.25 system-ui,sans-serif;text-align:center;opacity:0;transform:translate(-50%,8px);transition:opacity .2s,transform .2s;pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* Hand: larger labels, clock overlay while a rune recharges, pop when it is ready. */
+#hand .card{font-size:11px;min-height:80px;touch-action:none}
+#hand .card .rune-name{font-size:11px}
+#hand .card .ready-label{font-size:12px;font-weight:800}
+.card b{font-size:11px}
+.card em{position:relative}
+#hand .card.lock em::after{content:"";position:absolute;inset:0;border-radius:5px;background:conic-gradient(#0b0714b8 calc(var(--cd,0) * 360deg),transparent 0)}
+#hand .card.sel{transform:translateY(-6px);box-shadow:0 0 0 2px #72e4ef,0 0 18px #48d9ff99}
+#hand .card.dragging{opacity:.45}
+#hand .card.ready-pop{animation:readyPop .45s ease-out}
+@keyframes readyPop{0%{transform:scale(1)}40%{transform:scale(1.09);box-shadow:0 0 0 2px #ffe08a,0 0 22px #ffc85a}100%{transform:scale(1)}}
+#hand.pulse .card:not(.lock){animation:handPulse .7s ease-out}
+@keyframes handPulse{30%{box-shadow:0 0 0 2px #ffe08a,0 0 18px #ffc85a;transform:translateY(-4px)}}
+#hand.boost .cooldown-track i{background:linear-gradient(90deg,#ffd36e,#fff1c4,#ffd36e);box-shadow:0 0 8px #ffcf6e}
+.card .lv{position:absolute;top:-4px;right:-3px;z-index:1;padding:2px 4px;border-radius:6px;background:linear-gradient(#59c9e8,#1e6d93);border:1px solid #bdf3ff;color:#fff;font:800 9px/1 system-ui,sans-serif}
+#ghost{position:fixed;left:0;top:0;z-index:30;width:64px;height:64px;margin:-84px 0 0 -32px;border-radius:12px;pointer-events:none;background:url('cards-v27.svg') no-repeat;background-size:500% 200%;box-shadow:0 0 0 2px #ffe08a,0 8px 24px #000a;opacity:.92}
+#ghost[hidden]{display:none}
+#ghost[data-id="guard"]{background-position:0% 0%}#ghost[data-id="archer"]{background-position:25% 0%}#ghost[data-id="colossus"]{background-position:50% 0%}#ghost[data-id="imp"]{background-position:75% 0%}#ghost[data-id="mage"]{background-position:100% 0%}#ghost[data-id="hounds"]{background-position:0% 100%}#ghost[data-id="swarm"]{background-position:25% 100%}#ghost[data-id="brute"]{background-position:50% 100%}#ghost[data-id="meteor"]{background-position:75% 100%}#ghost[data-id="spark"]{background-position:100% 100%}
+
+/* Pause menu and result card. */
+#pausemenu{position:absolute;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;padding:24px;background:#0c0819c4;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#pausemenu[hidden]{display:none}
+#pausemenu>div{width:100%;max-width:320px;display:grid;gap:12px;padding:22px;border:2px solid #d7a76d;border-radius:14px;background:radial-gradient(ellipse at top,#68506d,#2a203b 68%);box-shadow:0 0 0 5px #31223a,0 12px 50px #000a;text-align:center}
+#pausemenu h2{margin:0 0 4px}
+#pausemenu button:not(.big),#res .plain{min-height:46px;border:1px solid #b08b5d;border-radius:10px;background:#3a2b47;color:#ffe9c2;font:700 15px system-ui,sans-serif}
+#quit[data-confirm="1"]{background:#6b2f3c;border-color:#ff9a9a}
+#res>div{display:grid;gap:10px}
+#res p{margin:4px 0}
+#rhint{color:#ffe2a0;min-height:0}
+#rhint:empty{display:none}
+
+/* Forge (unlock and upgrade), profile and backup code. */
+.unlock-item{display:grid;grid-template-columns:76px 1fr auto;align-items:center;text-align:left}
+.unlock-item .card{width:76px}
+.forge-info{display:grid;gap:3px;min-width:0}
+.forge-info b{color:#ffe0a5;font-size:14px}
+.forge-info small{font-size:12px;color:#e3cfe0;line-height:1.25}
+.forge-info .forge-level{color:#9fe8ff}
+.unlock-item>button:last-child{min-height:44px;font-size:13px}
+#unlock-list{max-width:420px}
+.profile-actions{display:grid;gap:10px;max-width:320px;margin:14px auto}
+.profile-actions button{min-height:46px;border:1px solid #c9a76b;border-radius:10px;background:#3a2b47;color:#ffe9c2;font:700 14px system-ui,sans-serif}
+#installhint{border:1px dashed #c9a76b;border-radius:10px;padding:10px;color:#ffe2a0}
+.rules{font-size:14px}
+.difficulty{font-size:14px}
+@media(max-height:650px){#hud{min-height:42px}#time{font-size:17px}#hand .card{min-height:70px}}
+@media(prefers-reduced-motion:reduce){#time.final,#hand .card.ready-pop,#hand.pulse .card{animation:none}#banner,#toast{transition:none}}

@@ -127,5 +127,5 @@ const ArenaArt3D = window.THREE ? (() => {
   function updateHealth(hp,ratio,cam,visible=true){const a=Math.max(0,Math.min(1,ratio));hp.fill.scale.x=Math.max(.001,a*hp.width);hp.fill.position.x=(a-1)*hp.width/2;hp.root.quaternion.copy(cam.quaternion);hp.root.visible=visible;}
   // Dispose only unique per-model resources. Shared library assets remain alive.
   function disposeTree(root){root.traverse(o=>{if(o.userData.banner)o.geometry.dispose();if(o.isSprite)o.material.dispose();if(o.isInstancedMesh&&typeof o.dispose==='function')o.dispose();if(o.userData.ownedGeometry&&o.geometry)o.geometry.dispose();if(o.userData.ownedMaterial&&o.material)o.material.dispose()})}
-  return {T,TAU,C,G,lin,material,stone,gold,goldLight,batch,modelBatch,mesh,glow,crystal,contact,lightPool,banner,waveBanner,health,updateHealth,texture,rng,random,symbol,disposeTree};
+  return {T,TAU,C,G,lin,material,stone,gold,goldLight,batch,modelBatch,mesh,glow,crystal,contact,lightPool,banner,waveBanner,health,updateHealth,texture,rng,random,symbol,disposeTree,glowTex,shadowTex};
 })():null;

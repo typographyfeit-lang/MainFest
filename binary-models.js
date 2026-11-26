@@ -10,6 +10,6 @@ const ArenaBinary=(()=>{
     function read(i,type,component=5126){const a=doc.accessors[i],b=a&&doc.bufferViews[a.bufferView],n=types[type];if(!a||!b||!n||a.type!==type||a.componentType!==component||b.buffer!==0||b.byteStride||a.sparse||!Number.isInteger(a.count)||a.count<1)throw Error('Unsupported GLB accessor');const size=component===5126?4:component===5123?2:0,local=a.byteOffset||0,offset=bin+(b.byteOffset||0)+local,len=a.count*n;if(!size||offset<bin||offset%size||local+len*size>b.byteLength||offset+len*size>limit)throw Error('GLB accessor outside buffer');return component===5126?new Float32Array(buffer,offset,len):new Uint16Array(buffer,offset,len)}
     return {doc,read};
   }
-  async function load(name){const url='./'+name+'.glb?v=30';const res=await fetch(url,{cache:'force-cache'});if(!res.ok)throw Error(name+': HTTP '+res.status);const b=await res.arrayBuffer();if(b.byteLength>4*1024*1024)throw Error('GLB exceeds size limit');return decode(b)}
+  async function load(name){const url='./'+name+'.glb?v=31';const res=await fetch(url,{cache:'force-cache'});if(!res.ok)throw Error(name+': HTTP '+res.status);const b=await res.arrayBuffer();if(b.byteLength>4*1024*1024)throw Error('GLB exceeds size limit');return decode(b)}
   return {load,decode};
 })();

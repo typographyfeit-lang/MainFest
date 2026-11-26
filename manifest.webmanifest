@@ -1,0 +1,17 @@
+{
+  "name": "Crystal Dominion — Sanctuary Duel",
+  "short_name": "Crystal",
+  "description": "Мобильная стратегия: призывай бойцов рунами и захватывай святилище.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#130e1d",
+  "theme_color": "#1c1528",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

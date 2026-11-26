@@ -47,7 +47,14 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     const shrineCrystal=A.mesh(seal,G.oct,coreMat,0,26,0,10,19,10,0,0,0,false);
     const halo=A.glow(seal,'#ffce75',0,26,0,43,.33);
     const pool=A.lightPool(seal,'#ffce75',0,0,105,105,.14,.22);
-    const marks=[];for(let i=0;i<12;i++){const a=i*TAU/12,m=new T.MeshBasicMaterial({color:A.lin('#ffce75'),toneMapped:false,transparent:true,opacity:.35,depthWrite:false});const mark=A.mesh(seal,G.box,m,Math.cos(a)*46,.30,Math.sin(a)*46,3.5,.35,5,0,-a,0,false);marks.push(mark)}
+    // 3.1: twelve timer marks in one instanced draw call (additive, so brightness encodes progress).
+    const marks=new T.InstancedMesh(G.box,new T.MeshBasicMaterial({color:0xffffff,toneMapped:false,transparent:true,depthWrite:false,blending:T.AdditiveBlending}),12);marks.frustumCulled=false;marks.castShadow=false;seal.add(marks);
+    const markTmp=new T.Object3D(),markBase=A.lin('#ffce75'),markColor=A.lin('#ffce75');for(let i=0;i<12;i++){const a=i*TAU/12;markTmp.position.set(Math.cos(a)*46,.30,Math.sin(a)*46);markTmp.rotation.set(0,-a,0);markTmp.scale.set(3.5,.35,5);markTmp.updateMatrix();marks.setMatrixAt(i,markTmp.matrix);marks.setColorAt(i,markColor)}
+    // 3.1: capture charge disc in the colour of the side holding the shrine.
+    const chargeTex=A.texture(128,128,g=>{const r=g.createRadialGradient(64,64,6,64,64,64);r.addColorStop(0,'rgba(255,255,255,.9)');r.addColorStop(.55,'rgba(255,255,255,.35)');r.addColorStop(.8,'rgba(255,255,255,.65)');r.addColorStop(.92,'rgba(255,255,255,.2)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,128,128)});
+    const chargeMat=new T.MeshBasicMaterial({map:chargeTex,color:A.lin('#ffce75'),transparent:true,opacity:0,depthWrite:false,toneMapped:false,blending:T.AdditiveBlending});
+    const chargeDisc=A.mesh(seal,G.plane,chargeMat,0,.21,0,96,96,1,-Math.PI/2,0,0,false);chargeDisc.visible=false;
+    let lastLit=-1,lastCand=-2,chargeLevel=0,lastT=0;
     let lastOwner=-99;
     // Fortified perimeter. Front wall is lower to protect the player's tower and camera visibility.
     for(const x of [-6,366])for(let z=-7;z<=567;z+=17){for(let j=0;j<2;j++)add(G.bevel,stone,x,5+j*8.5,z,12,8.2,16.6,0,0,0,choose(wall));add(G.bevel,stone,x,18,z,15,5,17,0,0,0,choose(wall));if(Math.floor((z+7)/17)%3===0)add(G.bevel,stone,x,23,z,13,6,12,0,0,0,choose(wall));}
@@ -68,10 +75,21 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     for(const x of [-27,387])for(const z of [55,175,385,505]){const h=18+dusk()*12;add(G.bevel,stone,x,-1,z,17,7,20,0,0,0,'#625269',false);add(G.bevel,stone,x,h/2,z,12,h,13,0,0,0,'#776274',false);add(G.bevel,stone,x,h+2,z,18,5,18,0,0,0,'#a18791',false);for(let i=0;i<3;i++)add(G.leaf,darkLeaf,x+(dusk()-.5)*12,h+5,z+(dusk()-.5)*12,3.3,1.6,1,0,dusk()*TAU,.4,null,false);}
     for(const x of [45,315])for(const z of [9,551])A.lightPool(env,'#ffad55',x,z,43,33,.12,.17);
     if(!low)for(const x of [-11,371])for(const z of [75,210,350,485])A.lightPool(env,'#8160af',x,z,45,85,.08,.19);
+    // 3.1: outer sanctuary. On tall phones the camera sees past the north wall, so a terrace with
+    // columns and enemy-coloured crystals fills that band; the south side stays low to keep the player's core clear.
+    const far=A.rng(3307),slab=['#4b3a52','#584561','#433549','#5f4a62'];
+    for(let i=0;i<24;i++){const x=-36+i*18.4;add(G.bevel,stone,x,-4+far()*2,-44-far()*8,18.2,9+far()*4,26,0,far()*.12,0,slab[i%4],false);add(G.bevel,stone,x,-6,-76-far()*6,18.2,8,26,0,0,0,slab[(i+1)%4],false)}
+    for(const [x,h] of [[22,44],[112,30],[248,36],[338,48]]){add(G.bevel,stone,x,h/2-1,-52,12,h,12,0,0,0,'#7a6578',false);add(G.bevel,stone,x,h+1.5,-52,17,4,17,0,0,0,'#a48a94',false);if(h>40)add(G.leaf,darkLeaf,x+4,h-6,-46,4,2,1.4,0,0,.5,null,false)}
+    for(const [x,s] of [[66,1],[180,1.45],[294,1]]){A.crystal(env,1,x,16*s,-66,15*s,32*s,false);A.crystal(env,1,x-13*s,8*s,-58,8*s,16*s,false);A.lightPool(env,C.team[1],x,-60,64*s,44*s,.16,.6)}
+    for(const x of [96,264]){add(G.bevel,stone,x,3,-40,8,6,8,0,.4,0,'#6f5b75',false);A.glow(env,'#ffb35a',x,9,-40,16,.3)}
+    for(const [x,s] of [[40,1],[150,.8],[210,.8],[320,1]]){A.crystal(env,0,x,4*s,612,9*s,10*s,false);A.lightPool(env,C.team[0],x,612,40*s,26*s,.12,.4)}
     b.flush();
     return {root:env,update(t,state){const sh=state&&state.shrine,owner=sh?sh.owner:-1;
-      if(lastOwner!==owner){lastOwner=owner;const c=owner<0?'#ffce75':C.team[owner];circleMat.color.copy(A.lin(c));coreMat.color.copy(A.lin(c));coreMat.emissive.copy(A.lin(c));halo.material.color.copy(A.lin(c));pool.material.color.copy(A.lin(c));for(const mark of marks)mark.material.color.copy(A.lin(c))}
-      const pulse=sh?sh.pulse:0;shrineCrystal.position.y=27+Math.sin(t*2)*2.3;shrineCrystal.rotation.y=t*.4;circleMat.opacity=sh&&sh.contested?.44+.25*Math.sin(t*9):.83;halo.material.opacity=.3+pulse*.15;pool.material.opacity=.15+pulse*.09;const progress=sh?1-sh.next/30:0;marks.forEach((m,i)=>m.material.opacity=i<progress*12?.95:.20);for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7;
+      if(lastOwner!==owner){lastOwner=owner;const c=owner<0?'#ffce75':C.team[owner];circleMat.color.copy(A.lin(c));coreMat.color.copy(A.lin(c));coreMat.emissive.copy(A.lin(c));halo.material.color.copy(A.lin(c));pool.material.color.copy(A.lin(c));markBase.copy(A.lin(c));lastLit=-1}
+      const pulse=sh?sh.pulse:0;shrineCrystal.position.y=27+Math.sin(t*2)*2.3;shrineCrystal.rotation.y=t*.4;circleMat.opacity=sh&&sh.contested?.44+.25*Math.sin(t*9):.83;halo.material.opacity=.3+pulse*.15;pool.material.opacity=.15+pulse*.09;const progress=sh?1-sh.next/30:0,lit=Math.floor(progress*12);if(lit!==lastLit){lastLit=lit;for(let i=0;i<12;i++){const k=i<lit?.95:.2;markColor.copy(markBase);markColor.r*=k;markColor.g*=k;markColor.b*=k;marks.setColorAt(i,markColor)}if(marks.instanceColor)marks.instanceColor.needsUpdate=true}
+      const dt=Math.min(.05,Math.max(0,t-lastT));lastT=t;const cand=sh?sh.candidate:-1;if(cand!==lastCand){lastCand=cand;chargeMat.color.copy(A.lin(cand<0?'#ffce75':C.team[cand]))}
+      const want=cand<0?0:owner>=0?.42+.1*Math.sin(t*5):.12+.5*Math.min(1,sh.charge/1.5);chargeLevel+=(want-chargeLevel)*Math.min(1,dt*9);chargeMat.opacity=chargeLevel;chargeDisc.visible=chargeLevel>.01;const cs=cand<0?96:44+52*Math.min(1,sh.charge/1.5);chargeDisc.scale.set(cs,cs,1);
+      for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7;
     }};
   }
   return {build};

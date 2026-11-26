@@ -11,7 +11,8 @@ fetch_double='window.__requests=[];const _testFiles='+json.dumps(files)+';window
 html=(root/'index.html').read_text();html=re.sub(r'<link rel="stylesheet"[^>]+>','',html)
 def replace(m):
  src=m.group(1)
- if src.startswith('https://'):return '<script>'+stub+'\n'+fetch_double+'</script>'
+ # Three.js (bundled three.min.js since 3.1, or a CDN URL) is replaced by the non-rendering double.
+ if src.startswith('https://') or src.split('?')[0]=='three.min.js':return '<script>'+stub+'\n'+fetch_double+'</script>'
  return '<script>'+(root/src.split('?')[0]).read_text()+'</script>'
 html=re.sub(r'<script src="([^"]+)"></script>',replace,html)
 with sync_playwright() as p:

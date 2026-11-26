@@ -1,5 +1,6 @@
-"""Run with Chromium + Playwright + Internet, or --three /path/to/three.min.js (r128).
-Captures real WebGL screenshots and renderer.info. Not a mobile-device benchmark.
+"""Real WebGL test in headless Chromium (software rendering): screenshots on five phone widths and renderer.info.
+Since 3.1 Three.js r128 is bundled (three.min.js), so no internet is needed; --three still overrides the CDN copy.
+Not a mobile-device benchmark: FPS here is software rendering, draw calls and triangles are real.
 """
 import argparse,json,os,pathlib,threading
 from functools import partial
