@@ -1,0 +1,28 @@
+CRYSTAL DOMINION 3.7 — IMPERIAL SANCTUARY
+Накопительный патч для опубликованной 3.5 (MainFest, main, 3216f4ad3347a4ab6bc463aa32984470a52f9c78).
+Содержит обновления 3.6 и 3.7; отдельная установка 3.6 не требуется.
+
+Установка на iPhone
+1. Сохрани ZIP в «Файлы», распакуй его.
+2. Открой https://github.com/typographyfeit-lang/MainFest/upload/main.
+3. Загрузи все файлы из корня распакованного архива. Не удаляй старые файлы.
+4. Commit changes; проверь успешную публикацию GitHub Pages в Actions.
+5. Открой https://typographyfeit-lang.github.io/MainFest/?v=37
+   На iPhone начни с автоматической графики, не с High.
+
+Диагностика:
+https://typographyfeit-lang.github.io/MainFest/?v=37&perf=auto&audio=auto&debug=1
+Экономичный режим:
+https://typographyfeit-lang.github.io/MainFest/?v=37&quality=low&perf=eco&sound=low&lobby=light&debug=1
+Совместимое аудио:
+https://typographyfeit-lang.github.io/MainFest/?v=37&quality=low&perf=eco&sound=low&audio=media&lobby=light&debug=1
+Старая графика (модели до 3.4):
+https://typographyfeit-lang.github.io/MainFest/?v=37&visual=legacy&debug=1
+
+Настройки в профиле: мир арены, нагрузка декораций, качество звука, отключение дополнительных VFX, системное уменьшение движения. Пять тем используют одну боевую геометрию. Совместимый аудиорежим сохраняет отдельную дорожку и ограниченный пул эффектов; пространственное панорамирование и динамическое приглушение поддерживаются Web Audio.
+
+Прогресс: прежний ключ crystal-dominion-v1. Код CD1 не меняется. game.js не входит в патч. Перед обновлением желательно скопировать код в профиле. Не очищай данные сайта без резервной копии.
+
+Если iPhone не слышит звук: Пауза → Громкость и вибрация → Совместимый (iPhone) → Проверить звук / восстановить. Проверь системную громкость и беззвучный режим.
+
+Ограничения: сборка проверена на уровне реального декодера GLB, объектов Three.js, браузерной разметки и аудио в Chromium. Полноценный WebGL-матч, реальный FPS, нагрев и звук Safari на физическом устройстве не проверены. Публикация в GitHub не выполнена.

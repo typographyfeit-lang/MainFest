@@ -1,0 +1,64 @@
+/* Royal Visual Upgrade: clean illustrated cards, carved gold interface, and five cosmetic palettes. */
+.royal-36{--royal-gold:#ebc886;--royal-dark:#201a31;--royal-accent:#a9e9f2;--royal-edge:#a58a60;--royal-floor:url('royal-floor-royal-37.webp');--royal-filter:saturate(1.06) contrast(1.025);--royal-hue:#25243e}
+.royal-36[data-royal-world="forest"]{--royal-accent:#b8e8c0;--royal-floor:url('royal-floor-forest-37.webp');--royal-filter:hue-rotate(20deg) saturate(.92);--royal-hue:#253c35}
+.royal-36[data-royal-world="frost"]{--royal-accent:#d2eeff;--royal-floor:url('royal-floor-frost-37.webp');--royal-filter:hue-rotate(-16deg) saturate(.7) brightness(1.10);--royal-hue:#25354f}
+.royal-36[data-royal-world="ember"]{--royal-accent:#ffd19b;--royal-floor:url('royal-floor-ember-37.webp');--royal-filter:hue-rotate(48deg) saturate(.85) sepia(.22);--royal-hue:#462b36}
+.royal-36[data-royal-world="sky"]{--royal-accent:#e8e6ff;--royal-floor:url('royal-floor-sky-37.webp');--royal-filter:saturate(.7) brightness(1.18);--royal-hue:#343e62}
+.royal-36 .card em,.royal-36 #ghost,.royal-36 #lobby-squad .squad-token{background-image:url('runes-37.webp'),url('runes-35.webp'),url('cards-v27.svg');background-size:500% 200%;background-repeat:no-repeat}
+.royal-36 .kingdom-portrait[data-type="rune"]{background-image:url('runes-37.webp'),url('runes-35.webp')}
+.royal-36 .card{border:1px solid #b49a6d;background:linear-gradient(160deg,#554363 0%,#282338 46%,#201b30 100%);box-shadow:inset 0 1px 0 #fff0cc30,0 3px 7px #08071155;border-radius:10px;transition:transform .14s ease,box-shadow .14s ease}
+.royal-36 .card em{border:1px solid #d9b879;border-radius:7px;box-shadow:0 2px 5px #0f0b19bb;overflow:hidden}
+.royal-36 .card[data-id="guard"],.royal-36 .card[data-id="colossus"],.royal-36 .card[data-id="brute"]{border-color:#c9ad7b}
+.royal-36 .card[data-id="archer"],.royal-36 .card[data-id="hounds"]{border-color:#81bda7}
+.royal-36 .card[data-id="mage"],.royal-36 .card[data-id="spark"]{border-color:#b8a5e8}
+.royal-36 .card[data-id="imp"],.royal-36 .card[data-id="meteor"]{border-color:#d8a37b}
+.royal-36 .card .rune-name{color:#f9efdf;font-weight:750;text-shadow:0 1px 2px #110f20}
+.royal-36 .card .lv{border-color:#f0ce8a;color:#fff2d1;background:linear-gradient(#ba945b,#67492e)}
+.royal-36 #hand .card:not(.lock){box-shadow:inset 0 0 0 1px #e6c68b33,0 2px 8px #0b1023aa}
+.royal-36 #hand .card.sel{transform:translateY(-5px);border-color:#d8f9ff;box-shadow:0 0 0 1px #b6faff,0 0 12px #5ecde876}
+.royal-36 #hand .card.lock{filter:saturate(.76);box-shadow:none}
+.royal-36 #hand .ready-label{color:#d8f6e8;font-size:10px;line-height:1.1}
+.royal-36 #hand .card.lock .ready-label{color:#ead8bc}
+.royal-36 #hand .cooldown-track{border-radius:10px;background:#100e23;border:1px solid #be9b6670;height:4px}
+.royal-36 #hand .cooldown-track i{border-radius:10px;background:linear-gradient(90deg,#6fc8cc,#c6faeb,#e7ce91)}
+.royal-36 #hand{padding-top:5px;background:linear-gradient(#53405b,#282135 28%,#1c182b);border-top:2px solid #c3a673}
+.royal-36 #hud{border-bottom:1px solid #d0b37a;background:linear-gradient(180deg,#453852,#251f38);gap:7px}
+.royal-36 #time{color:#ffe3a5;font-family:Georgia,serif;font-weight:800;font-variant-numeric:tabular-nums;text-shadow:0 1px 5px #100f1f}
+.royal-36 #time.final{color:#ffe39c}
+.royal-36 .core-stat>i{border:1px solid #d6b67b87;border-radius:7px;background:#1b162c;overflow:hidden}
+.royal-36 .core-stat>i>i{border-radius:6px}
+.royal-36 #bar{border-bottom:1px solid #d0aa7277;background:#262039}
+.royal-36 #bar b{font-weight:750;letter-spacing:.015em;color:#ffebc8}
+.royal-36 #pause{border:1px solid #d1b37b;background:linear-gradient(#685173,#30263f)}
+.royal-36 header{border-bottom:1px solid #d9b87785;background:linear-gradient(#3b324b,#231d35)}
+.royal-36 nav{background:linear-gradient(#3e324d,#221b31);border-top:1px solid #c3a475}
+.royal-36 nav button.on{color:#ffdfa1;box-shadow:inset 0 2px 0 #ebc586;background:radial-gradient(ellipse at 50% 5%,#9e764c66,transparent 70%)}
+.royal-36 .big{background:linear-gradient(#ffe5aa 0%,#dfb56c 45%,#bb8842 100%);color:#332437;border:1px solid #ffe6a2;box-shadow:0 3px 0 #67482f,inset 0 1px 1px #fff7d7,0 4px 12px #1710229a}
+.royal-36 .big:active{transform:translateY(1px)}
+.royal-36 .lobby-edition{color:#f5dfac;letter-spacing:.11em}
+.royal-36 .royal-world-control{display:grid;grid-template-columns:32px auto minmax(0,1fr);align-items:center;gap:6px;margin:6px 0 2px;padding:4px 6px;border:1px solid #a58b5e73;border-radius:9px;background:linear-gradient(110deg,var(--royal-hue),#251e34);font-size:11px;color:#f7e5bf;text-align:left;min-width:0}
+.royal-36 .royal-world-control::before{content:"";width:30px;height:29px;border-radius:5px;border:1px solid #d9b877;background:var(--royal-floor) center/cover no-repeat}
+.royal-36 .royal-world-control label{font-weight:700;white-space:nowrap}
+.royal-36 .royal-world-control select{width:100%;min-height:36px;padding:3px 4px;background:#241c33;color:#fff0d3;border:1px solid #9e855d;border-radius:6px;font:600 12px system-ui,sans-serif;min-width:0}
+.royal-36 .royal-options{margin-bottom:12px}
+.royal-36 .kingdom-intro-art{filter:var(--royal-filter)}
+.royal-36 .kingdom-intro-vignette{background:linear-gradient(#0c071d20,var(--royal-hue) 65%,#100c21f5 88%)}
+.royal-36 .kingdom-intro-content h2{color:#ffe6ab;font-size:clamp(24px,7.5vw,38px)}
+.royal-36 .kingdom-intro-content{border-top:1px solid #dfc08488;background:linear-gradient(transparent,#1a142d9a)}
+.royal-36 #res>div{border:2px solid #e4be77;border-radius:19px;background:radial-gradient(ellipse at 50% 5%,#705740 0%,#433452 35%,#211a31 75%);box-shadow:0 0 0 3px #715b3c,0 12px 35px #0009,inset 0 0 0 5px #1a172a;overflow:hidden}
+.royal-36 #res[data-result="win"] .kingdom-result-emblem{background:radial-gradient(ellipse,#ffda8e64,transparent 68%)}
+.royal-36 .kingdom-reward{background:linear-gradient(140deg,#413748,#252438);border-color:#e8ca8a;color:#ffe8aa}
+.royal-reward-sparks{position:absolute;inset:0;pointer-events:none;display:none}
+.royal-reward-sparks i{position:absolute;left:50%;top:52%;width:6px;height:6px;border-radius:1px;background:#ffe1a0;box-shadow:0 0 6px #fddc94;opacity:0;transform:translate(-50%,-50%) rotate(45deg)}
+.royal-36[data-royal-celebrate="1"] #res[data-result="win"]:not([hidden]) .royal-reward-sparks{display:block}
+.royal-36[data-royal-celebrate="1"] #res[data-result="win"]:not([hidden]) .royal-reward-sparks i{animation:royal-spark 1.05s calc(var(--i)*.025s) ease-out both}
+@keyframes royal-spark{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(45deg)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.6) rotate(135deg)}}
+@media(max-height:650px){.royal-36 .royal-world-control{margin:3px 0 0;padding:2px 4px;grid-template-columns:24px auto minmax(0,1fr);gap:4px}.royal-36 .royal-world-control::before{width:22px;height:22px}.royal-36 .royal-world-control select{min-height:32px;font-size:11px}.royal-36 .royal-world-control label{font-size:10px}.royal-36 #hand .card{min-height:69px}}
+@media(prefers-reduced-motion:reduce){.royal-36 .card,.royal-36 .big{transition:none}.royal-36 .royal-reward-sparks{display:none!important}.royal-36 .kingdom-intro-art{animation:none!important}}
+/* Imperial finish: engraved borders and high-contrast lettering, no animated filter passes. */
+.royal-36 #hud{background:linear-gradient(180deg,#382a49,#1b162b);border-bottom:1px solid #d9b77b;box-shadow:inset 0 1px #b89b6770}
+.royal-36 #hud .core-stat span{color:#fbecd8;text-shadow:0 1px 2px #090612}
+.royal-36 #hand .card{border-color:#c6a16b;box-shadow:inset 0 1px 0 #ffe5a470,0 3px 8px #0008}
+.royal-36 #hand .card.sel{outline:2px solid #9de8f6;outline-offset:-2px}
+.royal-36 .imperial-audio{margin-top:12px}
+.royal-36 .imperial-audio select{max-width:100%;width:100%}
