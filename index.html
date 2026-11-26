@@ -12,11 +12,12 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Crystal Dominion 3.3.1 — Living Battlefield</title>
+<title>Crystal Dominion 3.3.2 — Performance Edition</title>
 <!-- Living Battlefield: existing combat logic and menu remain unchanged. -->
 <link rel="stylesheet" href="style.css?v=31">
 <link rel="stylesheet" href="lobby-32.css?v=32">
 <link rel="stylesheet" href="battlefield-33.css?v=33">
+<link rel="stylesheet" href="performance-332.css?v=332">
 </head>
 <body>
 <div id="app" class="living-lobby" data-lobby-mode="static">
@@ -35,7 +36,7 @@
           <div id="lobby-live3d" class="lobby-live3d"></div>
           <div class="lobby-motes" id="lobby-motes"></div><div class="lobby-vignette"></div>
         </div>
-        <div class="lobby-brand"><div class="lobby-eyebrow">◆ &nbsp; SANCTUARY DUEL &nbsp; ◆</div><h1>CRYSTAL<br>DOMINION</h1><div class="lobby-edition">ЖИВОЕ СВЯТИЛИЩЕ · 3.3.1</div></div>
+        <div class="lobby-brand"><div class="lobby-eyebrow">◆ &nbsp; SANCTUARY DUEL &nbsp; ◆</div><h1>CRYSTAL<br>DOMINION</h1><div class="lobby-edition">ЖИВОЕ СВЯТИЛИЩЕ · 3.3.2</div></div>
         <button type="button" id="lobby-bless" class="lobby-bless" aria-label="Поприветствовать хранителя" title="Поприветствовать хранителя"></button>
         <p class="lobby-whisper" id="lobby-whisper" aria-live="polite">Святилище ждёт тебя</p>
       </div>
@@ -62,7 +63,7 @@
       <div class="lobby-chapter chapter-profile"><div class="chapter-emblem">◈</div><small>ЛЕТОПИСЬ КОРОЛЕВСТВА</small><h2>Хранитель</h2></div>
       <p id="record"></p>
       <div class="lobby-preferences"><h2>Атмосфера меню</h2><label for="lobby-quality">Анимация</label><select id="lobby-quality"><option value="auto">Авто · 2.5D</option><option value="full">Полная · 3D</option><option value="light">Лёгкая</option><option value="static">Статичная</option></select><p class="hint" id="lobby-quality-note" aria-live="polite"></p><label for="lobby-music">Музыка меню</label><button type="button" id="lobby-music" aria-pressed="true">Включена</button></div>
-      <div class="lobby-preferences arena-options"><h2>Оформление арены</h2><label for="arena-effects">Движение окружения</label><select id="arena-effects"><option value="auto">Авто · живое окружение</option><option value="light">Лёгкое</option><option value="static">Статичное</option></select><p class="hint">Настройка влияет только на новое оформление. Системное уменьшение движения имеет приоритет.</p></div><details class="battle-mixer"><summary>Звуковое оформление боя</summary><div class="mix-content"><label class="mix-row"><span>Музыка боя</span><output>30%</output><input type="range" min="0" max="100" step="5" value="30" data-audio-mix="music" aria-label="Музыка боя"></label><label class="mix-row"><span>Звуки сражения</span><output>80%</output><input type="range" min="0" max="100" step="5" value="80" data-audio-mix="sfx" aria-label="Звуки сражения"></label><label class="mix-row"><span>Окружение</span><output>25%</output><input type="range" min="0" max="100" step="5" value="25" data-audio-mix="ambient" aria-label="Окружение"></label><label class="mix-row"><span>Возгласы бойцов</span><output>55%</output><input type="range" min="0" max="100" step="5" value="55" data-audio-mix="voice" aria-label="Возгласы бойцов"></label><label class="mix-vibration"><input type="checkbox" data-audio-mix="vibration" checked> Тактильная отдача (если поддерживается)</label><button type="button" class="mix-reset" data-audio-reset>Восстановить настройки</button><div class="audio-recovery" style="display:grid;gap:6px;margin:8px 0;min-width:0"><label style="display:grid;gap:5px">Режим звука<select data-audio-mode style="width:100%;min-height:42px;color:#fff;background:#33253d;border:1px solid #a88b64;border-radius:8px;padding:6px"><option value="auto">Авто (Web Audio)</option><option value="media">Совместимый (iPhone)</option></select></label><button type="button" data-audio-test class="mix-reset">Проверить звук / восстановить</button><small data-audio-status role="status" style="color:#ffe0a5;font-size:12px;overflow-wrap:anywhere">Коснись кнопки для проверки.</small></div></div></details>
+      <div class="lobby-preferences perf-options"><h2>Производительность</h2><label for="perf-mode">Нагрузка арены</label><select id="perf-mode"><option value="auto">Авто (рекомендуется)</option><option value="eco">Экономичная</option><option value="balanced">Сбалансированная</option><option value="full">Максимальная</option></select><p class="hint" id="perf-mode-note">В авто-режиме декорации упрощаются при просадках FPS.</p><label class="perf-toggle"><input type="checkbox" id="perf-toggle"> Показать диагностику FPS в бою</label><p class="hint">Параметр меняет нагрузку новых эффектов, а не правила боя. Разрешение и тени регулирует существующий адаптивный рендерер.</p></div><div class="lobby-preferences arena-options"><h2>Оформление арены</h2><label for="arena-effects">Движение окружения</label><select id="arena-effects"><option value="auto">Авто · живое окружение</option><option value="light">Лёгкое</option><option value="static">Статичное</option></select><p class="hint">Настройка влияет только на новое оформление. Системное уменьшение движения имеет приоритет.</p></div><details class="battle-mixer"><summary>Звуковое оформление боя</summary><div class="mix-content"><label class="mix-row"><span>Музыка боя</span><output>30%</output><input type="range" min="0" max="100" step="5" value="30" data-audio-mix="music" aria-label="Музыка боя"></label><label class="mix-row"><span>Звуки сражения</span><output>80%</output><input type="range" min="0" max="100" step="5" value="80" data-audio-mix="sfx" aria-label="Звуки сражения"></label><label class="mix-row"><span>Окружение</span><output>25%</output><input type="range" min="0" max="100" step="5" value="25" data-audio-mix="ambient" aria-label="Окружение"></label><label class="mix-row"><span>Возгласы бойцов</span><output>55%</output><input type="range" min="0" max="100" step="5" value="55" data-audio-mix="voice" aria-label="Возгласы бойцов"></label><label class="mix-vibration"><input type="checkbox" data-audio-mix="vibration" checked> Тактильная отдача (если поддерживается)</label><button type="button" class="mix-reset" data-audio-reset>Восстановить настройки</button><div class="audio-recovery" style="display:grid;gap:6px;margin:8px 0;min-width:0"><label style="display:grid;gap:5px">Режим звука<select data-audio-mode style="width:100%;min-height:42px;color:#fff;background:#33253d;border:1px solid #a88b64;border-radius:8px;padding:6px"><option value="auto">Авто (Web Audio)</option><option value="media">Совместимый (iPhone)</option></select></label><button type="button" data-audio-test class="mix-reset">Проверить звук / восстановить</button><small data-audio-status role="status" style="color:#ffe0a5;font-size:12px;overflow-wrap:anywhere">Коснись кнопки для проверки.</small></div></div></details>
       <div class="profile-actions"><button id="export" type="button">Скопировать код прогресса</button><button id="import" type="button">Восстановить из кода</button></div>
       <p id="savemsg" class="hint" role="status"></p>
       <p id="installhint" class="hint" hidden>Чтобы прогресс не пропал, добавь игру на экран «Домой»: кнопка «Поделиться» → «На экран „Домой“».</p>
@@ -78,6 +79,7 @@
   <div id="game" hidden>
     <div id="hud"><div class="core-stat own"><span>Твоё ядро <b id="hp0">100%</b></span><i><i id="fill0"></i></i></div><strong id="time">3:00</strong><div class="core-stat enemy"><span>Враг <b id="hp1">100%</b></span><i><i id="fill1"></i></i></div><button id="pause" type="button" aria-label="Пауза"><span aria-hidden="true">❚❚</span></button></div>
     <output id="perf" aria-label="Статистика производительности" hidden></output>
+    <output id="perf332" aria-label="Расширенная диагностика производительности" hidden></output>
     <div id="bar" data-owner="-1"><i id="el"></i><b id="ev">Святилище · 30с</b></div>
     <div id="stage">
       <canvas id="cv" width="360" height="560" aria-label="Игровая арена"></canvas>
@@ -100,9 +102,10 @@
 <script src="character-models.js?v=31"></script>
 <script src="characters.js?v=31"></script>
 <script src="battle-safe-sfx-331.js?v=331"></script>
-<script src="audio-331.js?v=331"></script>
-<script src="battlefield-33.js?v=33"></script>
+<script src="audio-332.js?v=332"></script>
+<script src="battlefield-332.js?v=332"></script>
 <script src="render3d.js?v=31"></script>
+<script src="performance-332.js?v=332"></script>
 <script src="game.js?v=31"></script>
 <script src="pwa.js?v=31"></script>
 <script src="lobby-32.js?v=32"></script>

@@ -1,0 +1,14 @@
+/* Compact diagnostics, excluded from the default game view. */
+#perf{display:none!important}
+#perf332{position:absolute;top:calc(env(safe-area-inset-top) + 49px);left:6px;z-index:5;max-width:calc(100% - 12px);pointer-events:none;border:1px solid #af9368;border-radius:7px;padding:5px 8px;background:#121323e8;color:#ddf2e1;font:10px/1.35 ui-monospace,SFMono-Regular,monospace;white-space:pre-line;overflow-wrap:anywhere;box-shadow:0 2px 8px #0005}
+#perf332[hidden]{display:none}
+.lobby-preferences.perf-options{margin-top:12px}
+#app .perf-toggle{display:flex;gap:9px;align-items:center;line-height:1.35;min-height:44px;text-align:left}
+#perf-toggle{width:20px;height:20px;flex:0 0 20px;accent-color:#c4a16d}
+@media(max-height:640px){#perf332{top:calc(env(safe-area-inset-top) + 43px);font-size:9px}}
+/* Prevent the new two-column settings from overflowing 320px phones. */
+#app .perf-options{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}
+#app .perf-options label{min-width:0;overflow-wrap:anywhere}
+#app #perf-mode{width:100%;min-width:0;justify-self:end}
+#app .perf-toggle{grid-column:1/-1}
+@media(max-width:350px){#app .perf-options{grid-template-columns:minmax(0,1fr)}#app #perf-mode{max-width:none;justify-self:stretch}}
