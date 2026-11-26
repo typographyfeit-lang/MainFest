@@ -5,7 +5,7 @@ import argparse,json,os,pathlib,threading
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from playwright.sync_api import sync_playwright
-ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT=pathlib.Path(__file__).resolve().parent
 
 def run():
     parser=argparse.ArgumentParser();parser.add_argument('--three',type=pathlib.Path);parser.add_argument('--out',type=pathlib.Path,default=ROOT/'test-output');parser.add_argument('--quality',choices=['low','medium','high'],default='medium');args=parser.parse_args();args.out.mkdir(parents=True,exist_ok=True)
@@ -29,7 +29,7 @@ def run():
                 result=page.evaluate('''()=>{
                   const assert=(v,m)=>{if(!v)throw Error(m)};
                   assert(G.tw.length===6,'tower count');
-                  for(const t of G.tw){for(const h of [0,t.king?103:78]){const p=V.project(t.x,t.y,h);assert(Math.abs(p.ndcX)<1&&Math.abs(p.ndcY)<1&&p.ndcZ<1,'tower clipped')}}
+                  for(const t of G.tw){for(const h of [0,t.king?122:91]){const p=V.project(t.x,t.y,h);assert(Math.abs(p.ndcX)<1&&Math.abs(p.ndcY)<1&&p.ndcZ<1,'tower clipped')}}
                   for(const [x,z] of [[90,105],[270,455],[180,280],[40,350],[320,420]]){const p=V.project(x,z),q=V.pick(p);assert(q&&Math.hypot(q.x-x,q.y-z)<.01,'raycast round-trip')}
                   const rect=cv.getBoundingClientRect();assert(rect.width<=innerWidth&&rect.height>0&&document.documentElement.scrollWidth<=innerWidth,'layout');
                   return {width:innerWidth,empty:V.stats()};

@@ -2,14 +2,14 @@
 import json, os, pathlib
 from playwright.sync_api import sync_playwright
 
-ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT=pathlib.Path(__file__).resolve().parent
 def run():
-    import re
+    import re, base64
     html=(ROOT/'index.html').read_text()
-    html=re.sub(r'<link rel="stylesheet" href="style.css">',lambda _: '<style>'+ (ROOT/'style.css').read_text()+'</style>',html)
+    html=re.sub(r'<link rel="stylesheet" href="style.css(?:\?[^"]*)?">',lambda _: '<style>'+ (ROOT/'style.css').read_text().replace('cards-v27.svg','data:image/svg+xml;base64,'+base64.b64encode((ROOT/'cards-v27.svg').read_bytes()).decode())+'</style>',html)
     html=re.sub(r'<script src="[^"]+"></script>', '',html)
-    mock="""Object.defineProperty(window,'localStorage',{value:{_m:new Map(),getItem(k){return this._m.get(k)||null},setItem(k,v){this._m.set(k,String(v))}}}); const V={ok:true,begin(g){window.__lastGame=g},frame(){},pick(){return window.__pick||{x:90,y:400}}};"""
-    html=html.replace('</body>','<script>'+mock+'</script><script>'+(ROOT/'game.js').read_text()+'</script></body>')
+    mock="""Object.defineProperty(window,'localStorage',{value:{_m:new Map(),getItem(k){return this._m.get(k)||null},setItem(k,v){this._m.set(k,String(v))}}}); const V={ok:true,begin(g){window.__lastGame=g;window.ArenaAudio.begin(g)},frame(){},pick(){return window.__pick||{x:90,y:400}}};"""
+    html=html.replace('</body>','<script>'+mock+'</script><script>'+(ROOT/'audio.js').read_text()+'</script><script>'+(ROOT/'game.js').read_text()+'</script></body>')
     results=[]
     with sync_playwright() as p:
         launch={'headless':True,'args':['--no-sandbox']}
@@ -23,7 +23,7 @@ def run():
                 const assert=(v,m)=>{if(!v)throw Error(m)};
                 assert(G.tw.length===6,'tower count');
                 assert(JSON.stringify(G.tw.map(t=>[t.x,t.y,t.hp,t.rad]))===JSON.stringify([[90,455,1400,24],[270,455,1400,24],[180,515,2400,30],[90,105,1400,24],[270,105,1400,24],[180,45,2400,30]]),'tower coordinates and stats');
-                assert(G.hand.length===4&&G.q.length===4,'deck');
+                assert(G.hand.length===4&&G.q.length===4,'deck');assert([...document.querySelectorAll('#hand .card em')].every(e=>getComputedStyle(e).backgroundImage.includes('data:image/svg+xml')),'illustrated cards');const audio=document.querySelector('#sound');const old=audio.getAttribute('aria-pressed');audio.click();assert(audio.getAttribute('aria-pressed')!==old,'audio toggle');audio.click();
                 assert(G.t>179&&G.t<=180,'timer');
                 G.hand[0]='guard';G.sel=0;G.e=5;window.__pick={x:90,y:140};cv.onpointerdown({});assert(G.u.length===0&&G.e===5,'enemy placement prohibited');
                 window.__pick={x:90,y:400};cv.onpointerdown({});assert(G.u.length===1&&G.u[0].id==='guard'&&G.e===2,'unit placement and elixir');
@@ -42,6 +42,6 @@ def run():
             assert not errors,errors
             results.append(res);page.close()
         browser.close()
-    print(json.dumps({'test':'logic+DOM; V and localStorage mocked; no WebGL','viewports':results},ensure_ascii=False,indent=2))
+    print(json.dumps({'test':'logic+DOM+card atlas+audio toggle; V and localStorage mocked; no WebGL','viewports':results},ensure_ascii=False,indent=2))
 
 if __name__=='__main__':run()

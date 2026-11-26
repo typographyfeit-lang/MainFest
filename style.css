@@ -34,3 +34,25 @@ nav button.on{opacity:1;background:#483351;color:#ffdb99}nav small{display:block
 #res>div{background:linear-gradient(#51405d,#282034);border:2px solid #d6ab6c;border-radius:12px;padding:24px;width:100%;max-width:340px;box-shadow:0 10px 45px #0008}
 #res p{margin:12px 0 18px}button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 @media(max-height:580px){#hud{padding:3px 8px;font-size:11px}#hand .card{min-height:42px;padding-top:3px}#hand .card em{font-size:18px}#hand{padding:5px 6px 4px}#bar{height:15px;flex-basis:15px}#bar b{line-height:13px}}
+
+/* Crystal Sanctuary 2.7 — illustrated deck, compact gold-inlaid HUD. */
+#app{background:radial-gradient(ellipse at 50% 22%,#4b355d 0,#291d3b 48%,#16101f 85%)}
+header{background:linear-gradient(#32243f,#1c1528);border-bottom-color:#956b3d}
+.art{margin:20px 0 27px;gap:9px;min-height:190px}.art small{font-size:9px;letter-spacing:.22em;color:#bdaec7}
+.sigil{width:146px;height:146px;border:0;font-size:0;border-radius:50%;position:relative;background:radial-gradient(circle,#39d5f34f,#2c224c 42%,#161224 72%);box-shadow:0 0 30px #6952c444,inset 0 0 15px #d1b6ef25}
+.sigil:before{content:"";position:absolute;inset:6px;border:2px solid #dba76a;border-radius:50%;box-shadow:0 0 0 4px #695145,inset 0 0 0 5px #71544788;transform:rotate(-14deg)}
+.sigil:after{content:"";position:absolute;width:58px;height:100px;clip-path:polygon(50% 0,96% 34%,82% 70%,50% 100%,18% 70%,4% 34%);background:conic-gradient(from 25deg at 50% 45%,#b7faff,#1bbed9 20%,#0c7fae 44%,#67edff 57%,#1eabd4 72%,#e2ffff);filter:drop-shadow(0 0 9px #33d9ff);border:1px solid #b8f8ff}
+.big{background:linear-gradient(#e3b66d,#9b5c32 46%,#683b36 52%,#583043);border:2px solid #f0ca83;text-shadow:0 2px 2px #492c2f;box-shadow:0 4px 0 #1d1324,0 7px 20px #0006}
+#hud{gap:5px;padding:5px 7px;background:linear-gradient(#352442,#1c1528);font-size:11px;min-height:27px}#time{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#crowns{white-space:nowrap}#sound{font:700 9px system-ui,sans-serif;border:1px solid #9c7954;border-radius:4px;background:#32243f;color:#f3d6a4;min-width:52px;padding:3px 4px;white-space:nowrap}
+#game,#cv{background:#22192e}
+#bar{height:18px;flex-basis:18px;border:1px solid #c0935d;box-shadow:inset 0 1px 5px #0006;background:#1d132b}#el{background:linear-gradient(#e6a0ff,#a646eb 44%,#7431bf 56%,#9a47de);box-shadow:inset 0 1px #f8d0ff,0 0 9px #ae55ff}
+#hand{gap:5px;padding:7px 5px 5px;background:linear-gradient(#292039,#15101e);border-top:1px solid #5f4768}
+.card{padding:3px 2px 4px;overflow:visible;background:linear-gradient(#4b3756,#261d36);border:1px solid #b08b5d;border-radius:7px;box-shadow:inset 0 0 0 1px #1f1729,0 2px 0 #0f0b18;font-size:10px;line-height:1.15;min-width:0;color:#fbefdf;cursor:pointer}
+.card em{display:block;width:100%;max-width:74px;aspect-ratio:1;margin:0 auto 3px;background-image:url('cards-v27.svg');background-repeat:no-repeat;background-size:500% 200%;font-size:0!important;color:transparent;border-radius:5px;box-shadow:inset 0 0 0 1px #d0b07560;overflow:hidden}
+.card[data-id="guard"] em{background-position:0% 0%}.card[data-id="archer"] em{background-position:25% 0%}.card[data-id="colossus"] em{background-position:50% 0%}.card[data-id="imp"] em{background-position:75% 0%}.card[data-id="mage"] em{background-position:100% 0%}.card[data-id="hounds"] em{background-position:0% 100%}.card[data-id="swarm"] em{background-position:25% 100%}.card[data-id="brute"] em{background-position:50% 100%}.card[data-id="meteor"] em{background-position:75% 100%}.card[data-id="spark"] em{background-position:100% 100%}
+.card b{top:-4px;left:-3px;min-width:20px;padding:3px 4px;border-radius:50%;border:1px solid #e1c5f6;background:radial-gradient(circle at 35% 25%,#d38aff,#8042c2 65%,#4c266e);box-shadow:0 2px 3px #170e28;font-size:11px;line-height:1.05}
+#hand .card{padding:2px 2px 3px;min-height:54px;font-size:9px}#hand .card em{max-width:clamp(39px,13vw,59px);margin-bottom:2px}
+.card.sel{outline:2px solid #ffd084;box-shadow:0 0 10px #ffbd6a80,inset 0 0 0 1px #ffcf78;transform:translateY(-3px)}.card.lock{opacity:.53;filter:saturate(.68)}
+#res>div{border:2px solid #d7a76d;box-shadow:0 0 0 5px #31223a,0 12px 50px #000a;background:radial-gradient(ellipse at top,#68506d,#2a203b 68%)}
+@media(max-height:650px){#hand .card em{max-width:42px}#hand{padding-top:5px;padding-bottom:3px}#hand .card{min-height:46px}#bar{margin-top:2px}}
+@media(prefers-reduced-motion:reduce){.card.sel{transform:none}#el{transition:none}}

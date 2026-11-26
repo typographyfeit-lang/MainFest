@@ -1,12 +1,19 @@
-BLOCK ARENA — TEXTURE UPGRADE 2.1
+BLOCK ARENA 2.7 — инструкция установки
 
-Установка в текущую версию MainFest (графические файлы уже находятся в корне).
-1. Заменить art.js и environment.js в корне репозитория новыми файлами.
-2. Не менять index.html, game.js, towers.js, characters.js или render3d.js.
-3. Закоммитить, дождаться успешной публикации GitHub Pages.
-4. Открыть https://typographyfeit-lang.github.io/MainFest/?v=2.1&quality=medium
-5. Войти в бой и проверить воду, камни, башни, знамена, мосты и размещение войск.
+1. Распаковать ZIP в приложении «Файлы» на iPhone (или на компьютере).
+2. Открыть https://github.com/typographyfeit-lang/MainFest/upload/main
+3. Загрузить содержимое архива в КОРЕНЬ репозитория. Не сам ZIP и не вложенную папку.
+4. Нажать Commit changes. Одноимённые файлы будут заменены.
+5. После успешной публикации GitHub Pages открыть:
+   https://typographyfeit-lang.github.io/MainFest/?v=27&quality=medium
+   Максимальное качество: https://typographyfeit-lang.github.io/MainFest/?v=27&quality=high
 
-Проверено: синтаксис двух JS-файлов Node.js; 14 карт Canvas2D в Chromium (генерация без ошибок, повторяемость и размеры); соответствие исходных файлов текущим blob SHA GitHub.
-Не проверено: реальная WebGL-сцена, вид после освещения, производительность на смартфонах. CDN Three.js недоступен в тестовой среде.
-GitHub: попытка создать ветку texture-upgrade-2-1 отклонена с HTTP 403; репозиторий не изменён.
+Обязательные 10 файлов: index.html, style.css, art.js, environment.js,
+towers.js, characters.js, audio.js, render3d.js, game.js, cards-v27.svg.
+Не редактировать index.html вручную — все пути уже настроены.
+
+Если нужна экономия времени, загрузи только эти 10 файлов.
+Остальные файлы — инструкция, отчёт и тесты для разработчика.
+
+Прежнюю игровую механику не меняли. Фактический WebGL-рендер
+и скорость на телефоне нужно проверить после публикации.
