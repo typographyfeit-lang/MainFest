@@ -1,0 +1,18 @@
+{
+  "citadel-hd": {
+    "triangles": 5404,
+    "by_material": {
+      "stone": 3868,
+      "gold": 1536
+    },
+    "bytes": 495788
+  },
+  "guardian-hd": {
+    "triangles": 2388,
+    "by_material": {
+      "stone": 2148,
+      "gold": 240
+    },
+    "bytes": 218888
+  }
+}

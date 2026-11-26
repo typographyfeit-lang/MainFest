@@ -2,7 +2,7 @@
 const ArenaEnvironment3D = ArenaArt3D ? (()=>{
   const A=ArenaArt3D,{T,G,C,TAU}=A;
   function build(scene){
-    const env=new T.Group();scene.add(env);const b=A.batch(env),r=A.rng(714),stone=A.stone;
+    const tier=new URLSearchParams(location.search).get('quality');const low=tier==='low';const env=new T.Group();scene.add(env);const b=A.batch(env),r=A.rng(714),stone=A.stone;
     const choose=a=>a[Math.floor(r()*a.length)];
     const tiles=['#907287','#806780','#8d7687','#78677e','#9a8291','#6f5b75','#826d83','#795f79','#8e7485','#837086'];
     const wall=['#8c7489','#a38b91','#76637b','#b09a9b','#8d7587','#6a586f'];
@@ -20,7 +20,7 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     const edgeMat=new T.MeshBasicMaterial({map:edgeTex,transparent:true,depthWrite:false,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-1});
     A.mesh(env,G.plane,edgeMat,180,.07,280,360,560,1,-Math.PI/2,0,0,false);
     // Independently colored pavers, with a flat playable surface at y=0.
-    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;if(Math.abs(z-280)<25)continue;add(G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,(i+j)%2*Math.PI,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
+    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;if(Math.abs(z-280)<25)continue;add(low?G.box:G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,(i+j)%2*Math.PI,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
     // Thin, irregular moss patches near the perimeter; dedicated seed keeps other decor unchanged.
     const mossTex=A.texture(128,128,(g,w,h)=>{const q=A.rng(7209);for(let i=0;i<110;i++){const a=q()*TAU,d=Math.sqrt(q())*49,x=64+Math.cos(a)*d,y=64+Math.sin(a)*d;g.fillStyle=['#68794388','#87944980','#53633980','#a0a35b66'][i%4];g.beginPath();g.ellipse(x,y,2+q()*7,1.5+q()*4,a,0,TAU);g.fill()} });
     const mossMat=new T.MeshStandardMaterial({map:mossTex,transparent:true,depthWrite:false,roughness:1,polygonOffset:true,polygonOffsetFactor:-1});
@@ -75,6 +75,12 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     const foliage=A.rng(1631);for(let i=0;i<38;i++){const x=i%2?6+foliage()*9:345+foliage()*9,z=18+foliage()*524;if(Math.abs(z-280)<38)continue;for(let j=0;j<5;j++){const a=j*TAU/5+foliage()*.4,sz=3+foliage()*2;add(G.leaf,j%2?leaf:darkLeaf,x+Math.cos(a)*2.4,2.3,z+Math.sin(a)*2.4,sz,1.0,1.15,0,-a,-.40,null,false)}if(i%3===0)add(G.bevel,stone,x+3,.8,z+4,4.8,2.5,3.9,.13,foliage()*TAU,.08,'#6f6176',false)}
     for(const x of [15,45,140,222,320,346]){const z=280+(r()-.5)*17;add(G.leaf,leaf,x,-.65,z,4.8,.3,3.4,0,r()*TAU,0,null,false);for(let j=0;j<5;j++){const a=j*TAU/5;add(G.leaf,pink,x+Math.cos(a)*1.7,.25,z+Math.sin(a)*1.7,1.4,.65,.9,0,a,0,null,false)}add(G.leaf,A.goldLight,x,.8,z,.9,.5,.9,0,0,0,null,false)}
     for(const x of [30,330]){const z=-12;add(G.bevel,A.material('#76513d','wood'),x,26,z,3,35,3);add(G.bevel,A.material('#76513d','wood'),x,42,z+8,3,3,18);add(G.bevel,A.gold,x,34,z+15,7,11,7);add(G.bevel,A.material('#ffd078','glow'),x,34,z+15,5.5,7.8,5.5);A.glow(env,'#ffbd5a',x,34,z+15,22,.33)}
+    // Additional temple architecture outside the battlefield. Broken capitals, carved plinths,
+    // and mossy stone steps make the perimeter read as a sanctuary rather than an isolated board.
+    const dusk=A.rng(2818);
+    for(const x of [-27,387])for(const z of [55,175,385,505]){const h=18+dusk()*12;add(G.bevel,stone,x,-1,z,17,7,20,0,0,0,'#625269',false);add(G.bevel,stone,x,h/2,z,12,h,13,0,0,0,'#776274',false);add(G.bevel,stone,x,h+2,z,18,5,18,0,0,0,'#a18791',false);for(let i=0;i<3;i++)add(G.leaf,darkLeaf,x+(dusk()-.5)*12,h+5,z+(dusk()-.5)*12,3.3,1.6,1,0,dusk()*TAU,.4,null,false);}
+    for(const x of [45,315])for(const z of [9,551])A.lightPool(env,'#ffad55',x,z,43,33,.12,.17);
+    if(!low)for(const x of [-11,371])for(const z of [75,210,350,485])A.lightPool(env,'#8160af',x,z,45,85,.08,.19);
     b.flush();
     return {root:env,update(t){waterTex.offset.x=(t*.018)%1;caustics.offset.x=(t*.035)%1;causticMat.opacity=.39+Math.sin(t*.8)*.08;sealMat.opacity=.79+Math.sin(t*1.3)*.13;for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7}};
   }

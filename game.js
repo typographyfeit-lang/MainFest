@@ -44,33 +44,52 @@ $('#chest').onclick=()=>{
  m.textContent='Новая карта: '+CARDS[id].ic+' '+CARDS[id].n};
 
 // ---------- Бой ----------
-const cv=$('#cv');let G=null;
+const cv=$('#cv');let G=null,raf=0;
+const FIXED=1/30;
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const laneX=x=>BR[Math.abs(x-BR[0])<Math.abs(x-BR[1])?0:1];
+function constrain(u,oldX=u.x,oldY=u.y){
+ const rad=u.rad||12;u.x=clamp(u.x,rad,W-rad);u.y=clamp(u.y,rad,H-rad);
+ // Keep the centre on an existing bridge while it is inside the water channel.
+ if(Math.abs(u.y-RY)<RW&&Math.abs(u.x-laneX(u.x))>34){
+  if(Math.abs(oldY-RY)>=RW)u.y=oldY;
+  else u.x=clamp(u.x,laneX(oldX)-34,laneX(oldX)+34);
+ }
+}
+function placement(p,c){return !!(p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=0&&p.x<=W&&p.y>=0&&p.y<=H&&(c.sp||p.y>=RY+RW+10)&&G.e>=c.c)}
 const tower=(team,x,y,king)=>({team,x,y,king:!!king,hp:king?2400:1400,max:king?2400:1400,rad:king?30:24,r:130,d:king?60:50,as:king?1:.8,cd:0});
 const crowns=t=>Math.min(3,G.tw.filter(o=>o.team!==t&&o.hp<=0).reduce((s,o)=>s+(o.king?3:1),0));
 
 function spawn(id,team,x,y){const c=CARDS[id];
- for(let i=0;i<c.k;i++)G.u.push({...c,id,team,x:x+(i-(c.k-1)/2)*20+rnd(-3,3),y:y+rnd(-6,6),max:c.hp,cd:.5,rad:c.big?19:c.k>2?10:12})}
+ for(let i=0;i<c.k;i++){const u={...c,id,team,x:x+(i-(c.k-1)/2)*20+rnd(-3,3),y:y+rnd(-6,6),max:c.hp,cd:.5,rad:c.big?19:c.k>2?10:12};constrain(u);u.y=team?Math.min(u.y,RY-RW-10):Math.max(u.y,RY+RW+10);G.u.push(u)}}
 
 function blast(x,y,r,d,team,m){G.fx.push({k:'c',x,y,r,l:.3});
  for(const o of[...G.u,...G.tw])if(o.team!==team&&o.hp>0&&Math.hypot(o.x-x,o.y-y)<=r+o.rad)o.hp-=d*(o.king===undefined?1:m)}
 
 function start(){
+ if(raf)cancelAnimationFrame(raf);raf=0;
  const q=shuffle([...S.deck]);
- G={t:180,e:5,ae:5,q,hand:q.splice(0,4),u:[],fx:[],sel:-1,at:3,done:0,last:performance.now(),
+ G={t:180,e:5,ae:5,q,hand:q.splice(0,4),u:[],fx:[],sel:-1,at:3,done:0,last:performance.now(),acc:0,finishAge:0,hud:{},
   ai:Object.keys(CARDS).filter(k=>!CARDS[k].sp),
   tw:[tower(0,90,455),tower(0,270,455),tower(0,180,515,1),tower(1,90,105),tower(1,270,105),tower(1,180,45,1)]};
- $('#game').hidden=false;$('#res').hidden=true;hand();V.begin(G);requestAnimationFrame(loop)}
-function hand(){$('#hand').innerHTML=G.hand.map((id,i)=>cardEl(id,G.sel==i?'sel':'')).join('')}
-$('#hand').onclick=e=>{const c=e.target.closest('.card');if(c&&G&&!G.done){G.sel=[...c.parentNode.children].indexOf(c);hand()}};
+ $('#game').hidden=false;$('#res').hidden=true;hand();V.begin(G);upd();raf=requestAnimationFrame(loop)}
+function hand(){$('#hand').innerHTML=G.hand.map((id,i)=>cardEl(id,G.sel==i?'sel':'')).join('');G.hud.lockKey=null;}
+$('#hand').onclick=e=>{const c=e.target.closest('.card');if(c&&G&&!G.done){G.sel=[...c.parentNode.children].indexOf(c);if(V.preview)V.preview(null);hand()}};
 cv.onpointerdown=e=>{
  if(!G||G.done||G.sel<0)return;
  const p=V.pick(e);if(!p)return;const x=p.x,y=p.y,id=G.hand[G.sel],c=CARDS[id];
- if(G.e<c.c||(!c.sp&&y<RY+RW+10))return;
+ if(!placement(p,c))return;
  G.e-=c.c;c.sp?blast(x,y,c.rad,c.d,0,.4):spawn(id,0,Math.max(12,Math.min(W-12,x)),Math.min(H-12,y));
- G.hand[G.sel]=G.q.shift();G.q.push(id);G.sel=-1;hand()};
+ G.hand[G.sel]=G.q.shift();G.q.push(id);G.sel=-1;if(V.preview)V.preview(null);hand()};
 
-function loop(now){if(!G)return;const dt=Math.min(.05,(now-G.last)/1000);G.last=now;
- if(!G.done)step(dt);V.frame(G);upd();requestAnimationFrame(loop)}
+cv.addEventListener('pointermove',e=>{if(!G||G.done||G.sel<0||!V.preview)return;const c=CARDS[G.hand[G.sel]],p=V.pick(e);V.preview(p,c,placement(p,c))},{passive:true});
+cv.addEventListener('pointerleave',()=>{if(V.preview)V.preview(null)},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(G){G.last=performance.now();G.acc=0}});
+function loop(now){raf=0;if(!G)return;const dt=Math.max(0,Math.min(.5,(now-G.last)/1000));G.last=now;
+ if(document.hidden){G.acc=0;raf=requestAnimationFrame(loop);return}
+ // A fixed 30 Hz simulation is independent of drawing speed. Large tab suspensions are paused.
+ if(!G.done&&!G.paused){G.acc+=dt;while(G.acc+1e-9>=FIXED&&!G.done){step(FIXED);G.acc-=FIXED}}
+ V.frame(G);upd();if(G.done){G.finishAge+=dt;if(G.finishAge>=.35)return}raf=requestAnimationFrame(loop)}
 
 function step(dt){
  G.t-=dt;const rt=G.t<60?1/1.4:1/2.8;G.e=Math.min(10,G.e+dt*rt);G.ae=Math.min(10,G.ae+dt*rt);
@@ -93,10 +112,10 @@ function act(u,dt){
   else{u.spl?blast(tg.x,tg.y,u.spl,u.d,u.team,1):tg.hp-=u.d;if(u.r>40)G.fx.push({k:'l',a:u,b:tg,l:.1})}
  }else{
   let tx=tg.x,ty=tg.y;
-  if((u.y-RY)*(ty-RY)<0){tx=BR[Math.abs(u.x-BR[0])<Math.abs(u.x-BR[1])?0:1];ty=RY} // идти к мосту
+  if((u.y-RY)*(ty-RY)<0||Math.abs(u.y-RY)<RW&&Math.abs(ty-RY)>=RW){tx=laneX(u.x);ty=RY+Math.sign(tg.y-RY)*(RW+2)} // пройти мост до противоположного берега
   const d=Math.hypot(tx-u.x,ty-u.y)||1,nx=u.x+(tx-u.x)/d*u.s*dt;let ny=u.y+(ty-u.y)/d*u.s*dt;
   if(Math.abs(ny-RY)<RW&&Math.abs(nx-BR[0])>34&&Math.abs(nx-BR[1])>34)ny=u.y; // в реку нельзя
-  u.x=nx;u.y=ny}}
+  const ox=u.x,oy=u.y;u.x=nx;u.y=ny;constrain(u,ox,oy)}}
 
 function tow(t,dt){t.cd-=dt;let tg=null,bd=t.r;
  for(const o of G.u)if(o.team!==t.team&&o.hp>0){const d=dist(t,o);if(d<bd){bd=d;tg=o}}
@@ -104,22 +123,23 @@ function tow(t,dt){t.cd-=dt;let tg=null,bd=t.r;
 
 function sep(){for(let i=0;i<G.u.length;i++)for(let j=i+1;j<G.u.length;j++){
  const a=G.u[i],b=G.u[j],d=dist(a,b),m=a.rad+b.rad;
- if(d<m&&d>0){const p=(m-d)/d/4,dx=(a.x-b.x)*p,dy=(a.y-b.y)*p;a.x+=dx;a.y+=dy;b.x-=dx;b.y-=dy}}}
+ if(d<m&&d>0){const p=(m-d)/d/4,dx=(a.x-b.x)*p,dy=(a.y-b.y)*p,ax=a.x,ay=a.y,bx=b.x,by=b.y;a.x+=dx;a.y+=dy;b.x-=dx;b.y-=dy;constrain(a,ax,ay);constrain(b,bx,by)}}}
 
 function end(){
+ if(G.done)return;
  const a=crowns(0),b=crowns(1),hp=t=>G.tw.filter(o=>o.team===t).reduce((s,o)=>s+Math.max(0,o.hp),0);
  const r=a!==b?(a>b?1:-1):hp(0)!==hp(1)?(hp(0)>hp(1)?1:-1):0;
  G.done=1;S.tr=Math.max(0,S.tr+(r>0?30:r<0?-20:0));S.coin+=r>0?60:20;save();ui();
  $('#rt').textContent=r>0?'ПОБЕДА! 👑':r<0?'ПОРАЖЕНИЕ':'НИЧЬЯ';
  $('#rp').textContent=`Короны ${a}:${b} · ${r>0?'+30 🏆 +60 🪙':r<0?'−20 🏆 +20 🪙':'+20 🪙'}`;
  $('#res').hidden=false}
-$('#rb').onclick=()=>{G=null;$('#game').hidden=true;$('#res').hidden=true};
+$('#rb').onclick=()=>{if(raf)cancelAnimationFrame(raf);raf=0;if(V.stop)V.stop();G=null;$('#game').hidden=true;$('#res').hidden=true};
 $('#play').onclick=()=>V.ok?start():alert('3D-движок не загрузился: нужен интернет и WebGL');
 
-function upd(){const t=Math.max(0,G.t|0);
- $('#time').textContent=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}${G.t<60?' ×2':''}  След: ${CARDS[G.q[0]].ic}`;
- $('#crowns').textContent=`👑 ${crowns(0)}:${crowns(1)}`;
- $('#el').style.width=G.e*10+'%';$('#ev').textContent='💧 '+(G.e|0);
- [...$('#hand').children].forEach((el,i)=>el.classList.toggle('lock',CARDS[G.hand[i]].c>G.e))}
+function upd(){const t=Math.max(0,G.t|0),h=G.hud;
+ const time=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}${G.t<60?' ×2':''}  След: ${CARDS[G.q[0]].ic}`,score=`👑 ${crowns(0)}:${crowns(1)}`,meter=Math.round(G.e*100)/10,elixir=G.e|0;
+ if(h.time!==time){$('#time').textContent=time;h.time=time}if(h.score!==score){$('#crowns').textContent=score;h.score=score}if(h.meter!==meter){$('#el').style.width=meter+'%';h.meter=meter}if(h.elixir!==elixir){$('#ev').textContent='💧 '+elixir;h.elixir=elixir}
+ const lockKey=G.hand.join(',')+':'+elixir;if(h.lockKey!==lockKey){[...$('#hand').children].forEach((el,i)=>el.classList.toggle('lock',CARDS[G.hand[i]].c>G.e));h.lockKey=lockKey}}
+
 
 ui();

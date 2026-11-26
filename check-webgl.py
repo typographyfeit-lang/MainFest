@@ -24,7 +24,7 @@ def run():
                 page.goto(base,wait_until='load',timeout=30000)
                 assert page.evaluate('typeof V !== "undefined" && V.ok===true'),f'WebGL renderer failed: {errors}'
                 assert page.evaluate('THREE.REVISION')=='128','Expected Three.js r128'
-                page.locator('#play').click();page.evaluate('G.done=1') # freeze simulation, not the rendering loop
+                page.locator('#play').click();page.evaluate('G.paused=true') # freeze simulation, not the rendering loop
                 page.wait_for_timeout(2200)
                 result=page.evaluate('''()=>{
                   const assert=(v,m)=>{if(!v)throw Error(m)};
@@ -39,7 +39,7 @@ def run():
                     page.evaluate('''()=>{let i=0;for(const id of Object.keys(CARDS).filter(k=>!CARDS[k].sp)){for(let j=0;j<(i<4?3:2);j++){const c=CARDS[id];G.u.push({...c,id,team:j%2,x:55+(G.u.length%5)*62,y:140+Math.floor(G.u.length/5)*83,max:c.hp,cd:.4,rad:c.big?19:c.k>2?10:12})}i++}G.tw[0].hp=1000;G.tw[3].hp=900;}''')
                     page.wait_for_timeout(2500);result['stress']=page.evaluate('V.stats()');page.locator('#cv').screenshot(path=str(args.out/'arena-390-stress.png'),timeout=30000)
                     page.evaluate('G.tw[3].hp=0');page.wait_for_timeout(500);page.locator('#cv').screenshot(path=str(args.out/'arena-390-destroyed.png'),timeout=30000)
-                    page.evaluate('document.querySelector("#rb").click();start();G.done=1');page.wait_for_timeout(1000);assert page.evaluate('G.tw.every(t=>t.hp===t.max)&&G.u.length===0'),'restart'
+                    page.evaluate('document.querySelector("#rb").click();start();G.paused=true');page.wait_for_timeout(1000);assert page.evaluate('G.tw.every(t=>t.hp===t.max)&&G.u.length===0'),'restart'
                 result['errors']=errors;assert not errors,errors;results.append(result);page.close()
             browser.close()
     finally:server.shutdown()

@@ -56,3 +56,6 @@ header{background:linear-gradient(#32243f,#1c1528);border-bottom-color:#956b3d}
 #res>div{border:2px solid #d7a76d;box-shadow:0 0 0 5px #31223a,0 12px 50px #000a;background:radial-gradient(ellipse at top,#68506d,#2a203b 68%)}
 @media(max-height:650px){#hand .card em{max-width:42px}#hand{padding-top:5px;padding-bottom:3px}#hand .card{min-height:46px}#bar{margin-top:2px}}
 @media(prefers-reduced-motion:reduce){.card.sel{transform:none}#el{transition:none}}
+
+/* Diagnostics are opt-in and do not consume arena layout height. */
+#perf{position:absolute;top:calc(env(safe-area-inset-top) + 32px);left:5px;right:auto;z-index:3;max-width:calc(100% - 10px);padding:3px 6px;background:#150e24da;border:1px solid #ab8859;color:#f8e5b9;font:10px/1.3 monospace;pointer-events:none;border-radius:4px;white-space:normal}#perf[hidden]{display:none}

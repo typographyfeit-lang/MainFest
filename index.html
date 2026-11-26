@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Block Arena 2.7 — Crystal Sanctuary</title>
-<link rel="stylesheet" href="style.css?v=27">
+<title>Block Arena 2.8 — Crystal Sanctuary</title>
+<link rel="stylesheet" href="style.css?v=28">
 </head>
 <body>
 <div id="app">
@@ -12,7 +12,7 @@
   <main>
     <section id="battle" class="tab on">
       <h1>BLOCK<br>ARENA</h1>
-      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span><small>VISUAL EDITION 2.7</small></div>
+      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span><small>ULTRA GRAPHICS 2.8</small></div>
       <button id="play" class="big">В БОЙ</button>
     </section>
     <section id="cards" class="tab">
@@ -35,6 +35,7 @@
   </nav>
   <div id="game" hidden>
     <div id="hud"><span id="time"></span><span id="crowns"></span><button id="sound" type="button" aria-label="Звук игры" aria-pressed="true">Звук: вкл</button></div>
+    <output id="perf" aria-label="Статистика производительности" hidden></output>
     <canvas id="cv" width="360" height="560" aria-label="Игровая арена"></canvas>
     <div id="bar"><i id="el"></i><b id="ev"></b></div>
     <div id="hand"></div>
@@ -42,12 +43,14 @@
   <div id="res" hidden><div><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="art.js?v=27"></script>
-<script src="environment.js?v=27"></script>
-<script src="towers.js?v=27"></script>
-<script src="characters.js?v=27"></script>
-<script src="audio.js?v=27"></script>
-<script src="render3d.js?v=27"></script>
-<script src="game.js?v=27"></script>
+<script src="art.js?v=28"></script>
+<script src="environment.js?v=28"></script>
+<script src="hd-model-data.js?v=28"></script>
+<script src="hd-models.js?v=28"></script>
+<script src="towers.js?v=28"></script>
+<script src="characters.js?v=28"></script>
+<script src="audio.js?v=28"></script>
+<script src="render3d.js?v=28"></script>
+<script src="game.js?v=28"></script>
 </body>
 </html>
