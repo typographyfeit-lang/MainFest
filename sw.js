@@ -1,7 +1,7 @@
 // Living Battlefield 3.3: additive arena and audio update, existing gameplay and lobby unchanged.
-const VERSION='crystal-dominion-33-living-battlefield', V='?v=31', L='?v=32', B='?v=33';
+const VERSION='crystal-dominion-331-audio-fix', V='?v=31', L='?v=32', B='?v=33', F='?v=331';
 const CORE=['./','index.html','manifest.webmanifest','icon-180.png','icon-192.png','icon-512.png','cards-v27.svg',
- 'style.css'+V,'three.min.js'+V,'three-fallback.js'+V,'art.js'+V,'environment.js'+V,'binary-models.js'+V,'hd-models.js'+V,'towers.js'+V,'character-models.js'+V,'characters.js'+V,'audio-33.js'+B,'battlefield-33.js'+B,'battlefield-33.css'+B,'render3d.js'+V,'game.js'+V,'pwa.js'+V,
+ 'style.css'+V,'three.min.js'+V,'three-fallback.js'+V,'art.js'+V,'environment.js'+V,'binary-models.js'+V,'hd-models.js'+V,'towers.js'+V,'character-models.js'+V,'characters.js'+V,'battle-safe-sfx-331.js'+F,'audio-331.js'+F,'battle-safe-theme-331.mp3','battlefield-33.js'+B,'battlefield-33.css'+B,'render3d.js'+V,'game.js'+V,'pwa.js'+V,
  'citadel-hd.glb'+V,'guardian-hd.glb'+V,'guard-unit.glb'+V,'archer-unit.glb'+V,'colossus-unit.glb'+V,'imp-unit.glb'+V,'mage-unit.glb'+V,'hounds-unit.glb'+V,'swarm-unit.glb'+V,'brute-unit.glb'+V,
  'lobby-32.css'+L,'lobby-32.js'+L,'sanctuary-bg.webp','sanctuary-forge.webp','sanctuary-hall.webp','sanctuary-profile.webp','sanctuary-guardian.webp','sanctuary-crystal.svg','sanctuary-ambient.mp3','battle-sfx-33.json','battle-sfx-33.wav','battle-theme-33.mp3','battle-tension-33.mp3','battle-ambience-33.mp3'];
 const scope=self.registration.scope;
