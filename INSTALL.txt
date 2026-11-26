@@ -1,18 +1,13 @@
-BLOCK ARENA 2.9 — CINEMATIC GRAPHICS & ANIMATION
+CRYSTAL DOMINION 3.0 — УСТАНОВКА
 
-1. Распакуйте ZIP в приложении «Файлы».
-2. https://github.com/typographyfeit-lang/MainFest/upload/main
-3. Загрузите все файлы из корня архива, включая 10 моделей .glb.
-4. Commit changes. После успешного GitHub Pages deployment откройте игру.
+1. Распакуйте crystal-dominion-3.0.zip.
+2. Откройте https://github.com/typographyfeit-lang/MainFest/upload/main
+3. Загрузите ВСЕ файлы из архива в корень (без папки). Согласитесь заменить одноимённые.
+4. Commit changes. Проверьте завершение GitHub Pages Actions.
+5. Откройте https://typographyfeit-lang.github.io/MainFest/?v=30
+   High: https://typographyfeit-lang.github.io/MainFest/?v=30&quality=high
+   Диагностика: https://typographyfeit-lang.github.io/MainFest/?v=30&debug=1
 
-Максимальная графика:
-https://typographyfeit-lang.github.io/MainFest/?v=29&quality=high
-Автоматическая графика + FPS:
-https://typographyfeit-lang.github.io/MainFest/?v=29&debug=1
-Облегчённая графика:
-https://typographyfeit-lang.github.io/MainFest/?v=29&quality=low
-
-В index.html вручную ничего менять не надо. Старый hd-model-data.js не используется.
-Первое нажатие «В БОЙ» может ожидать загрузку моделей; при ошибке нажмите снова.
-Локальный запуск: python3 -m http.server 8000, http://localhost:8000.
-Three.js r128 требует доступа к CDN. Настоящий WebGL и FPS на телефоне ещё не проверены.
+Редактировать index.html или удалять старые ресурсы не требуется.
+Старый прогресс импортируется на том же устройстве/сайте. Ключ ba1 сохраняется.
+Для запуска нужен доступ к Three.js CDN и WebGL. Реальный рендер ещё не проверен.

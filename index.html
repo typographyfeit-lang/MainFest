@@ -3,56 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Block Arena 2.9 — Crystal Sanctuary</title>
-<link rel="stylesheet" href="style.css?v=29">
+<title>Crystal Dominion 3.0 — Sanctuary Duel</title>
+<link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
 <div id="app">
   <header><b id="tr"></b><b id="co"></b></header>
   <main>
     <section id="battle" class="tab on">
-      <h1>BLOCK<br>ARENA</h1>
-      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span><small>CINEMATIC GRAPHICS 2.9</small></div>
+      <h1>CRYSTAL<br>DOMINION</h1>
+      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span><small>SANCTUARY DUEL · 3.0</small></div>
+      <div class="rules"><p><b>1</b> Выбери руну и коснись своей половины. Руны восстанавливаются сами. Заклинания можно направлять в любую точку.</p><p><b>2</b> Призови бойцов в центре, чтобы захватить святилище и получить хранителя.</p><p><b>3</b> Разрушь ядро соперника!</p></div>
+      <label class="difficulty">Сложность <select id="difficulty"><option value="easy">Лёгкая</option><option value="normal">Обычная</option><option value="hard">Высокая</option></select></label>
       <button id="play" class="big">В БОЙ</button>
       <p id="loadstatus" role="status" class="hint"></p>
     </section>
     <section id="cards" class="tab">
-      <h2>Колода (8)</h2><div id="deck" class="grid"></div>
+      <h2>Отряд (4 руны)</h2><div id="deck" class="grid"></div>
       <h2>Коллекция</h2><div id="coll" class="grid"></div>
-      <p class="hint">Выберите карту в коллекции, затем нажмите карту в колоде, чтобы заменить её.</p>
+      <p class="hint" id="deckhint">Выбери руну в коллекции, затем замени одну из четырёх.</p>
     </section>
     <section id="shop" class="tab">
-      <h2>Магазин</h2>
-      <button id="chest" class="big">📦 Сундук — 100 🪙</button>
-      <p id="shopmsg" class="hint">Сундук открывает новую карту.</p>
+      <h2>Кузница рун</h2><p class="hint">Осколки за сражения. Открывай выбранные руны без случайных наград.</p><div id="unlock-list"></div><p id="shopmsg" class="hint" role="status"></p>
     </section>
-    <section id="clan" class="tab"><h2>Клан</h2><p class="hint">Раздел появится позже.</p></section>
+    <section id="profile" class="tab"><h2>Хранитель</h2><p id="record"></p><p class="hint">Твой прогресс сохраняется на этом устройстве. Играй в своём темпе.</p></section>
   </main>
   <nav>
-    <button data-t="shop">🛒<small>Магазин</small></button>
-    <button data-t="cards">🃏<small>Карты</small></button>
+    <button data-t="shop">◇<small>Кузница</small></button>
+    <button data-t="cards">▦<small>Отряд</small></button>
     <button data-t="battle" class="on">⚔️<small>Бой</small></button>
-    <button data-t="clan">🛡️<small>Клан</small></button>
+    <button data-t="profile">◈<small>Профиль</small></button>
   </nav>
   <div id="game" hidden>
-    <div id="hud"><span id="time"></span><span id="crowns"></span><button id="sound" type="button" aria-label="Звук игры" aria-pressed="true">Звук: вкл</button></div>
+    <div id="hud"><div class="core-stat own"><span>Твоё ядро <b id="hp0">100%</b></span><i><i id="fill0"></i></i></div><strong id="time">3:00</strong><div class="core-stat enemy"><span>Враг <b id="hp1">100%</b></span><i><i id="fill1"></i></i></div><button id="sound" type="button" aria-label="Звук игры" aria-pressed="true">Звук: вкл</button></div>
     <output id="perf" aria-label="Статистика производительности" hidden></output>
+    <div id="bar" data-owner="-1"><i id="el"></i><b id="ev">Святилище · 30с</b></div>
     <canvas id="cv" width="360" height="560" aria-label="Игровая арена"></canvas>
-    <div id="bar"><i id="el"></i><b id="ev"></b></div>
+
     <div id="hand"></div>
   </div>
   <div id="res" hidden><div><h2 id="rt"></h2><p id="rp"></p><button id="rb" class="big">Продолжить</button></div></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="art.js?v=29"></script>
-<script src="environment.js?v=29"></script>
-<script src="binary-models.js?v=29"></script>
-<script src="hd-models.js?v=29"></script>
-<script src="towers.js?v=29"></script>
-<script src="character-models.js?v=29"></script>
-<script src="characters.js?v=29"></script>
-<script src="audio.js?v=29"></script>
-<script src="render3d.js?v=29"></script>
-<script src="game.js?v=29"></script>
+<script src="art.js?v=30"></script>
+<script src="environment.js?v=30"></script>
+<script src="binary-models.js?v=30"></script>
+<script src="hd-models.js?v=30"></script>
+<script src="towers.js?v=30"></script>
+<script src="character-models.js?v=30"></script>
+<script src="characters.js?v=30"></script>
+<script src="audio.js?v=30"></script>
+<script src="render3d.js?v=30"></script>
+<script src="game.js?v=30"></script>
 </body>
 </html>

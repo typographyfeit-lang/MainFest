@@ -20,7 +20,7 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     const edgeMat=new T.MeshBasicMaterial({map:edgeTex,transparent:true,depthWrite:false,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-1});
     A.mesh(env,G.plane,edgeMat,180,.07,280,360,560,1,-Math.PI/2,0,0,false);
     // Independently colored pavers, with a flat playable surface at y=0.
-    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;if(Math.abs(z-280)<25)continue;add(low?G.box:G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,(i+j)%2*Math.PI,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
+    for(let i=0;i<20;i++)for(let j=0;j<32;j++){const x=9+i*18,z=9+j*17.5;add(low?G.box:G.bevel,stone,x,-1.6,z,17.35,3.2,16.85,0,(i+j)%2*Math.PI,0,choose(tiles),false);if(r()<.11&&(i<2||i>17||r()<.12)){add(G.leaf,moss,x+(r()-.5)*9,.05,z+7.3,2+r()*4,.16,1.3+r()*2,0,r()*TAU,0,null,false)}}
     // Thin, irregular moss patches near the perimeter; dedicated seed keeps other decor unchanged.
     const mossTex=A.texture(128,128,(g,w,h)=>{const q=A.rng(7209);for(let i=0;i<110;i++){const a=q()*TAU,d=Math.sqrt(q())*49,x=64+Math.cos(a)*d,y=64+Math.sin(a)*d;g.fillStyle=['#68794388','#87944980','#53633980','#a0a35b66'][i%4];g.beginPath();g.ellipse(x,y,2+q()*7,1.5+q()*4,a,0,TAU);g.fill()} });
     const mossMat=new T.MeshStandardMaterial({map:mossTex,transparent:true,depthWrite:false,roughness:1,polygonOffset:true,polygonOffsetFactor:-1});
@@ -29,45 +29,28 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     // The interior stays readable; this is an authored AO approximation, not a lightmap bake.
     const aoTex=A.texture(512,768,(g,w,h)=>{const im=g.createImageData(w,h),d=im.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const u=x/w,v=y/h,side=Math.min(u,1-u),end=Math.min(v,1-v),river=Math.abs(v-.5);let alpha=78*Math.exp(-side*34)+50*Math.exp(-end*40);if(river<.04)alpha*=.40;const k=(y*w+x)*4;d[k]=34;d[k+1]=22;d[k+2]=47;d[k+3]=Math.min(110,alpha)}g.putImageData(im,0,0)});
     A.mesh(env,G.plane,new T.MeshBasicMaterial({map:aoTex,transparent:true,depthWrite:false,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-1}),180,.07,280,360,560,1,-Math.PI/2,0,0,false);
-    // Exact navigable channel: z=264..296; no central bridge.
-    const waterTex=A.texture(512,256,(g,w,h)=>{
-      const q=A.rng(19),grad=g.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#10456d');grad.addColorStop(.18,'#166f9e');grad.addColorStop(.47,'#208fb3');grad.addColorStop(.72,'#1c85ae');grad.addColorStop(1,'#103f69');g.fillStyle=grad;g.fillRect(0,0,w,h);
-      // Broad painterly caustics and small curved wavelets. All texture motion is cosmetic.
-      for(let i=0;i<58;i++){const x=q()*w,y=q()*h,rx=12+q()*33,ry=4+q()*13;g.save();g.translate(x,y);g.scale(1,ry/rx);const p=g.createRadialGradient(0,0,0,0,0,rx);p.addColorStop(0,'#86f8e54b');p.addColorStop(.55,'#49d8ed26');p.addColorStop(1,'#49d8ed00');g.fillStyle=p;g.fillRect(-rx,-rx,2*rx,2*rx);g.restore()}
-      for(let i=0;i<85;i++){const x=q()*w,y=q()*h,len=8+q()*29;g.strokeStyle=i%6?'#92e9ff38':'#e5ffffa0';g.lineWidth=.65+q()*1.8;g.beginPath();g.moveTo(x,y);g.bezierCurveTo(x+len*.24,y-3.5,x+len*.68,y+4,x+len,y);g.stroke()}
-      for(const y of [2,h-3]){g.fillStyle='#c5f7ff40';g.fillRect(0,y,w,1.2)}
-    },true);waterTex.repeat.set(3,1);
-    const waterHeight=A.texture(256,64,(g,w,h)=>{const im=g.createImageData(w,h),d=im.data;for(let j=0;j<h;j++)for(let i=0;i<w;i++){const a=127+23*Math.sin(i/w*TAU*6+Math.sin(j/h*TAU*3)*1.3)+15*Math.cos(j/h*TAU*7+i/w*TAU*3);const k=(j*w+i)*4;d[k]=d[k+1]=d[k+2]=a;d[k+3]=255}g.putImageData(im,0,0)},true);waterHeight.encoding=T.LinearEncoding;waterHeight.repeat.set(4,1);
-    const waterMat=new T.MeshStandardMaterial({map:waterTex,color:A.lin('#75cfe8'),emissive:A.lin('#0876a9'),emissiveIntensity:.38,roughness:.30,metalness:.04,...(low?{}:{bumpMap:waterHeight,bumpScale:1.25})});
-    A.mesh(env,G.plane,waterMat,180,-.65,280,392,32,1,-Math.PI/2,0,0,false);
-    const caustics=A.texture(512,128,(g,w,h)=>{const q=A.rng(313);g.lineWidth=1.15;for(let i=0;i<56;i++){const x=q()*w,y=q()*h,r=4+q()*12;g.strokeStyle=i%4?'#79def24d':'#a4f8ff83';g.beginPath();g.moveTo(x-r,y);g.quadraticCurveTo(x,y-r*.5,x+r,y+1);g.quadraticCurveTo(x,y+r*.6,x-r,y);g.stroke()}},true);caustics.repeat.set(4,1);
-    const causticMat=new T.MeshBasicMaterial({map:caustics,transparent:true,opacity:.44,depthWrite:false,toneMapped:false});A.mesh(env,G.plane,causticMat,180,-.57,280,392,32,1,-Math.PI/2,0,0,false);
-    for(let i=0;i<24;i++)for(const z of [261,299])add(G.bevel,stone,7.5+15*i,.6,z,14.5,4.2,5.5,0,0,0,choose(wall));
-    // Bridges: retain x ±34 as visual walkable deck. Posts sit outside the deck.
-    for(const x of [90,270]){
-      const wood=A.material('#b78251','wood'),woodDark=A.material('#704329','wood');
-      add(G.bevel,woodDark,x,1.2,280,68,3.2,42);
-      for(let j=0;j<7;j++){add(G.bevel,wood,x,2.6,261.8+j*6.1,68,2.8,5.75,0,0,0,null);for(const dx of [-28,28])add(G.cyl,A.material('#6c4834','gold'),x+dx,4.05,261.8+j*6.1,.8,.22,.8,0,0,0,null,false)}
-      for(const s of [-1,1]){add(G.bevel,woodDark,x+s*34,3.8,280,3.6,3.4,43);for(const dz of [-21,21]){add(G.bevel,woodDark,x+s*35,5,280+dz,7.2,10,7.2);add(G.bevel,A.gold,x+s*35,10.3,280+dz,8.5,2.5,8.5);add(G.box,A.goldLight,x+s*35,11.65,280+dz,4.2,.35,4.2,0,Math.PI/4,0)}}
-    }
-    // Gold tracks painted onto a single transparent plane, not physical colliders.
-    const runes=A.texture(1024,1600,(g,w,h)=>{const sx=w/360,sy=h/560;g.scale(sx,sy);g.lineCap='round';g.lineJoin='round';const gold='#ffc05a';g.shadowColor='#ff8f3766';g.shadowBlur=4;function ln(x1,y1,x2,y2,width=1){g.strokeStyle=gold;g.lineWidth=width;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke()}
-      for(const x of [90,270])for(const [a,e] of [[105,258],[302,455]]){for(const dx of [-7,7])ln(x+dx,a,x+dx,e,1.75);for(let z=a+13;z<e-4;z+=19){g.strokeStyle=gold;g.lineWidth=1.45;g.beginPath();g.moveTo(x,z-4);g.lineTo(x+4.5,z);g.lineTo(x,z+4);g.lineTo(x-4.5,z);g.closePath();g.stroke()}}
-      for(const [a,e] of [[46,243],[317,515]]){ln(180,a,180,e,2.05);for(let z=a+17;z<e-4;z+=21){g.strokeStyle=gold;g.lineWidth=1.3;g.beginPath();g.moveTo(180,z-6);g.lineTo(188,z);g.lineTo(180,z+6);g.lineTo(172,z);g.closePath();g.stroke();g.beginPath();g.moveTo(180,z-2.7);g.lineTo(184,z);g.lineTo(180,z+2.7);g.lineTo(176,z);g.closePath();g.stroke()}}
+    // All paths are on a continuous walkable floor at y=0. No river or bridges.
+    const runes=A.texture(1024,1600,(g,w,h)=>{g.scale(w/360,h/560);g.lineCap='round';g.lineJoin='round';
+      for(const sign of [-1,1]){const x=180+sign*84;g.beginPath();g.moveTo(180,68);g.bezierCurveTo(x,125,x,180,x,280);g.bezierCurveTo(x,380,x,435,180,492);g.strokeStyle='#b69c6860';g.lineWidth=37;g.stroke();g.strokeStyle='#c9a46a';g.lineWidth=1.8;g.stroke();for(let z=215;z<=345;z+=26){g.strokeStyle='#e4b86a';g.lineWidth=1.6;g.beginPath();g.moveTo(x,z-5);g.lineTo(x+5,z);g.lineTo(x,z+5);g.lineTo(x-5,z);g.closePath();g.stroke()}}
+      g.strokeStyle='#ffd078b0';g.lineWidth=2;g.setLineDash([5,7]);g.beginPath();g.moveTo(180,140);g.lineTo(180,222);g.moveTo(180,338);g.lineTo(180,420);g.stroke();g.setLineDash([]);
+      // Player and rival deployment boundaries, with subtle three-lane arrows.
+      for(const z of [238,322]){g.strokeStyle=z===322?'#41dcfa90':'#d072ff90';g.lineWidth=1.5;g.setLineDash([5,6]);g.beginPath();g.moveTo(20,z);g.lineTo(340,z);g.stroke();g.setLineDash([]);for(const x of [96,180,264]){const d=z===322?-1:1;g.strokeStyle=z===322?'#5ee7fb':'#dd9bff';g.beginPath();g.moveTo(x-5,z-d*8);g.lineTo(x,z);g.lineTo(x+5,z-d*8);g.stroke()}}
     });
     A.mesh(env,G.plane,new T.MeshBasicMaterial({map:runes,transparent:true,depthWrite:false,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-1}),180,.13,280,360,560,1,-Math.PI/2,0,0,false);
-    // Floating seal: deliberately separated from banks so it does not look like a traversable third bridge.
-    const seal=new T.Group();seal.position.set(180,1.3,280);env.add(seal);
-    const sealTex=A.texture(512,512,(g,w,h)=>{g.scale(2,2);g.translate(128,128);g.shadowColor='#ffad4499';g.shadowBlur=8;g.strokeStyle='#ffc05a';g.lineWidth=6;for(const rad of [92,110]){g.beginPath();g.arc(0,0,rad,0,TAU);g.stroke()}g.lineWidth=8;g.lineCap='round';g.beginPath();for(let i=0;i<=200;i++){const a=i/200*TAU*1.65,rr=3+i/200*65,x=rr*Math.cos(a),y=rr*Math.sin(a);if(i===0)g.moveTo(x,y);else g.lineTo(x,y)}g.stroke();for(let i=0;i<8;i++){const a=i*TAU/8;g.save();g.rotate(a);g.lineWidth=4;g.beginPath();g.moveTo(112,0);g.lineTo(124,-8);g.lineTo(135,0);g.lineTo(124,8);g.closePath();g.stroke();g.restore()}});
-    const sealMat=new T.MeshBasicMaterial({map:sealTex,transparent:true,depthWrite:false,toneMapped:false,opacity:.94,side:T.DoubleSide});
-    // Floating, interrupted stone rim: gaps toward both banks keep the central crossing visibly closed.
-    const rim=new T.TorusGeometry(28,2.05,5,26,Math.PI*.75);
-    for(const angle of [-Math.PI*.375,Math.PI*.625])A.mesh(seal,rim,A.material('#a28b98'),0,.3,0,1,1,.48,-Math.PI/2,0,angle,false);
-    // Holographic effect above the water; no opaque solid disk across the river.
-    A.mesh(seal,G.plane,sealMat,0,2,0,70,70,1,-Math.PI/2,0,0,false);
-    A.mesh(seal,G.plane,new T.MeshBasicMaterial({color:A.lin('#efab69'),toneMapped:false,map:sealTex,transparent:true,opacity:.18,depthWrite:false,blending:T.AdditiveBlending}),0,1.5,0,76,76,1,-Math.PI/2,0,0,false);
+    // The shrine is a walkable inlaid circle: its floating crystal never blocks movement.
+    const seal=new T.Group();seal.position.set(180,0,280);env.add(seal);
+    const sealTex=A.texture(512,512,(g,w,h)=>{g.translate(256,256);g.strokeStyle='#e0b671';g.fillStyle='#473d58';g.lineWidth=7;g.beginPath();g.arc(0,0,244,0,TAU);g.fill();g.stroke();for(const rr of [177,224]){g.beginPath();g.arc(0,0,rr,0,TAU);g.stroke()}g.lineWidth=5;for(let i=0;i<12;i++){g.save();g.rotate(i*TAU/12);g.beginPath();g.moveTo(0,-195);g.lineTo(14,-210);g.lineTo(0,-225);g.lineTo(-14,-210);g.closePath();g.stroke();g.restore()}g.strokeStyle='#ffdd91';g.lineWidth=12;g.beginPath();for(let i=0;i<6;i++){const a=i*TAU/6-Math.PI/2,x=84*Math.cos(a),y=84*Math.sin(a);i?g.lineTo(x,y):g.moveTo(x,y)}g.closePath();g.stroke();g.rotate(Math.PI/4);g.strokeRect(-43,-43,86,86);});
+    A.mesh(seal,G.plane,new T.MeshBasicMaterial({map:sealTex,transparent:true,toneMapped:false,depthWrite:false}),0,.17,0,108,108,1,-Math.PI/2,0,0,false);
+    const circleMat=new T.MeshBasicMaterial({color:A.lin('#ffce75'),transparent:true,opacity:.85,toneMapped:false,depthWrite:false});
+    A.mesh(seal,G.ring,circleMat,0,.24,0,54,54,54,-Math.PI/2,0,0,false);
+    const coreMat=new T.MeshStandardMaterial({color:A.lin('#ffce75'),emissive:A.lin('#ffbc4d'),emissiveIntensity:.62,roughness:.3,metalness:.12,flatShading:true});
+    const shrineCrystal=A.mesh(seal,G.oct,coreMat,0,26,0,10,19,10,0,0,0,false);
+    const halo=A.glow(seal,'#ffce75',0,26,0,43,.33);
+    const pool=A.lightPool(seal,'#ffce75',0,0,105,105,.14,.22);
+    const marks=[];for(let i=0;i<12;i++){const a=i*TAU/12,m=new T.MeshBasicMaterial({color:A.lin('#ffce75'),toneMapped:false,transparent:true,opacity:.35,depthWrite:false});const mark=A.mesh(seal,G.box,m,Math.cos(a)*46,.30,Math.sin(a)*46,3.5,.35,5,0,-a,0,false);marks.push(mark)}
+    let lastOwner=-99;
     // Fortified perimeter. Front wall is lower to protect the player's tower and camera visibility.
-    for(const x of [-6,366])for(let z=-7;z<=567;z+=17){if(Math.abs(z-280)<22)continue;for(let j=0;j<2;j++)add(G.bevel,stone,x,5+j*8.5,z,12,8.2,16.6,0,0,0,choose(wall));add(G.bevel,stone,x,18,z,15,5,17,0,0,0,choose(wall));if(Math.floor((z+7)/17)%3===0)add(G.bevel,stone,x,23,z,13,6,12,0,0,0,choose(wall));}
+    for(const x of [-6,366])for(let z=-7;z<=567;z+=17){for(let j=0;j<2;j++)add(G.bevel,stone,x,5+j*8.5,z,12,8.2,16.6,0,0,0,choose(wall));add(G.bevel,stone,x,18,z,15,5,17,0,0,0,choose(wall));if(Math.floor((z+7)/17)%3===0)add(G.bevel,stone,x,23,z,13,6,12,0,0,0,choose(wall));}
     for(const z of [-9,569])for(let x=-2;x<=364;x+=17){const front=z>0;for(let j=0;j<(front?2:3);j++)add(G.bevel,stone,x,4+j*8,z,16.6,7.6,13,0,0,0,choose(wall));add(G.bevel,stone,x,front?17:25,z,17,5,16,0,0,0,choose(wall))}
     const runeTex=A.texture(128,128,(g)=>{g.scale(2,2);g.shadowColor='#f4973299';g.shadowBlur=4;g.strokeStyle='#ffb94e';g.lineWidth=4;g.strokeRect(12,12,40,40);g.strokeRect(23,23,18,18)});
     const runeMat=new T.MeshBasicMaterial({map:runeTex,transparent:true,depthWrite:false,toneMapped:false,side:T.DoubleSide});
@@ -78,7 +61,6 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     for(const x of [25,63,298,342])for(const z of [-4,562])for(let j=0;j<10;j++){const y=25-j*2.2,dx=Math.sin(j*1.4)*2;add(G.leaf,j%2?leaf:darkLeaf,x+dx,y,z+3,2.7,.7,1.7,0,0,j%2?.5:-.5,null,false);if(j%2===0)add(G.leaf,leaf,x+dx+2.7,y-.8,z+3.3,1.9,.55,1.25,0,0,-.6,null,false)}
     // Fan-shaped original fern clusters and weathered pebbles at the margins.
     const foliage=A.rng(1631);for(let i=0;i<38;i++){const x=i%2?6+foliage()*9:345+foliage()*9,z=18+foliage()*524;if(Math.abs(z-280)<38)continue;for(let j=0;j<5;j++){const a=j*TAU/5+foliage()*.4,sz=3+foliage()*2;add(G.leaf,j%2?leaf:darkLeaf,x+Math.cos(a)*2.4,2.3,z+Math.sin(a)*2.4,sz,1.0,1.15,0,-a,-.40,null,false)}if(i%3===0)add(G.bevel,stone,x+3,.8,z+4,4.8,2.5,3.9,.13,foliage()*TAU,.08,'#6f6176',false)}
-    for(const x of [15,45,140,222,320,346]){const z=280+(r()-.5)*17;add(G.leaf,leaf,x,-.65,z,4.8,.3,3.4,0,r()*TAU,0,null,false);for(let j=0;j<5;j++){const a=j*TAU/5;add(G.leaf,pink,x+Math.cos(a)*1.7,.25,z+Math.sin(a)*1.7,1.4,.65,.9,0,a,0,null,false)}add(G.leaf,A.goldLight,x,.8,z,.9,.5,.9,0,0,0,null,false)}
     for(const x of [30,330]){const z=-12;add(G.bevel,A.material('#76513d','wood'),x,26,z,3,35,3);add(G.bevel,A.material('#76513d','wood'),x,42,z+8,3,3,18);add(G.bevel,A.gold,x,34,z+15,7,11,7);add(G.bevel,A.material('#ffd078','glow'),x,34,z+15,5.5,7.8,5.5);A.glow(env,'#ffbd5a',x,34,z+15,22,.33)}
     // Additional temple architecture outside the battlefield. Broken capitals, carved plinths,
     // and mossy stone steps make the perimeter read as a sanctuary rather than an isolated board.
@@ -87,7 +69,10 @@ const ArenaEnvironment3D = ArenaArt3D ? (()=>{
     for(const x of [45,315])for(const z of [9,551])A.lightPool(env,'#ffad55',x,z,43,33,.12,.17);
     if(!low)for(const x of [-11,371])for(const z of [75,210,350,485])A.lightPool(env,'#8160af',x,z,45,85,.08,.19);
     b.flush();
-    return {root:env,update(t){waterTex.offset.x=(t*.018)%1;waterHeight.offset.x=(t*.035)%1;waterHeight.offset.y=(t*.008)%1;caustics.offset.x=(t*.035)%1;causticMat.opacity=.39+Math.sin(t*.8)*.08;sealMat.opacity=.79+Math.sin(t*1.3)*.13;for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7}};
+    return {root:env,update(t,state){const sh=state&&state.shrine,owner=sh?sh.owner:-1;
+      if(lastOwner!==owner){lastOwner=owner;const c=owner<0?'#ffce75':C.team[owner];circleMat.color.copy(A.lin(c));coreMat.color.copy(A.lin(c));coreMat.emissive.copy(A.lin(c));halo.material.color.copy(A.lin(c));pool.material.color.copy(A.lin(c));for(const mark of marks)mark.material.color.copy(A.lin(c))}
+      const pulse=sh?sh.pulse:0;shrineCrystal.position.y=27+Math.sin(t*2)*2.3;shrineCrystal.rotation.y=t*.4;circleMat.opacity=sh&&sh.contested?.44+.25*Math.sin(t*9):.83;halo.material.opacity=.3+pulse*.15;pool.material.opacity=.15+pulse*.09;const progress=sh?1-sh.next/30:0;marks.forEach((m,i)=>m.material.opacity=i<progress*12?.95:.20);for(const c of cornerCrystals)c.root.position.y=c.baseY+Math.sin(t*1.4+c.root.position.x)*.7;
+    }};
   }
   return {build};
 })():null;

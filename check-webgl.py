@@ -29,14 +29,14 @@ def run():
                 result=page.evaluate('''()=>{
                   const assert=(v,m)=>{if(!v)throw Error(m)};
                   assert(G.tw.length===6,'tower count');assert(Object.keys(V.stats().characterModels).length===8,'all eight skeletal GLB loaded');
-                  for(const t of G.tw){for(const h of [0,t.king?122:91]){const p=V.project(t.x,t.y,h);assert(Math.abs(p.ndcX)<1&&Math.abs(p.ndcY)<1&&p.ndcZ<1,'tower clipped')}}
-                  for(const [x,z] of [[90,105],[270,455],[180,280],[40,350],[320,420]]){const p=V.project(x,z),q=V.pick(p);assert(q&&Math.hypot(q.x-x,q.y-z)<.01,'raycast round-trip')}
+                  for(const t of G.tw){for(const h of [0,t.king?122:60]){const p=V.project(t.x,t.y,h);assert(Math.abs(p.ndcX)<1&&Math.abs(p.ndcY)<1&&p.ndcZ<1,'tower clipped')}}
+                  for(const [x,z] of [[53,169],[307,391],[180,280],[40,350],[320,420]]){const p=V.project(x,z),q=V.pick(p);assert(q&&Math.hypot(q.x-x,q.y-z)<.01,'raycast round-trip')}
                   const rect=cv.getBoundingClientRect();assert(rect.width<=innerWidth&&rect.height>0&&document.documentElement.scrollWidth<=innerWidth,'layout');
                   return {width:innerWidth,empty:V.stats()};
                 }''')
                 page.locator('#cv').screenshot(path=str(args.out/f'arena-{w}.png'),timeout=30000)
                 if w==390:
-                    page.evaluate('''()=>{let i=0;for(const id of Object.keys(CARDS).filter(k=>!CARDS[k].sp)){for(let j=0;j<(i<4?3:2);j++){const c=CARDS[id];G.u.push({...c,id,team:j%2,x:55+(G.u.length%5)*62,y:140+Math.floor(G.u.length/5)*83,max:c.hp,cd:.4,rad:c.big?19:c.k>2?10:12})}i++}G.tw[0].hp=1000;G.tw[3].hp=900;}''')
+                    page.evaluate('''()=>{let i=0;for(const id of Object.keys(CARDS).filter(k=>!CARDS[k].sp)){for(let j=0;j<(i<4?3:2);j++){const c=CARDS[id];G.u.push({...c,id,team:j%2,x:55+(G.u.length%5)*62,y:140+Math.floor(G.u.length/5)*83,max:c.hp,cd:.4,rad:c.big?19:c.k>2?10:12})}i++}G.tw[0].hp=700;G.tw[3].hp=600;}''')
                     page.wait_for_timeout(2500);result['stress']=page.evaluate('V.stats()');page.locator('#cv').screenshot(path=str(args.out/'arena-390-stress.png'),timeout=30000)
                     page.evaluate('G.tw[3].hp=0');page.wait_for_timeout(500);page.locator('#cv').screenshot(path=str(args.out/'arena-390-destroyed.png'),timeout=30000)
                     page.evaluate('document.querySelector("#rb").click();start();G.paused=true');page.wait_for_timeout(1000);assert page.evaluate('G.tw.every(t=>t.hp===t.max)&&G.u.length===0'),'restart'

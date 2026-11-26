@@ -26,24 +26,23 @@ const ArenaTowers3D=ArenaArt3D?(()=>{
       banners.push(A.banner(intact,team,0,27,34.1,29,40));sm(G.cyl,A.gold,0,46,35,1.8,30,1.8,0,0,Math.PI/2);
       for(const x of [-20,20])sm(G.bevel,A.gold,x,9,26,4,6,5);
     }else{
-      peak=84;intact.scale.set(1.09,1.07,1.09);ruins.scale.setScalar(1.06);
-      ArenaHDModels.add(intact,'guardian-hd');
-      for(const x of [-20,20]){sm(G.bevel,dark,x,19,24.1,8,17,2.2);sm(G.bevel,emit,x,19,25.5,4.5,12,1.2,0,0,0,false);A.glow(intact,tc,x,19,26,15,.22)}
-      banners.push(A.banner(intact,team,0,24,27.2,22,31));sm(G.cyl,A.gold,0,39.5,27.4,1.35,23,1.35,0,0,Math.PI/2);
-      // Guardian is a purely visual tower part, not a game unit.
-      guardian=new T.Group();guardian.position.set(0,41,1);intact.add(guardian);const g=A.batch(guardian);
-      g.add(G.sphere,cloth,0,7,0,9.3,9.2,7);g.add(G.sphere,trim,0,2,0,10,3.5,8);g.add(G.hood,cloth,0,17,-1,10.4,11,8.8,0,0,-.10);g.add(G.sphere,trim,0,15.5,4.8,7.9,8.4,3.4);g.add(G.sphere,A.gold,0,15.6,6.1,7.0,7.3,2.25);g.add(G.sphere,A.material('#14101f','skin'),0,15.8,7.1,6.2,6.5,2.1);g.add(G.sphere,trim,0,4.5,2,9.8,3.8,7.5);g.add(G.shield,A.gold,0,6,7.9,3.3,4.2,1.6);for(const s of [-1,1]){g.add(G.sphere,A.material('#f4faff','glow'),s*2.4,17,9.02,1.4,1.7,.65,0,0,0,null,false);g.add(G.sphere,cloth,s*8.2,7,2.8,3.5,5,3.8,0,0,s*.35);g.add(G.bevel,A.gold,s*8.3,10,3,4.2,1.8,4.3,0,0,s*.23)}g.add(G.oct,A.gold,0,5,7.1,2.2,2.5,1.1);g.flush();
-      staff=new T.Group();staff.position.set(10,8,4);guardian.add(staff);A.mesh(staff,G.cyl,A.material('#714b30','wood'),0,9,0,1.25,26,1.25);A.mesh(staff,G.cyl,A.gold,0,22,0,2.5,2.8,2.5);orb=A.crystal(staff,team,0,27,0,9,12,true);
+      peak=54;ruins.scale.setScalar(.66);
+      sm(G.cyl,dark,0,2,0,16,4,16);sm(G.cyl,A.gold,0,4.7,0,13.5,2,13.5);
+      sm(G.cyl,A.material('#9d8690'),0,15,0,10.5,19,10.5);
+      for(const q of [-1,1]){sm(G.bevel,A.material('#b09a9d'),q*9,13,0,5,18,8);sm(G.bevel,A.gold,q*9,22,0,6,2.5,9);}
+      sm(G.cyl,A.gold,0,25,0,12,3,12);sm(G.cyl,trim,0,27.2,0,8.5,2,8.5);sm(G.arch,emit,0,13,10.7,5.2,12,1.2,0,0,0,false);
+      orb=A.crystal(intact,team,0,40,0,16,25,true);ring=A.mesh(intact,G.torus,A.material(tc,'glow'),0,28,0,10,10,10,-Math.PI/2,0,0,false);
+
     }
     batch.flush();
-    A.contact(root,0,0,t.king?105:80,t.king?93:70,.085);
-    const light=A.lightPool(intact,tc,0,3,t.king?104:76,t.king?92:70,t.king?.19:.13,.17);
+    A.contact(root,0,0,t.king?105:43,t.king?93:40,.085);
+    const light=A.lightPool(intact,tc,0,3,t.king?104:52,t.king?92:48,t.king?.19:.13,.17);
     const rubble=A.batch(ruins);for(let i=0;i<13;i++){let a=i*2.4,rad=(t.king?26:20)*rand();rubble.add(G.bevel,stone,Math.cos(a)*rad,2+rand()*3,Math.sin(a)*rad,7+rand()*7,4+rand()*5,8+rand()*6,rand()*.5,a,rand()*.5,color())}rubble.flush();
-    const hp=A.health(root,team,t.king?40:35,peak+5);let dead=false;
+    const hp=A.health(root,team,t.king?40:28,peak+5);let dead=false;
     return {t,root,peak,update(time,dt,cam,hasAttack){if(t.hp<=0){if(!dead){dead=true;intact.visible=false;ruins.visible=true}A.updateHealth(hp,0,cam,false);return}
       if(hasAttack)attack=.23;attack=Math.max(0,attack-dt);
       light.material.opacity=(t.king?.19:.13)*(1+.15*Math.sin(time*2+t.x));if(coreLight)coreLight.intensity=.58+.09*Math.sin(time*2+t.x);
-      orb.root.position.y=orb.baseY+Math.sin(time*2.2+t.x*.02)*(t.king?1.8:.55);orb.root.rotation.y=time*(t.king?.28:.7);if(ring)ring.scale.setScalar(17+Math.sin(time*2)*.7);if(guardian){guardian.rotation.y=Math.sin(time*.9+t.x)*.08;staff.rotation.x=-Math.sin(attack/.23*Math.PI)*.8;staff.rotation.z=-.13-Math.sin(attack/.23*Math.PI)*.25}
+      orb.root.position.y=orb.baseY+Math.sin(time*2.2+t.x*.02)*(t.king?1.8:.55);orb.root.rotation.y=time*(t.king?.28:.7);if(ring)ring.scale.setScalar((t.king?17:10)+Math.sin(time*2)*.7);if(guardian){guardian.rotation.y=Math.sin(time*.9+t.x)*.08;staff.rotation.x=-Math.sin(attack/.23*Math.PI)*.8;staff.rotation.z=-.13-Math.sin(attack/.23*Math.PI)*.25}
       for(const m of banners)A.waveBanner(m,time+t.x*.01);
       A.updateHealth(hp,t.hp/t.max,cam,t.hp<t.max);
     },isDead:()=>dead};

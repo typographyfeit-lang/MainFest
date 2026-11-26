@@ -7,9 +7,10 @@ def bounds(x,y,z,hw,h,hd):
         for dz in [-hd,hd]:
             for dy in [0,h]:points.append((x+dx,y+dy,z+dz))
 bounds(180,0,280,180,0,280)
-for z in [45,515]:bounds(180,0,z,42,122,42)
-for x in [90,270]:
-    for z in [105,455]:bounds(x,0,z,34,91,34)
+for z in [52,508]:bounds(180,0,z,42,122,42)
+for x in [53,307]:
+    for z in [169,391]:bounds(x,0,z,18,60,18)
+bounds(180,0,280,54,50,54)
 for x in [45,315]:
     for z in [-11,571]:bounds(x,0,z,13,34 if z>0 else 47,12)
 for x in [0,360]:
