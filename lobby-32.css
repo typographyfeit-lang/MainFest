@@ -1,0 +1,80 @@
+/* Living Sanctuary 3.2 — isolated lobby styles. Battle styles and hit targets remain 3.1. */
+.living-lobby{--lobby-cream:#f7e8cf;--lobby-gold:#d6ad68;--lobby-cyan:#85effa;--lobby-night:#141325;background:#151328;isolation:isolate}
+.living-lobby>header{position:relative;z-index:1;min-height:48px;background:linear-gradient(180deg,#25213a,#171526);border-bottom:1px solid #91714f75;font-size:13px;letter-spacing:.015em;color:#f7dcab}
+.living-lobby>header .snd{height:38px;min-height:38px;border-color:#a48b6555;background:#302b45}
+.living-lobby>main{padding:0;position:relative;scrollbar-width:thin;min-height:0;overflow:auto;background:radial-gradient(ellipse at 50% 18%,#2a284a,#151426 75%)}
+.living-lobby #battle.on{display:flex;flex-direction:column;min-height:100%;text-align:center;overflow:hidden}
+.lobby-stage{position:relative;flex:1 0 auto;height:clamp(250px,51dvh,560px);min-height:250px;overflow:hidden;background:#242242;isolation:isolate}
+.lobby-scenery,.lobby-landscape,.lobby-vignette,.lobby-clouds,.lobby-mist,.lobby-live3d,.lobby-motes{position:absolute;inset:0;pointer-events:none}
+.lobby-landscape{background:#292644 url('sanctuary-bg.webp') center center/100% 100% no-repeat;transform:translate(var(--pan-x,0px),var(--pan-y,0px)) scale(1.035);transition:transform .35s ease-out}
+.lobby-vignette{z-index:8;background:linear-gradient(180deg,#100e2480 0%,transparent 31%,transparent 67%,#141325cc 91%,#141325 100%),radial-gradient(ellipse at 50% 42%,transparent 49%,#0f10274f 100%)}
+.lobby-brand{position:absolute;z-index:9;top:clamp(10px,3.4%,24px);left:5px;right:5px;pointer-events:none;text-align:center}
+.lobby-eyebrow{color:#ebd2a6;font:700 9px/1.3 system-ui,sans-serif;letter-spacing:.21em;text-shadow:0 2px 6px #000}
+.living-lobby .lobby-brand h1{font:700 clamp(28px,8.8vw,48px)/.94 Georgia,'Times New Roman',serif;letter-spacing:.055em;margin:8px 0 8px;color:#fff1ca;text-shadow:0 2px 0 #80613e,0 4px 0 #3d2848,0 6px 18px #100e23,0 0 26px #694d9c}
+.lobby-edition{font:650 9px/1.3 system-ui,sans-serif;letter-spacing:.19em;color:#d8e2ff;text-shadow:0 2px 7px #100e23}
+.lobby-clouds{z-index:1;inset:12% -15% 47%;background:radial-gradient(ellipse at 22% 47%,#c4b9fa28,transparent 40%),radial-gradient(ellipse at 70% 57%,#e6cffb21,transparent 43%);animation:lobby-cloud 32s ease-in-out infinite alternate}
+.lobby-water{position:absolute;z-index:2;top:31%;height:19%;width:9%;opacity:.5;overflow:hidden;pointer-events:none;mask-image:linear-gradient(transparent,#000 15%,#000 78%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 15%,#000 78%,transparent)}
+.lobby-water.left{left:12%;transform:rotate(-7deg)}.lobby-water.right{right:11%;transform:rotate(7deg)}
+.lobby-water:before{content:'';position:absolute;inset:-100% 0 0;background:repeating-linear-gradient(180deg,transparent 0%,#c8f6ff38 5%,#b3e5ff16 8%,transparent 17%);animation:lobby-water 3s linear infinite}
+.lobby-mist{z-index:2;inset:43% -12% 20%;background:radial-gradient(ellipse at 28% 59%,#d9d4ff2f,transparent 50%),radial-gradient(ellipse at 65% 45%,#a9dbff24,transparent 52%);animation:lobby-mist 16s ease-in-out infinite alternate}
+.lobby-altar-glow{position:absolute;z-index:3;top:52%;left:25%;width:50%;height:10%;border-radius:50%;background:radial-gradient(ellipse,#65e8ff62,#55caef29 44%,transparent 72%);animation:lobby-breathe 5s ease-in-out infinite}
+.lobby-sigil{position:absolute;z-index:4;left:50%;top:56.5%;width:52%;aspect-ratio:1;transform:translate(-50%,-50%) scaleY(.29);opacity:.78;filter:drop-shadow(0 0 5px #ffe1a577)}
+.lobby-sigil svg{display:block;width:100%;height:100%;animation:lobby-orbit 32s linear infinite}
+.lobby-aura{position:absolute;z-index:3;left:50%;top:41%;width:64%;height:49%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,#8ef5ff57 0%,#34caff2e 27%,#4a76ff12 50%,transparent 72%);animation:lobby-breathe 5s ease-in-out infinite}
+.lobby-crystal{position:absolute;z-index:5;left:50%;top:41%;height:32%;max-width:30%;transform:translate(-50%,-50%);animation:lobby-float 7s ease-in-out infinite;filter:drop-shadow(0 0 14px #4ce8ff9e)}
+.lobby-crystal img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain}
+.lobby-guardian{position:absolute;z-index:5;left:73%;top:62%;height:25%;width:21%;transform:translate(-50%,-100%);transform-origin:center bottom;animation:lobby-guard 4.8s ease-in-out infinite;filter:drop-shadow(1px 5px 4px #070c20b3)}
+.lobby-guardian img{height:100%;width:100%;display:block;object-fit:contain;object-position:center bottom}
+.lobby-live3d{z-index:6;display:none}.lobby-live3d canvas{display:block;width:100%;height:100%}
+#lobby-stage[data-live="1"] .lobby-live3d{display:block}#lobby-stage[data-live="1"] .lobby-crystal,#lobby-stage[data-live="1"] .lobby-guardian{visibility:hidden}
+.lobby-motes{z-index:7;overflow:hidden}.lobby-motes i{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:#b8f5ff;box-shadow:0 0 6px #93edff;left:var(--x);top:var(--y);opacity:0;animation:lobby-mote var(--t) linear infinite;animation-delay:var(--delay)}
+.lobby-motes i:nth-child(3n){background:#ffe1a6;box-shadow:0 0 6px #f9bb66}
+.lobby-bless{position:absolute;z-index:10;left:61%;top:37%;width:33%;height:28%;border:0;border-radius:18px;background:transparent;cursor:pointer;min-width:44px;min-height:44px;touch-action:manipulation}
+.lobby-whisper{position:absolute;z-index:9;bottom:7%;left:5%;right:5%;font:600 clamp(11px,3.2vw,14px)/1.4 system-ui,sans-serif;color:#f8e7c8;letter-spacing:.04em;text-shadow:0 2px 8px #101022;pointer-events:none}
+#lobby-stage.blessed .lobby-aura{background:radial-gradient(ellipse,#b6f8ff86,#48e7ff35 33%,transparent 72%)}
+#lobby-stage.blessed .lobby-guardian{animation:lobby-greeting .85s ease-in-out 1}
+.lobby-panel{position:relative;z-index:9;background:linear-gradient(180deg,#141325,#19182d);padding:6px 14px 10px;border-top:1px solid #a88b5540;display:grid;gap:7px;flex:none}
+.lobby-squad-row{display:flex;align-items:center;gap:7px;min-height:40px;text-align:left}.lobby-squad-row>span{color:#bfb7d1;font-size:9px;letter-spacing:.07em;white-space:nowrap}
+#lobby-squad{display:flex;flex:1;justify-content:center;gap:5px;min-width:0}#lobby-squad .squad-token{display:block;width:clamp(26px,8vw,36px);aspect-ratio:1;border:1px solid #c3a26b99;border-radius:6px;background-image:url('cards-v27.svg');background-size:500% 200%;background-repeat:no-repeat;flex:none}
+#lobby-edit,#lobby-help{border:1px solid #91774d66;border-radius:8px;background:#25243a;color:#f3deba;padding:7px 9px;font:650 12px system-ui,sans-serif;min-height:40px;cursor:pointer;white-space:nowrap}
+.living-lobby #play.lobby-play{position:relative;overflow:hidden;min-height:61px;padding:9px 12px 9px 50px;display:grid;justify-items:center;align-content:center;gap:0;background:linear-gradient(180deg,#eecf8d 0%,#c99954 46%,#a8733b 48%,#774e2d 100%);color:#fff9e4;border:1.5px solid #ffe4ad;border-radius:11px;box-shadow:0 4px 0 #50301f,0 6px 18px #070717b8,inset 0 0 0 3px #8f632c55;text-shadow:0 2px 2px #613f28;letter-spacing:.14em}
+#play.lobby-play svg{position:absolute;left:20px;top:14px;width:30px;height:30px;color:#fff5cc;filter:drop-shadow(0 2px 2px #7a4d27)}#play.lobby-play>span{font:850 23px/1.1 system-ui,sans-serif}#play.lobby-play>small{font:600 10px/1.3 system-ui,sans-serif;letter-spacing:.065em;color:#fff0ca}
+#play.lobby-play:after{content:'';position:absolute;inset:-20% auto -20% -35%;width:25%;background:linear-gradient(90deg,transparent,#fff7d25c,transparent);transform:skewX(-22deg);animation:lobby-shine 10s ease-in-out infinite;pointer-events:none}
+#play.lobby-play:disabled:after{animation:none}.living-lobby #loadstatus{margin:0;min-height:0;text-align:center;color:#e9d3ad;font-size:11px}.living-lobby #loadstatus:empty{display:none}
+.lobby-options{display:flex;align-items:center;justify-content:space-between;gap:7px}.living-lobby .lobby-options .difficulty{font-size:12px;color:#d9cfdf;margin:0;gap:6px;flex:1;justify-content:flex-start}.lobby-options select{min-width:0!important;max-width:106px;min-height:40px;padding:5px 7px!important;background:#29263e!important;border-color:#91774d66!important;color:#fae5c2!important;font-size:12px!important}
+.living-lobby #lobby-rules{padding:11px;margin:0;max-width:none;border-radius:9px;background:#252339;font-size:12px}.living-lobby #lobby-rules[hidden]{display:none!important}
+.living-lobby>nav{position:relative;z-index:1;min-height:58px;background:linear-gradient(180deg,#1c1b2f,#141323);border-top:1px solid #ab8e5c75;gap:1px}
+.living-lobby>nav button{position:relative;display:grid;justify-items:center;align-content:center;gap:4px;min-height:58px;padding:7px 2px;opacity:1;color:#b9b5cb;border-radius:0;transition:color .2s,background .2s;cursor:pointer}.living-lobby>nav svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.55;stroke-linejoin:round;stroke-linecap:round}.living-lobby>nav small{font-size:11px}.living-lobby>nav button.on{background:radial-gradient(ellipse at 50% 8%,#b8a06c27,transparent 85%);color:#ffe2a6}.living-lobby>nav button.on:before{content:'';height:2px;width:48%;position:absolute;top:0;background:#f3d69a;box-shadow:0 0 7px #eac07580;border-radius:2px}
+.living-lobby main>.tab:not(#battle){padding:12px 14px 24px;min-height:100%;background:linear-gradient(180deg,#22203b,#171629);text-align:center}.living-lobby main>.tab.on:not(#battle){animation:lobby-enter .24s ease-out both}
+.lobby-chapter{position:relative;min-height:132px;display:grid;align-content:center;justify-items:center;gap:5px;border:1px solid #a78c606e;border-radius:12px;overflow:hidden;background-size:cover;background-position:center;isolation:isolate;color:#f4dfb9;margin-bottom:14px}.lobby-chapter:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#1a172b35,#161428b0 82%)}.lobby-chapter h2{font:700 26px/1.1 Georgia,serif;color:#fff0cc;margin:0;text-shadow:0 2px 8px #000}.lobby-chapter small{font-size:9px;letter-spacing:.2em}.chapter-emblem{font:400 34px/1 Georgia,serif;color:#ffe0a0;text-shadow:0 0 15px #ffb469;animation:lobby-chapter 5s ease-in-out infinite}.chapter-forge{background-image:url('sanctuary-forge.webp')}.chapter-hall{background-image:url('sanctuary-hall.webp')}.chapter-profile{background-image:url('sanctuary-profile.webp')}.chapter-forge:after{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 90%,#fc9f5155,transparent 65%);animation:lobby-breathe 4.5s infinite alternate}
+.living-lobby #cards h2:not(.lobby-chapter h2),.living-lobby #profile h2:not(.lobby-chapter h2){font-size:17px}.living-lobby #cards .card{background:linear-gradient(180deg,#48405c,#28253d);border-color:#b59a6c9e}.lobby-info{margin-top:13px;padding:12px;border-radius:9px;background:#28243e;border:1px solid #a28b6460;font-size:13px;color:#e9d8b8;min-height:42px;text-align:left}
+.lobby-preferences{display:grid;grid-template-columns:1fr auto;align-items:center;text-align:left;gap:8px;padding:12px;background:#242238;border:1px solid #a28b6460;border-radius:12px;color:#e7d9c3;font-size:13px;margin-bottom:15px}.lobby-preferences h2,.lobby-preferences p{grid-column:1/-1;margin:0}.lobby-preferences select,.lobby-preferences button{max-width:180px;min-height:44px;border:1px solid #a28b6477;border-radius:8px;padding:8px;background:#342e48;color:#f6e4bf;font:650 13px system-ui}.lobby-preferences p{font-size:11px;color:#c6bed5}
+/* Offscreen, in battle, hidden tab, or reduced-motion: pause all continuous lobby animation. */
+.living-lobby:not([data-lobby-active="1"]) .lobby-scenery *, .living-lobby:not([data-lobby-active="1"]) #play:after,.living-lobby:not([data-menu-visible="1"]) .chapter-emblem,.living-lobby:not([data-menu-visible="1"]) .chapter-forge:after{animation-play-state:paused!important}
+.living-lobby[data-lobby-mode="light"] .lobby-clouds,.living-lobby[data-lobby-mode="light"] .lobby-water,.living-lobby[data-lobby-mode="light"] .lobby-mist,.living-lobby[data-lobby-mode="light"] .lobby-motes i:nth-child(n+9){display:none}
+.living-lobby[data-lobby-mode="static"] .lobby-scenery *, .living-lobby[data-lobby-mode="static"] #play:after,.living-lobby[data-lobby-mode="static"] .chapter-emblem,.living-lobby[data-lobby-mode="static"] .chapter-forge:after{animation:none!important}
+.living-lobby[data-lobby-mode="static"] .lobby-motes{display:none}
+@keyframes lobby-float{0%,100%{transform:translate(-50%,-50%) rotate(-2deg)}50%{transform:translate(-50%,calc(-50% - 8px)) rotate(2deg)}}
+@keyframes lobby-breathe{0%,100%{opacity:.66}50%{opacity:1}}
+@keyframes lobby-orbit{to{transform:rotate(360deg)}}
+@keyframes lobby-cloud{to{transform:translateX(7%)}}
+@keyframes lobby-water{to{transform:translateY(34%)}}
+@keyframes lobby-mist{to{transform:translate(6%,-3%);opacity:.55}}
+@keyframes lobby-guard{0%,100%{transform:translate(-50%,-100%) rotate(-1deg)}50%{transform:translate(-50%,-100%) scaleY(1.025) rotate(1deg)}}
+@keyframes lobby-greeting{0%,100%{transform:translate(-50%,-100%) rotate(0)}45%{transform:translate(-50%,-104%) rotate(-8deg)}}
+@keyframes lobby-mote{0%{opacity:0;transform:translate3d(0,20px,0)}18%{opacity:.75}82%{opacity:.42}100%{opacity:0;transform:translate3d(var(--dx),-75px,0)}}
+@keyframes lobby-shine{0%,75%{left:-35%}91%,100%{left:130%}}
+@keyframes lobby-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes lobby-chapter{50%{transform:translateY(-3px);opacity:.75}}
+@media(max-width:350px){.lobby-panel{padding:5px 9px 8px}.lobby-squad-row{gap:4px}.lobby-squad-row>span{font-size:8px}#lobby-squad{gap:3px}#lobby-edit,#lobby-help{font-size:11px;padding:6px}.lobby-options .difficulty{font-size:11px!important}.lobby-brand h1{font-size:29px!important}}
+@media(max-height:650px){.lobby-stage{height:clamp(210px,48dvh,310px);min-height:210px}.lobby-panel{gap:5px;padding-bottom:7px}.lobby-whisper{bottom:4%}.lobby-brand{top:8px}.lobby-brand h1{font-size:clamp(24px,7.5vw,35px)!important;margin:4px 0!important}.lobby-edition,.lobby-eyebrow{font-size:8px}.living-lobby #play.lobby-play{min-height:53px}.living-lobby>nav,.living-lobby>nav button{min-height:51px}.living-lobby>nav svg{width:21px;height:21px}.lobby-squad-row{min-height:34px}}
+@media(prefers-reduced-motion:reduce){.living-lobby .lobby-scenery *,.living-lobby #play:after,.living-lobby .lobby-chapter *,.living-lobby .lobby-chapter:after,.living-lobby main>.tab.on:not(#battle){animation:none!important;transition:none!important}}
+/* Preserve the arena's full-screen stacking above the new header and navigation. */
+.living-lobby>#game{z-index:20}.living-lobby>#res{z-index:40}
+/* Pseudo-element animations need an explicit pause in addition to their parent. */
+.living-lobby:not([data-lobby-active="1"]) .lobby-water:before{animation-play-state:paused!important}
+.living-lobby[data-lobby-mode="static"] .lobby-water:before{animation:none!important}
+@media(prefers-reduced-motion:reduce){.living-lobby .lobby-water:before{animation:none!important}}
+
+.living-lobby[data-lobby-mode="static"] .lobby-landscape,.living-lobby[data-lobby-mode="light"] .lobby-landscape{transition:none}
+@media(prefers-reduced-motion:reduce){.lobby-landscape{transition:none!important}}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1c1528">
+<meta name="theme-color" content="#161329">
 <meta name="description" content="Crystal Dominion — мобильная стратегия: призывай бойцов рунами, захватывай святилище и разрушь ядро соперника.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -12,42 +12,66 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Crystal Dominion 3.1 — Sanctuary Duel</title>
+<title>Crystal Dominion 3.2 — Living Sanctuary</title>
+<!-- Battle CSS and scripts remain at the verified 3.1 revision; lobby is a separate layer. -->
 <link rel="stylesheet" href="style.css?v=31">
+<link rel="stylesheet" href="lobby-32.css?v=32">
 </head>
 <body>
-<div id="app">
+<div id="app" class="living-lobby" data-lobby-mode="static">
   <header><b id="tr"></b><button type="button" class="snd" data-sound="icon" aria-label="Звук">🔊</button><b id="co"></b></header>
   <main>
     <section id="battle" class="tab on">
-      <h1>CRYSTAL<br>DOMINION</h1>
-      <div class="art" aria-hidden="true"><div class="sigil">◇</div><span>CRYSTAL SANCTUARY</span><small>SANCTUARY DUEL · 3.1</small></div>
-      <div class="rules"><p><b>1</b> Перетащи руну на свою половину арены или выбери руну и коснись поля. Руны заряжаются сами.</p><p><b>2</b> Удерживай святилище в центре, чтобы призвать хранителя.</p><p><b>3</b> Разрушь ядро соперника! В последнюю минуту руны заряжаются вдвое быстрее.</p></div>
-      <label class="difficulty">Сложность <select id="difficulty"><option value="easy">Лёгкая</option><option value="normal">Обычная</option><option value="hard">Высокая</option></select></label>
-      <button id="play" class="big">В БОЙ</button>
-      <p id="loadstatus" role="status" class="hint"></p>
+      <div class="lobby-stage" id="lobby-stage">
+        <div class="lobby-scenery" aria-hidden="true">
+          <div class="lobby-landscape"></div><div class="lobby-clouds"></div>
+          <div class="lobby-water left"></div><div class="lobby-water right"></div>
+          <div class="lobby-mist"></div><div class="lobby-altar-glow"></div>
+          <div class="lobby-sigil"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="105" fill="none" stroke="#f8d89a" stroke-width="1.2" stroke-dasharray="3 10"/><circle cx="120" cy="120" r="92" fill="none" stroke="#f6c97c" stroke-width="2" stroke-dasharray="30 10 5 10"/><path d="M120 13 127 24 120 36 113 24ZM120 204 127 216 120 227 113 216ZM13 120 24 113 36 120 24 127ZM204 120 216 113 227 120 216 127Z" fill="#f7da9f"/></svg></div>
+          <div class="lobby-aura"></div>
+          <div class="lobby-crystal" id="lobby-crystal"><img src="sanctuary-crystal.svg" alt="" width="200" height="310"></div>
+          <div class="lobby-guardian" id="lobby-guardian"><img src="sanctuary-guardian.webp" alt="" width="313" height="476"></div>
+          <div id="lobby-live3d" class="lobby-live3d"></div>
+          <div class="lobby-motes" id="lobby-motes"></div><div class="lobby-vignette"></div>
+        </div>
+        <div class="lobby-brand"><div class="lobby-eyebrow">◆ &nbsp; SANCTUARY DUEL &nbsp; ◆</div><h1>CRYSTAL<br>DOMINION</h1><div class="lobby-edition">ЖИВОЕ СВЯТИЛИЩЕ · 3.2</div></div>
+        <button type="button" id="lobby-bless" class="lobby-bless" aria-label="Поприветствовать хранителя" title="Поприветствовать хранителя"></button>
+        <p class="lobby-whisper" id="lobby-whisper" aria-live="polite">Святилище ждёт тебя</p>
+      </div>
+      <div class="lobby-panel">
+        <div class="lobby-squad-row"><span>ТВОЙ ОТРЯД</span><div id="lobby-squad" aria-label="Текущий отряд"></div><button type="button" id="lobby-edit" aria-label="Изменить отряд">Изменить</button></div>
+        <button id="play" class="big lobby-play"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 2 8 8-8 12L4 10Z M12 2v20M4 10h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>В БОЙ</span><small>Дуэль · 3 минуты</small></button>
+        <p id="loadstatus" role="status" class="hint"></p>
+        <div class="lobby-options"><label class="difficulty">Сложность <select id="difficulty"><option value="easy">Лёгкая</option><option value="normal">Обычная</option><option value="hard">Высокая</option></select></label><button type="button" id="lobby-help" aria-expanded="false" aria-controls="lobby-rules">Как играть</button></div>
+        <div class="rules" id="lobby-rules" hidden><p><b>1</b> Перетащи руну на свою половину арены или выбери руну и коснись поля. Руны заряжаются сами.</p><p><b>2</b> Удерживай святилище в центре, чтобы призвать хранителя.</p><p><b>3</b> Разрушь ядро соперника! В последнюю минуту руны заряжаются вдвое быстрее.</p></div>
+      </div>
     </section>
     <section id="cards" class="tab">
+      <div class="lobby-chapter chapter-hall"><div class="chapter-emblem">◇</div><small>ЗАЛ ХРАНИТЕЛЕЙ</small><h2>Твой отряд</h2></div>
       <h2>Отряд (4 руны)</h2><div id="deck" class="grid"></div>
       <h2>Коллекция</h2><div id="coll" class="grid"></div>
       <p class="hint" id="deckhint">Выбери руну в коллекции, затем замени одну из четырёх.</p>
+      <p id="lobby-rune-info" class="lobby-info" aria-live="polite">Коснись руны, чтобы узнать её роль.</p>
     </section>
     <section id="shop" class="tab">
-      <h2>Кузница рун</h2><p class="hint">Осколки дают за каждый бой. Открывай новые руны и улучшай свои: каждый уровень добавляет 7% здоровья и урона.</p><p id="shopmsg" class="hint" role="status"></p><div id="unlock-list"></div>
+      <div class="lobby-chapter chapter-forge"><div class="chapter-emblem">✧</div><small>МАСТЕРСКАЯ МАГИИ</small><h2>Кузница рун</h2></div>
+      <p class="hint">Осколки дают за каждый бой. Открывай новые руны и улучшай свои: каждый уровень добавляет 7% здоровья и урона.</p><p id="shopmsg" class="hint" role="status"></p><div id="unlock-list"></div>
     </section>
     <section id="profile" class="tab">
-      <h2>Хранитель</h2><p id="record"></p>
+      <div class="lobby-chapter chapter-profile"><div class="chapter-emblem">◈</div><small>ЛЕТОПИСЬ КОРОЛЕВСТВА</small><h2>Хранитель</h2></div>
+      <p id="record"></p>
+      <div class="lobby-preferences"><h2>Атмосфера меню</h2><label for="lobby-quality">Анимация</label><select id="lobby-quality"><option value="auto">Авто · 2.5D</option><option value="full">Полная · 3D</option><option value="light">Лёгкая</option><option value="static">Статичная</option></select><p class="hint" id="lobby-quality-note" aria-live="polite"></p><label for="lobby-music">Музыка меню</label><button type="button" id="lobby-music" aria-pressed="true">Включена</button></div>
       <div class="profile-actions"><button id="export" type="button">Скопировать код прогресса</button><button id="import" type="button">Восстановить из кода</button></div>
       <p id="savemsg" class="hint" role="status"></p>
       <p id="installhint" class="hint" hidden>Чтобы прогресс не пропал, добавь игру на экран «Домой»: кнопка «Поделиться» → «На экран „Домой“».</p>
       <p class="hint">Прогресс сохраняется на этом устройстве. Код прогресса — запасная копия, если сменишь телефон или браузер.</p>
     </section>
   </main>
-  <nav>
-    <button data-t="shop">◇<small>Кузница</small></button>
-    <button data-t="cards">▦<small>Отряд</small></button>
-    <button data-t="battle" class="on">⚔️<small>Бой</small></button>
-    <button data-t="profile">◈<small>Профиль</small></button>
+  <nav aria-label="Разделы игры">
+    <button data-t="shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 5 7 4h10l-4 5h-4l2 6H6l2-6L3 10Z M10 3l2 3 2-3"/></svg><small>Кузница</small></button>
+    <button data-t="cards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l4 4v13H7Z M7 5H3v15h4 M17 3v5h4 M10 13h8 M10 16h5"/></svg><small>Отряд</small></button>
+    <button data-t="battle" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 10 12 22 4 10Z M12 2v20 M4 10h16"/></svg><small>Бой</small></button>
+    <button data-t="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><small>Профиль</small></button>
   </nav>
   <div id="game" hidden>
     <div id="hud"><div class="core-stat own"><span>Твоё ядро <b id="hp0">100%</b></span><i><i id="fill0"></i></i></div><strong id="time">3:00</strong><div class="core-stat enemy"><span>Враг <b id="hp1">100%</b></span><i><i id="fill1"></i></i></div><button id="pause" type="button" aria-label="Пауза"><span aria-hidden="true">❚❚</span></button></div>
@@ -77,5 +101,6 @@
 <script src="render3d.js?v=31"></script>
 <script src="game.js?v=31"></script>
 <script src="pwa.js?v=31"></script>
+<script src="lobby-32.js?v=32"></script>
 </body>
 </html>
