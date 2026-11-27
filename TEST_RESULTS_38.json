@@ -1,0 +1,258 @@
+{
+  "results": [
+    {
+      "modes": [
+        {
+          "mode": "classic",
+          "pitch": 60,
+          "fov": 22,
+          "maxNdc": 0.8896962906318148,
+          "distance": 1611.5807890892029
+        },
+        {
+          "mode": "royal",
+          "pitch": 66,
+          "fov": 26,
+          "maxNdc": 0.8813846376234667,
+          "distance": 1408.1566143035889
+        },
+        {
+          "mode": "tactical",
+          "pitch": 76,
+          "fov": 24,
+          "maxNdc": 0.8987249089399868,
+          "distance": 1540.942764878273
+        }
+      ],
+      "towers": {
+        "built": 6,
+        "active": 6,
+        "stageChanges": 6,
+        "mages": 4,
+        "attacks": 0,
+        "fallbacks": 0,
+        "detail": 1
+      },
+      "canvas": [
+        320,
+        392
+      ],
+      "viewport": [
+        320,
+        568
+      ]
+    },
+    {
+      "modes": [
+        {
+          "mode": "classic",
+          "pitch": 60,
+          "fov": 22,
+          "maxNdc": 0.8896962906318148,
+          "distance": 1611.5807890892029
+        },
+        {
+          "mode": "royal",
+          "pitch": 66,
+          "fov": 26,
+          "maxNdc": 0.8813846376234667,
+          "distance": 1408.1566143035889
+        },
+        {
+          "mode": "tactical",
+          "pitch": 76,
+          "fov": 24,
+          "maxNdc": 0.8987249089399868,
+          "distance": 1540.942764878273
+        }
+      ],
+      "towers": {
+        "built": 6,
+        "active": 6,
+        "stageChanges": 6,
+        "mages": 4,
+        "attacks": 0,
+        "fallbacks": 0,
+        "detail": 1
+      },
+      "canvas": [
+        375,
+        485
+      ],
+      "viewport": [
+        375,
+        667
+      ]
+    },
+    {
+      "modes": [
+        {
+          "mode": "classic",
+          "pitch": 60,
+          "fov": 22,
+          "maxNdc": 0.9225400203660551,
+          "distance": 1823.9684277772903
+        },
+        {
+          "mode": "royal",
+          "pitch": 66,
+          "fov": 26,
+          "maxNdc": 0.9176441374878117,
+          "distance": 1536.2055146694183
+        },
+        {
+          "mode": "tactical",
+          "pitch": 76,
+          "fov": 24,
+          "maxNdc": 0.9191277209270383,
+          "distance": 1610.441762804985
+        }
+      ],
+      "towers": {
+        "built": 6,
+        "active": 6,
+        "stageChanges": 6,
+        "mages": 4,
+        "attacks": 0,
+        "fallbacks": 0,
+        "detail": 1
+      },
+      "canvas": [
+        390,
+        660
+      ],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "modes": [
+        {
+          "mode": "classic",
+          "pitch": 60,
+          "fov": 22,
+          "maxNdc": 0.922962992257411,
+          "distance": 1856.5738594532013
+        },
+        {
+          "mode": "royal",
+          "pitch": 66,
+          "fov": 26,
+          "maxNdc": 0.9181566554200926,
+          "distance": 1563.6577361822128
+        },
+        {
+          "mode": "tactical",
+          "pitch": 76,
+          "fov": 24,
+          "maxNdc": 0.9196132361536331,
+          "distance": 1640.258938074112
+        }
+      ],
+      "towers": {
+        "built": 6,
+        "active": 6,
+        "stageChanges": 6,
+        "mages": 4,
+        "attacks": 0,
+        "fallbacks": 0,
+        "detail": 1
+      },
+      "canvas": [
+        430,
+        742
+      ],
+      "viewport": [
+        430,
+        932
+      ]
+    },
+    {
+      "modes": [
+        {
+          "mode": "classic",
+          "pitch": 60,
+          "fov": 22,
+          "maxNdc": 0.9230334912620027,
+          "distance": 1862.1285712718964
+        },
+        {
+          "mode": "royal",
+          "pitch": 66,
+          "fov": 26,
+          "maxNdc": 0.9182420591010707,
+          "distance": 1568.3345794677734
+        },
+        {
+          "mode": "tactical",
+          "pitch": 76,
+          "fov": 24,
+          "maxNdc": 0.9196941146101272,
+          "distance": 1645.3387212753296
+        }
+      ],
+      "towers": {
+        "built": 6,
+        "active": 6,
+        "stageChanges": 6,
+        "mages": 4,
+        "attacks": 0,
+        "fallbacks": 0,
+        "detail": 1
+      },
+      "canvas": [
+        480,
+        831
+      ],
+      "viewport": [
+        480,
+        1024
+      ]
+    }
+  ],
+  "extras": {
+    "damage": [
+      {
+        "hp": 1100,
+        "dead": false,
+        "collapsing": false,
+        "triangles": 4280,
+        "meshes": 8
+      },
+      {
+        "hp": 825,
+        "dead": false,
+        "collapsing": false,
+        "triangles": 4292,
+        "meshes": 11
+      },
+      {
+        "hp": 550,
+        "dead": false,
+        "collapsing": false,
+        "triangles": 4460,
+        "meshes": 12
+      },
+      {
+        "hp": 275,
+        "dead": false,
+        "collapsing": false,
+        "triangles": 4204,
+        "meshes": 10
+      },
+      {
+        "hp": 0,
+        "dead": true,
+        "collapsing": false,
+        "triangles": 414,
+        "meshes": 3
+      }
+    ],
+    "cinematic": true,
+    "restored": true
+  },
+  "errors": [],
+  "warnings": [],
+  "missing": []
+}
