@@ -1,0 +1,5081 @@
+{
+  "camera": {
+    "gpu": "mock renderer; real Three.js r128 scene, geometry, GLB, camera and Raycaster",
+    "sizes": [
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.4683196589340948,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.6440444369269722,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4714558283543905,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6485644365014016,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.48541308274109507,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.6554577403341506,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.5005763701361882,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.6884046404908197,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5039285512257389,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6932359665665492,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5188471471135685,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7006040642857375,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5202971307871328,
+            "maxNdc": 0.8159918400816001,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7241792696657706,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.494429521885799,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6843315181810368,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5232195223335191,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7241792696657706,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              392
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5592576016779196,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7740589642600967,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5284846165054842,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7314665972394245,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5592576016779196,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7740589642600967,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              320,
+              419
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 3.308375183933206e-11,
+        "viewport": [
+          320,
+          568
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.4927444937537868,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.6776340560864288,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.49604422756561717,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6823897926001142,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.510729411319429,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.6896426111452287,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.517169328573479,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7112236752458855,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5206326267768439,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.7162151486988267,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5360457398977627,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.723827481956307,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5505076153350403,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7619482565190875,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5202160955895934,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7200222776326555,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5505076153350403,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7619482565190875,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              464
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5777957083365619,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7997172433724044,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5460026692933879,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7557130370842742,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5777957083365619,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7997172433724044,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              360,
+              487
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 3.8484264498640906e-11,
+        "viewport": [
+          360,
+          640
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.4944436126977653,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.6799707252453475,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.49775472490205036,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6847428608504594,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5124905472205303,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.6920206891146952,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 72,
+            "fov": 22,
+            "coverage": 0.5219693395902183,
+            "maxNdc": 0.8159917653227658,
+            "margin": 0.816,
+            "ratio": 1.0994078422799065,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7178247656198309,
+            "maxNdc": 0.9599902292793357,
+            "margin": 0.96,
+            "ratio": 1.1036252931272648,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5254647817522677,
+            "maxNdc": 0.8159921096040407,
+            "margin": 0.816,
+            "ratio": 1.2065136643571475,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.722862566506052,
+            "maxNdc": 0.9599907684156372,
+            "margin": 0.96,
+            "ratio": 1.2457945643736204,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5410209488183743,
+            "maxNdc": 0.815991419891874,
+            "margin": 0.816,
+            "ratio": 1.0295645395777728,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7305455522200492,
+            "maxNdc": 0.9599898202019647,
+            "margin": 0.96,
+            "ratio": 1.0344344846594418,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5524059174568854,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7645756643001876,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5220099441950748,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.722505113072768,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5524059174568854,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7645756643001876,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              485
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.583158411830774,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8071396703540126,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5510702916038728,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7627270472025922,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.583158411830774,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8071396703540126,
+            "maxNdc": 0.9599904000959992,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              512
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 4.053079265957387e-11,
+        "viewport": [
+          375,
+          667
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5498182177322365,
+            "maxNdc": 0.8159915792648939,
+            "margin": 0.816,
+            "ratio": 1.0809621925327528,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7515917922130535,
+            "maxNdc": 0.9599900391795942,
+            "margin": 0.96,
+            "ratio": 1.0952496329087142,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4513064330774682,
+            "maxNdc": 0.8159912118109741,
+            "margin": 0.816,
+            "ratio": 1.1702064233339982,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6100316357912147,
+            "maxNdc": 0.9599895302408785,
+            "margin": 0.96,
+            "ratio": 1.2002428237158957,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5977423635649433,
+            "maxNdc": 0.8159918033101068,
+            "margin": 0.816,
+            "ratio": 1.0279938454791473,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.8234398466111329,
+            "maxNdc": 0.9599903489246814,
+            "margin": 0.96,
+            "ratio": 1.0329339355864304,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5287605555527362,
+            "maxNdc": 0.8159915866397771,
+            "margin": 0.816,
+            "ratio": 1.077634979842656,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7231318760479291,
+            "maxNdc": 0.9599900543781028,
+            "margin": 0.96,
+            "ratio": 1.0913352658790285,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4350970821172279,
+            "maxNdc": 0.8159912352584267,
+            "margin": 0.816,
+            "ratio": 1.1632116435032982,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.588563375795641,
+            "maxNdc": 0.9599895667244374,
+            "margin": 0.96,
+            "ratio": 1.192013673874197,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5738041327181964,
+            "maxNdc": 0.8159918024493915,
+            "margin": 0.816,
+            "ratio": 1.0268434134448403,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7906093390417082,
+            "maxNdc": 0.9599903517637319,
+            "margin": 0.96,
+            "ratio": 1.031580486272164,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.613143636290346,
+            "maxNdc": 0.8159918400815994,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8486417111285064,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5228394627087704,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7236532355830732,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.614174954302994,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8500691409037979,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              630
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5879459526071807,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8137660243698006,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5013529094467658,
+            "maxNdc": 0.815991840081599,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6939140615180153,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5889348876878022,
+            "maxNdc": 0.815991840081599,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8151347926474775,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              375,
+              657
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 4.951273893288536e-11,
+        "viewport": [
+          375,
+          812
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5461003613865761,
+            "maxNdc": 0.8159915775804912,
+            "margin": 0.816,
+            "ratio": 1.08037337642115,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7465687825560057,
+            "maxNdc": 0.9599900395388066,
+            "margin": 0.96,
+            "ratio": 1.0945569083411235,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4484498786113686,
+            "maxNdc": 0.8159912158853113,
+            "margin": 0.816,
+            "ratio": 1.168968559280703,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6062503284819581,
+            "maxNdc": 0.9599895365933473,
+            "margin": 0.96,
+            "ratio": 1.1987865135861049,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5935098013611639,
+            "maxNdc": 0.8159918030826352,
+            "margin": 0.816,
+            "ratio": 1.0277902538679156,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.8176358948050686,
+            "maxNdc": 0.9599903493230912,
+            "margin": 0.96,
+            "ratio": 1.0326944160684612,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5253785467429097,
+            "maxNdc": 0.8159915907211603,
+            "margin": 0.816,
+            "ratio": 1.077102368157289,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7185587435710667,
+            "maxNdc": 0.9599900531002187,
+            "margin": 0.96,
+            "ratio": 1.0907086633528331,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4324869066080398,
+            "maxNdc": 0.8159912399250112,
+            "margin": 0.816,
+            "ratio": 1.1620919366434634,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.585103744503445,
+            "maxNdc": 0.9599895718827891,
+            "margin": 0.96,
+            "ratio": 1.1906963717874113,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5699673361487267,
+            "maxNdc": 0.8159918032247863,
+            "margin": 0.816,
+            "ratio": 1.0266592551686329,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7853461814472995,
+            "maxNdc": 0.9599903515363534,
+            "margin": 0.96,
+            "ratio": 1.0313638294403102,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.6086844098445978,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8424697714112084,
+            "maxNdc": 0.9599904000959993,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5190369938890701,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.718390302960651,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.6097082273626084,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8438868198790432,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              660
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5839123699090618,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8081832109467983,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.4979133953005614,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6891534883052755,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5848945204350604,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.809542588837454,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              390,
+              688
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 6.167008347909037e-11,
+        "viewport": [
+          390,
+          844
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5446361686209097,
+            "maxNdc": 0.8159915818929064,
+            "margin": 0.816,
+            "ratio": 1.0801416464317573,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.744590368837347,
+            "maxNdc": 0.9599900389354293,
+            "margin": 0.96,
+            "ratio": 1.0942842842813414,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.44732426567129835,
+            "maxNdc": 0.8159912190894328,
+            "margin": 0.816,
+            "ratio": 1.1684813942195162,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.6047600812742038,
+            "maxNdc": 0.9599895380049617,
+            "margin": 0.96,
+            "ratio": 1.1982133778102564,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5918436199368915,
+            "maxNdc": 0.815991804593768,
+            "margin": 0.816,
+            "ratio": 1.027710129787448,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.8153510160739943,
+            "maxNdc": 0.9599903483914652,
+            "margin": 0.96,
+            "ratio": 1.032600152353084,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5241748244549955,
+            "maxNdc": 0.8159915901165886,
+            "margin": 0.816,
+            "ratio": 1.0769129190053297,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7169309303947407,
+            "maxNdc": 0.9599900533194834,
+            "margin": 0.96,
+            "ratio": 1.090485782097747,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4315574355212216,
+            "maxNdc": 0.8159912405098714,
+            "margin": 0.816,
+            "ratio": 1.161693658840875,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5838716083419463,
+            "maxNdc": 0.959989571415257,
+            "margin": 0.96,
+            "ratio": 1.190227809497348,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.568602277640736,
+            "maxNdc": 0.815991806632624,
+            "margin": 0.816,
+            "ratio": 1.0265937505243294,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7834735672653395,
+            "maxNdc": 0.9599903491531235,
+            "margin": 0.96,
+            "ratio": 1.031286764944977,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.6069294669030553,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8400407846409068,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5175405200282435,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7163190588626207,
+            "maxNdc": 0.9599904000959989,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.6079503325772244,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8414537475117292,
+            "maxNdc": 0.9599904000959989,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              667
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5824776322652343,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8061974148999784,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.4966899667033647,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6874601615271484,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.583457369538142,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8075534526479475,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              393,
+              695
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 5.7985374013246234e-11,
+        "viewport": [
+          393,
+          852
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5400909472485085,
+            "maxNdc": 0.8159915831694354,
+            "margin": 0.816,
+            "ratio": 1.0794228835258517,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7384481618164074,
+            "maxNdc": 0.959990042326804,
+            "margin": 0.96,
+            "ratio": 1.0934386810971157,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4438278439997113,
+            "maxNdc": 0.815991221984832,
+            "margin": 0.816,
+            "ratio": 1.1669703427831601,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.600130177981313,
+            "maxNdc": 0.9599895449959777,
+            "margin": 0.96,
+            "ratio": 1.1964356712151099,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.586673979725256,
+            "maxNdc": 0.8159918022379797,
+            "margin": 0.816,
+            "ratio": 1.0274616070269036,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.8082614011539506,
+            "maxNdc": 0.9599903481144072,
+            "margin": 0.96,
+            "ratio": 1.0323077727217773,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5209486110607515,
+            "maxNdc": 0.8159915919006896,
+            "margin": 0.816,
+            "ratio": 1.0764054613600607,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7125676745836405,
+            "maxNdc": 0.959990056030624,
+            "margin": 0.96,
+            "ratio": 1.0898887731934097,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.42906507679365813,
+            "maxNdc": 0.8159912466778582,
+            "margin": 0.816,
+            "ratio": 1.160626833942555,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.580567202679519,
+            "maxNdc": 0.9599895780391107,
+            "margin": 0.96,
+            "ratio": 1.1889727214183559,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5649449888767981,
+            "maxNdc": 0.8159918048861284,
+            "margin": 0.816,
+            "ratio": 1.0264182896136522,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7784562676012015,
+            "maxNdc": 0.9599903506456067,
+            "margin": 0.96,
+            "ratio": 1.0310803404615154,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.6014861239952911,
+            "maxNdc": 0.8159918400815994,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8325067460142437,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.512898876027086,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7098946380997728,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.602497833874215,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8339070365041037,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              709
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5786345480497441,
+            "maxNdc": 0.8159918400815994,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8008782671968777,
+            "maxNdc": 0.9599904000959993,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.49341289430556845,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6829244211841778,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5796078211897129,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8022253580480456,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              414,
+              737
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 5.7152177990731456e-11,
+        "viewport": [
+          414,
+          896
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5362968061979386,
+            "maxNdc": 0.8159915844025722,
+            "margin": 0.816,
+            "ratio": 1.0788235690753494,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7333200662590598,
+            "maxNdc": 0.9599900441964964,
+            "margin": 0.96,
+            "ratio": 1.0927336053542414,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.44090659042128955,
+            "maxNdc": 0.8159912267596784,
+            "margin": 0.816,
+            "ratio": 1.1657104076401839,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5962609071283956,
+            "maxNdc": 0.9599895515787651,
+            "margin": 0.96,
+            "ratio": 1.1949533949698774,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5823616134756144,
+            "maxNdc": 0.8159918026343158,
+            "margin": 0.816,
+            "ratio": 1.027254385387315,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.8023470168462046,
+            "maxNdc": 0.9599903486369752,
+            "margin": 0.96,
+            "ratio": 1.0320639825613303,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5168440011084652,
+            "maxNdc": 0.8159915953187695,
+            "margin": 0.816,
+            "ratio": 1.0757604780263468,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7070156143845765,
+            "maxNdc": 0.9599900610161188,
+            "margin": 0.96,
+            "ratio": 1.089129969402088,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.425891602190847,
+            "maxNdc": 0.815991250792026,
+            "margin": 0.816,
+            "ratio": 1.1592708887180252,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5763587931498981,
+            "maxNdc": 0.9599895824915958,
+            "margin": 0.96,
+            "ratio": 1.1873774918727065,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5602947932289499,
+            "maxNdc": 0.8159918042881326,
+            "margin": 0.816,
+            "ratio": 1.026195277199967,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7720764312199224,
+            "maxNdc": 0.9599903543117481,
+            "margin": 0.96,
+            "ratio": 1.030817973058478,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5969473892939969,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8262247602685082,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5090286089768404,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.704537867095973,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5979514649440469,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8276144843516222,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              742
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.573749951886199,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.7941175804653277,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.48924770448292165,
+            "maxNdc": 0.815991840081599,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6771594525715181,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5747150090524387,
+            "maxNdc": 0.815991840081599,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.795453299726559,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              430,
+              772
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 5.52413048167139e-11,
+        "viewport": [
+          430,
+          932
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5346616858371376,
+            "maxNdc": 0.8159915849047923,
+            "margin": 0.816,
+            "ratio": 1.0785654783509784,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7311098285486357,
+            "maxNdc": 0.9599900485033737,
+            "margin": 0.96,
+            "ratio": 1.092429969583138,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.43964691746371076,
+            "maxNdc": 0.8159912300738386,
+            "margin": 0.816,
+            "ratio": 1.1651678253290685,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5945921603358731,
+            "maxNdc": 0.959989556190887,
+            "margin": 0.96,
+            "ratio": 1.1943150630679187,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5805040046827539,
+            "maxNdc": 0.8159918040629021,
+            "margin": 0.816,
+            "ratio": 1.0271651468293745,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7997991984548924,
+            "maxNdc": 0.9599903506393077,
+            "margin": 0.96,
+            "ratio": 1.031958996034094,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5155972792890062,
+            "maxNdc": 0.815991595008463,
+            "margin": 0.816,
+            "ratio": 1.0755647144884988,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7053290663963475,
+            "maxNdc": 0.9599900620910681,
+            "margin": 0.96,
+            "ratio": 1.0888996595031784,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4249271409230827,
+            "maxNdc": 0.8159912512257258,
+            "margin": 0.816,
+            "ratio": 1.1588593361184332,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5750795882886074,
+            "maxNdc": 0.959989585611418,
+            "margin": 0.96,
+            "ratio": 1.1868933129145194,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5588829966453128,
+            "maxNdc": 0.8159918074249319,
+            "margin": 0.816,
+            "ratio": 1.0261275892456252,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7701394120080665,
+            "maxNdc": 0.9599903497163452,
+            "margin": 0.96,
+            "ratio": 1.030738339906017,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5949928138442055,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8235194655283123,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5073619046069222,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7022310098365705,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5959936018651435,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8249046392597144,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5722673938709892,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.7920655970532726,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.48798349852818557,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6754096865442015,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.573229957349461,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7933978648435447,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 6.708044269308016e-11,
+        "viewport": [
+          480,
+          1024
+        ]
+      },
+      {
+        "results": [
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5346616858371376,
+            "maxNdc": 0.8159915849047923,
+            "margin": 0.816,
+            "ratio": 1.0785654783509784,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7311098285486357,
+            "maxNdc": 0.9599900485033737,
+            "margin": 0.96,
+            "ratio": 1.092429969583138,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.43964691746371076,
+            "maxNdc": 0.8159912300738386,
+            "margin": 0.816,
+            "ratio": 1.1651678253290685,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5945921603358731,
+            "maxNdc": 0.959989556190887,
+            "margin": 0.96,
+            "ratio": 1.1943150630679187,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5805040046827539,
+            "maxNdc": 0.8159918040629021,
+            "margin": 0.816,
+            "ratio": 1.0271651468293745,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7997991984548924,
+            "maxNdc": 0.9599903506393077,
+            "margin": 0.96,
+            "ratio": 1.031958996034094,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.5155972792890062,
+            "maxNdc": 0.815991595008463,
+            "margin": 0.816,
+            "ratio": 1.0755647144884988,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 74,
+            "fov": 22,
+            "coverage": 0.7053290663963475,
+            "maxNdc": 0.9599900620910681,
+            "margin": 0.96,
+            "ratio": 1.0888996595031784,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 9
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.4249271409230827,
+            "maxNdc": 0.8159912512257258,
+            "margin": 0.816,
+            "ratio": 1.1588593361184332,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": 24,
+            "coverage": 0.5750795882886074,
+            "maxNdc": 0.959989585611418,
+            "margin": 0.96,
+            "ratio": 1.1868933129145194,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.5588829966453128,
+            "maxNdc": 0.8159918074249319,
+            "margin": 0.816,
+            "ratio": 1.0261275892456252,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "royal",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": 24,
+            "coverage": 0.7701394120080665,
+            "maxNdc": 0.9599903497163452,
+            "margin": 0.96,
+            "ratio": 1.030738339906017,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5949928138442055,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.8235194655283123,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.5073619046069222,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.7022310098365705,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.5959936018651435,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": false,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.8249046392597144,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              831
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 85,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.5722673938709892,
+            "maxNdc": 0.8159918400815992,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "auto",
+            "zoom": 100,
+            "pitch": 84,
+            "fov": null,
+            "coverage": 0.7920655970532726,
+            "maxNdc": 0.9599904000959991,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 4
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 85,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.48798349852818557,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "min",
+            "zoom": 100,
+            "pitch": 58,
+            "fov": null,
+            "coverage": 0.6754096865442015,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 85,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.573229957349461,
+            "maxNdc": 0.8159918400815991,
+            "margin": 0.816,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          },
+          {
+            "mode": "tactical",
+            "compact": true,
+            "setting": "max",
+            "zoom": 100,
+            "pitch": 85,
+            "fov": null,
+            "coverage": 0.7933978648435447,
+            "maxNdc": 0.959990400095999,
+            "margin": 0.96,
+            "ratio": 1,
+            "canvas": [
+              480,
+              864
+            ],
+            "candidates": 1
+          }
+        ],
+        "checks": 600,
+        "maxErr": 6.708044269308016e-11,
+        "viewport": [
+          768,
+          1024
+        ]
+      }
+    ],
+    "totalPicks": 6000,
+    "maxCssError": 6.708044269308016e-11,
+    "transitions": 200,
+    "inspectionNoRuneSpend": true,
+    "openingPausedAndSkippable": true,
+    "occlusion": {
+      "counts": [
+        1,
+        0,
+        0
+      ],
+      "units": 72,
+      "checks": 1078,
+      "marks": 0
+    },
+    "final": {
+      "shot": true,
+      "restored": true,
+      "error": 0
+    },
+    "errors": [],
+    "warnings": []
+  },
+  "simulation": {
+    "test": "51 complete deterministic simulated matches; not playtesting",
+    "results": [
+      {
+        "difficulty": "easy",
+        "seedIndex": 0,
+        "done": true,
+        "result": 1,
+        "seconds": 69,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 24
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 1,
+        "done": true,
+        "result": 1,
+        "seconds": 68,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 9,
+        "casts": 25
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 2,
+        "done": true,
+        "result": 1,
+        "seconds": 62,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 23
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 3,
+        "done": true,
+        "result": 1,
+        "seconds": 87,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 30
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 4,
+        "done": true,
+        "result": 1,
+        "seconds": 79,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 27
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 5,
+        "done": true,
+        "result": 1,
+        "seconds": 81,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 28
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 6,
+        "done": true,
+        "result": 1,
+        "seconds": 73,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 9,
+        "casts": 26
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 7,
+        "done": true,
+        "result": 1,
+        "seconds": 101,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          3,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 36
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 8,
+        "done": true,
+        "result": 1,
+        "seconds": 70,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 26
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 9,
+        "done": true,
+        "result": 1,
+        "seconds": 68,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 25
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 10,
+        "done": true,
+        "result": 1,
+        "seconds": 73,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 27
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 11,
+        "done": true,
+        "result": 1,
+        "seconds": 75,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 27
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 12,
+        "done": true,
+        "result": 1,
+        "seconds": 97,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          3,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 35
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 13,
+        "done": true,
+        "result": 1,
+        "seconds": 76,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 27
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 14,
+        "done": true,
+        "result": 1,
+        "seconds": 95,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 34
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 15,
+        "done": true,
+        "result": 1,
+        "seconds": 78,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 27
+      },
+      {
+        "difficulty": "easy",
+        "seedIndex": 16,
+        "done": true,
+        "result": 1,
+        "seconds": 53,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 19
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 0,
+        "done": true,
+        "result": 1,
+        "seconds": 79,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 28
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 1,
+        "done": true,
+        "result": 1,
+        "seconds": 101,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 37
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 2,
+        "done": true,
+        "result": 1,
+        "seconds": 161,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 60
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 3,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          68,
+          45
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 14,
+        "casts": 65
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 4,
+        "done": true,
+        "result": 1,
+        "seconds": 84,
+        "core": [
+          93,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 16,
+        "casts": 32
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 5,
+        "done": true,
+        "result": -1,
+        "seconds": 180,
+        "core": [
+          39,
+          98
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 69
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 6,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          97
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 68
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 7,
+        "done": true,
+        "result": 1,
+        "seconds": 138,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          3,
+          0
+        ],
+        "maxUnits": 10,
+        "casts": 50
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 8,
+        "done": true,
+        "result": 1,
+        "seconds": 128,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 9,
+        "casts": 47
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 9,
+        "done": true,
+        "result": 1,
+        "seconds": 166,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 60
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 10,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          70,
+          57
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 66
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 11,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          37
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 67
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 12,
+        "done": true,
+        "result": 0,
+        "seconds": 180,
+        "core": [
+          100,
+          100
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 14,
+        "casts": 65
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 13,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          49
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 14,
+        "casts": 66
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 14,
+        "done": true,
+        "result": -1,
+        "seconds": 180,
+        "core": [
+          70,
+          86
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 15,
+        "casts": 66
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 15,
+        "done": true,
+        "result": 1,
+        "seconds": 108,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 38
+      },
+      {
+        "difficulty": "normal",
+        "seedIndex": 16,
+        "done": true,
+        "result": 1,
+        "seconds": 78,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 28
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 0,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          15
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 14,
+        "casts": 66
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 1,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          70
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 66
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 2,
+        "done": true,
+        "result": 1,
+        "seconds": 129,
+        "core": [
+          100,
+          0
+        ],
+        "awards": [
+          2,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 47
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 3,
+        "done": true,
+        "result": -1,
+        "seconds": 98,
+        "core": [
+          0,
+          96
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 15,
+        "casts": 36
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 4,
+        "done": true,
+        "result": -1,
+        "seconds": 116,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 17,
+        "casts": 43
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 5,
+        "done": true,
+        "result": -1,
+        "seconds": 130,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          2
+        ],
+        "maxUnits": 14,
+        "casts": 49
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 6,
+        "done": true,
+        "result": -1,
+        "seconds": 129,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          3
+        ],
+        "maxUnits": 14,
+        "casts": 47
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 7,
+        "done": true,
+        "result": -1,
+        "seconds": 180,
+        "core": [
+          50,
+          93
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 17,
+        "casts": 64
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 8,
+        "done": true,
+        "result": -1,
+        "seconds": 180,
+        "core": [
+          41,
+          84
+        ],
+        "awards": [
+          0,
+          1
+        ],
+        "maxUnits": 17,
+        "casts": 69
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 9,
+        "done": true,
+        "result": -1,
+        "seconds": 180,
+        "core": [
+          66,
+          79
+        ],
+        "awards": [
+          1,
+          0
+        ],
+        "maxUnits": 15,
+        "casts": 65
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 10,
+        "done": true,
+        "result": -1,
+        "seconds": 100,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          1
+        ],
+        "maxUnits": 14,
+        "casts": 37
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 11,
+        "done": true,
+        "result": -1,
+        "seconds": 110,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 11,
+        "casts": 40
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 12,
+        "done": true,
+        "result": -1,
+        "seconds": 136,
+        "core": [
+          0,
+          100
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 15,
+        "casts": 49
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 13,
+        "done": true,
+        "result": -1,
+        "seconds": 76,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          1
+        ],
+        "maxUnits": 16,
+        "casts": 29
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 14,
+        "done": true,
+        "result": -1,
+        "seconds": 90,
+        "core": [
+          0,
+          98
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 16,
+        "casts": 33
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 15,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          67
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 12,
+        "casts": 64
+      },
+      {
+        "difficulty": "hard",
+        "seedIndex": 16,
+        "done": true,
+        "result": 1,
+        "seconds": 180,
+        "core": [
+          100,
+          44
+        ],
+        "awards": [
+          0,
+          0
+        ],
+        "maxUnits": 13,
+        "casts": 65
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 'use strict';
-// Crystal Dominion 3.8 — WebGL renderer (Three.js r128), Royal Citadels camera.
+// Crystal Dominion 3.9 — WebGL renderer (Three.js r128), Royal Citadels camera.
 // Public contract: V.ok, V.prepare(), V.begin(G), V.frame(G), V.pick(event), V.project(x, z, y),
 // V.preview(point, card, valid), V.stop(), V.stats().
 // The renderer only reads the simulation (game.js); it never changes positions, HP or balance.
@@ -43,7 +43,9 @@ const V = (() => {
     if (R.info) R.info.autoReset = false;             // so the counter includes the shadow pass
 
     /* ------------------------------------------------------------ scene */
-    const sc = new T.Scene(), cam = new T.PerspectiveCamera(22, W / H, 1, 3000), ray = new T.Raycaster();
+    const sc = new T.Scene(), perspective = new T.PerspectiveCamera(22, W / H, 1, 3000), ray = new T.Raycaster();
+    const orthographic = new T.OrthographicCamera(-180,180,280,-280,1,3000), shotPerspective = new T.PerspectiveCamera(), shotOrtho = new T.OrthographicCamera();
+    let cam=perspective, baseCamera=perspective;
     const groundPlane = new T.Plane(new T.Vector3(0, 1, 0), 0);
     sc.background = A.lin('#22192e');
     const env = ArenaEnvironment3D.build(sc);
@@ -97,6 +99,8 @@ const V = (() => {
     /* ------------------------------------------------------------ camera */
     const fitPoints = [], towerFitPoints = [], camBase = new T.Vector3(), camBaseQ = new T.Quaternion();
     let camBaseFov = 22, cameraPitch = 60, cameraDistance = 0, cameraMargin = .978, fitCount = 0, cinematicShot = false;
+    const camTarget = new T.Vector3(180,17,280), fitOffset = new T.Vector2(), occluders=[];
+    let cameraHalfHeight=0, fitMaxNdc=0, fieldCoverage=0;
     function bounds(x, y, z, hw, h, hd) { for (const dx of [-hw, hw]) for (const dz of [-hd, hd]) for (const dy of [0, h]) fitPoints.push(new T.Vector3(x + dx, y + dy, z + dz)); }
     bounds(180, 0, 280, 180, 0, 280);
     for (const z of [52, 508]) bounds(180, 0, z, 42, 122, 42);
@@ -106,8 +110,11 @@ const V = (() => {
     for (const x of [0, 360]) for (const z of [-8, 568]) bounds(x, 0, z, 0, 42, 0);
     let lastSize = '';
     function refreshTowerBounds() {
-      towerFitPoints.length=0;
+      towerFitPoints.length=0;occluders.length=0;
       for(const o of towers){
+        // Conservative inner opaque masonry box, not the crystal, flags or transparent halo.
+        const h=o.t.rad*.78;
+        occluders.push({t:o.t,box:new T.Box3(new T.Vector3(o.t.x-h,1,o.t.y-h),new T.Vector3(o.t.x+h,o.t.king?60:27,o.t.y+h))});
         const b=o.fitBounds;
         if(b)for(const dx of [-b.half,b.half])for(const dz of [-b.half,b.half])for(const y of [0,b.height])towerFitPoints.push(new T.Vector3(o.t.x+dx,y,o.t.y+dz));
         // The static mesh bounding box is measured once at battle start, with a conservative
@@ -117,33 +124,72 @@ const V = (() => {
           for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])towerFitPoints.push(new T.Vector3(x,y,z));
       }
     }
-    function fit() {
-      const w = cv.clientWidth || 360, h = cv.clientHeight || 560;
-      if (w < 1 || h < 1) return;
-      lastSize = w + 'x' + h;
-      R.setSize(w, h, false);
-      cam.aspect = w / h;
-      const settings = window.CDCamera38?.view(cam.aspect) || {pitch:Math.max(58,Math.min(64,58+(0.75-w/h)*24)),fov:22,margin:.978};
-      cameraPitch=settings.pitch;cameraMargin=settings.margin;cam.fov=settings.fov;cam.far=3000;
-      const a=cameraPitch*Math.PI/180,target=new T.Vector3(180,17,280),points=fitPoints.concat(towerFitPoints), projected=new T.Vector3();
-      const put=d=>{cam.position.set(180,target.y+Math.sin(a)*d,target.z+Math.cos(a)*d);cam.lookAt(target);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);};
-      const fits=()=>points.every(p=>{const v=projected.copy(p).project(cam);return Math.abs(v.x)<cameraMargin&&Math.abs(v.y)<cameraMargin&&v.z<1&&v.z>-1;});
-      let lo=160,hi=2700;put(hi);
-      while(!fits()&&hi<12000){hi*=1.5;cam.far=Math.max(3000,hi+1000);put(hi);}
-      for(let i=0;i<25;i++){const d=(lo+hi)/2;put(d);if(fits())hi=d;else lo=d;}
-      put(hi);cameraDistance=hi;camBase.copy(cam.position);camBaseQ.copy(cam.quaternion);camBaseFov=cam.fov;fitCount++;wake();
+    // Pure interval solver; auto evaluates candidate tilts/FOV only at layout changes.
+    let inspection=null, introAt=0, actualRatio=1, fitCandidates=0;
+    function solveFit(points,aspect,pitch,fov,margin,ortho,legacy){
+      const a=pitch*Math.PI/180, upY=Math.cos(a),upZ=-Math.sin(a),backY=Math.sin(a),backZ=Math.cos(a);
+      const coords=points.map(p=>({x:p.x-180,y:(p.y-17)*upY+(p.z-280)*upZ,z:(p.y-17)*backY+(p.z-280)*backZ}));
+      const tangent=Math.tan(fov*Math.PI/360);let d=1000,sx=0,sy=0,hh=0;
+      if(ortho){const xs=coords.map(p=>p.x),ys=coords.map(p=>p.y);const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);sx=(minX+maxX)/2;sy=(minY+maxY)/2;hh=Math.max((maxY-minY)/2,(maxX-minX)/2/aspect)/margin*1.00001;}
+      else {function interval(d){let x0=-Infinity,x1=Infinity,y0=-Infinity,y1=Infinity;for(const p of coords){const depth=d-p.z;if(depth<=2)return null;const hy=depth*tangent*margin,hx=hy*aspect;x0=Math.max(x0,p.x-hx);x1=Math.min(x1,p.x+hx);y0=Math.max(y0,p.y-hy);y1=Math.min(y1,p.y+hy);}if(legacy)return x0<=0&&x1>=0&&y0<=0&&y1>=0?[0,0]:null;return x0<=x1&&y0<=y1?[(x0+x1)/2,(y0+y1)/2]:null;}
+        let lo=160,hi=2700;while(!interval(hi)&&hi<100000)hi*=2;for(let i=0;i<28;i++){const m=(lo+hi)/2;if(interval(m))hi=m;else lo=m;}d=hi*1.00001;[sx,sy]=interval(d)||[0,0];}
+      const corners=[[0,0],[360,0],[360,560],[0,560]].map(([x,z])=>{const yy=-17*upY+(z-280)*upZ,zz=-17*backY+(z-280)*backZ,hy=ortho?hh:(d-zz)*tangent;return [(x-180-sx)/(hy*aspect),(yy-sy)/hy];});let area=0;for(let i=0;i<4;i++){const p=corners[i],q=corners[(i+1)%4];area+=p[0]*q[1]-q[0]*p[1];}
+      const ratio=ortho?1:(d+17*backY+280*backZ)/(d+17*backY-280*backZ);
+      return {pitch,fov,d,sx,sy,hh,upY,upZ,backY,backZ,coverage:Math.abs(area)/8,ratio};
     }
-    function restoreCamera(){cam.position.copy(camBase);cam.quaternion.copy(camBaseQ);if(cam.fov!==camBaseFov){cam.fov=camBaseFov;cam.updateProjectionMatrix();}cam.updateMatrixWorld(true);}
+    function fit() {
+      const w=cv.clientWidth,h=cv.clientHeight;if(w<1||h<1)return;
+      lastSize=w+'x'+h;R.setSize(w,h,false);
+      const aspect=w/h, settings=window.CDCamera38?.view(aspect)||{pitch:60,fov:22,margin:.945},points=(settings.legacy?fitPoints:fitPoints.slice(0,64)).concat(towerFitPoints);
+      cameraMargin=settings.margin;
+      const pitches=settings.automatic?(settings.orthographic?[80,82,84,85]:[70,72,74]):[settings.pitch],fovs=settings.automatic&&!settings.orthographic?[22,24,26]:[settings.fov];
+      let best=null,bestScore=-Infinity;fitCandidates=0;
+      for(const p of pitches)for(const f of fovs){const a=solveFit(points,aspect,p,f,settings.margin,!!settings.orthographic,settings.legacy);fitCandidates++;const score=a.coverage-.32*(a.ratio-1)-.003*Math.abs(p-settings.pitch);if(score>bestScore){bestScore=score;best=a;}}
+      const {pitch,fov,d,sx,sy,hh,upY,upZ,backY,backZ}=best;cameraPitch=pitch;camBaseFov=fov;cameraHalfHeight=hh;actualRatio=best.ratio;
+      cam=settings.orthographic?orthographic:perspective;baseCamera=cam;
+      if(settings.orthographic){cam.left=-hh*aspect;cam.right=hh*aspect;cam.top=hh;cam.bottom=-hh;}else{cam.aspect=aspect;cam.fov=fov;}
+      fitOffset.set(sx,sy);camTarget.set(180+sx,17+sy*upY,280+sy*upZ);cam.position.set(camTarget.x,camTarget.y+backY*d,camTarget.z+backZ*d);cam.lookAt(camTarget);
+      cam.near=1;cam.far=Math.max(3000,d+1000);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);camBase.copy(cam.position);camBaseQ.copy(cam.quaternion);cameraDistance=d;
+      const v=new T.Vector3();fitMaxNdc=0;for(const p of points){v.copy(p).project(cam);fitMaxNdc=Math.max(fitMaxNdc,Math.abs(v.x),Math.abs(v.y));}
+      fieldCoverage=best.coverage;fitCount++;wake();
+    }
+    function restoreCamera(){cam=baseCamera;cam.position.copy(camBase);cam.quaternion.copy(camBaseQ);cam.updateMatrixWorld(true);}
     function refitCamera(){if(on&&cv.clientWidth&&cv.clientHeight)fit();}
-    function cameraStats(){return {available:true,pitch:cameraPitch,fov:camBaseFov,distance:cameraDistance,margin:cameraMargin,fitCount,cinematicShot,points:fitPoints.length+towerFitPoints.length,canvas:[cv.clientWidth,cv.clientHeight],settings:window.CDCamera38?.settings()};}
-    // No camera motion during a live match. During the already-existing finish window only,
-    // use a real 3D closer view of the falling or winning core. The base pose is restored.
+    function cameraStats(){return {available:true,pitch:cameraPitch,fov:baseCamera.isOrthographicCamera?null:camBaseFov,projection:baseCamera.isOrthographicCamera?'orthographic':'perspective',distance:cameraDistance,halfHeight:cameraHalfHeight,offset:fitOffset.toArray(),margin:cameraMargin,maxNdc:fitMaxNdc,fieldCoverage,perspectiveRatio:actualRatio,fitCandidates,occlusionChecks,inspecting:!!inspection,intro:!!introAt,markers:visionMarks.size,fitCount,cinematicShot,points:fitPoints.length+towerFitPoints.length,canvas:[cv.clientWidth,cv.clientHeight],settings:window.CDCamera38?.settings()};}
+    function inspectCamera(state,opts){
+      if(!on||!state?.paused||state.done||window.CDCamera38?.legacy)return false;
+      inspection={yaw:Math.max(-180,Math.min(180,Number(opts?.yaw)||0)),pitch:Math.max(35,Math.min(85,Number(opts?.pitch)||60)),zoom:Math.max(85,Math.min(150,Number(opts?.zoom)||100)),focus:['arena','own','enemy','shrine'].includes(opts?.focus)?opts.focus:'arena'};wake();return true;
+    }
+    function closeInspection(){inspection=null;restoreCamera();wake();}
+    function openingCamera(state,now){
+      if(!introAt||!state.paused||state.done||!window.CDCamera38?.introAllowed()){introAt=0;return false;}
+      const k=clamp01((now-introAt)/1400);if(k>=1){introAt=0;return false;}
+      // Starts at an elevated angled overview and eases to the EXACT base pose.
+      const e=1-k*k*(3-2*k);cam=baseCamera.isOrthographicCamera?shotOrtho:shotPerspective;cam.copy(baseCamera,false);
+      cam.position.set(camBase.x+180*e,camBase.y-120*e,camBase.z+130*e);cam.lookAt(camTarget);
+      cam.updateProjectionMatrix();cam.updateMatrixWorld(true);return true;
+    }
+    function showInspection(state){
+      if(!inspection||!state.paused||state.done){inspection=null;return false;}
+      const a=inspection.pitch*Math.PI/180,b=inspection.yaw*Math.PI/180;
+      const target=inspection.focus==='own'?new T.Vector3(180,40,508):inspection.focus==='enemy'?new T.Vector3(180,40,52):inspection.focus==='shrine'?new T.Vector3(180,10,280):camTarget;
+      cam=shotPerspective;cam.aspect=baseCamera.isOrthographicCamera?cv.clientWidth/cv.clientHeight:baseCamera.aspect;cam.fov=30;cam.near=1;cam.far=5000;
+      const d=(inspection.focus==='arena'?Math.max(850,baseCamera.isOrthographicCamera?cameraHalfHeight/Math.tan(Math.PI/12):cameraDistance):380)*100/inspection.zoom;
+      cam.position.set(target.x+Math.sin(b)*Math.cos(a)*d,target.y+Math.sin(a)*d,target.z+Math.cos(b)*Math.cos(a)*d);cam.lookAt(target);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);return true;
+    }
+    function beginIntro(state){if(!on||!state?.paused||state.done||!window.CDCamera38?.introAllowed())return false;introAt=performance.now();wake();return true;}
+    function endIntro(){introAt=0;restoreCamera();wake();}
+    // Separate cinematic camera with a smooth in/out envelope. Gameplay projection is never modified.
     function finishCamera(state){
       if(!state.done||!window.CDCamera38?.cinemaAllowed()||state.finishAge<.08||state.finishAge>=1.08)return false;
       const target=state.tw.find(t=>t.king&&t.hp<=0)||state.tw.find(t=>t.king&&t.team===(state.result>0?0:1));if(!target||!state.result)return false;
-      const k=clamp01((state.finishAge-.08)/.66),s=k*k*(3-2*k),focus=new T.Vector3(180,17,280).lerp(new T.Vector3(target.x,38,target.y),s*.85);
-      const near=new T.Vector3(target.x+70,174,target.y+210);
-      cam.position.copy(camBase).lerp(near,s*.86);cam.fov=camBaseFov+(36-camBaseFov)*s;cam.lookAt(focus);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);return true;
+      const k=clamp01((state.finishAge-.08)/1),ease=Math.sin(Math.PI*k)**2;
+      const focus=camTarget.clone().lerp(new T.Vector3(target.x,38,target.y),ease*.82);
+      cam=baseCamera.isOrthographicCamera?shotOrtho:shotPerspective;cam.copy(baseCamera,false);
+      cam.position.copy(camBase).lerp(new T.Vector3(target.x+55,205,target.y+215),ease*.72);cam.lookAt(focus);
+      if(cam.isOrthographicCamera){const f=1-ease*.39;cam.left*=f;cam.right*=f;cam.top*=f;cam.bottom*=f;}
+      else cam.fov=camBaseFov+(34-camBaseFov)*ease;
+      cam.updateProjectionMatrix();cam.updateMatrixWorld(true);return true;
     }
     addEventListener('resize', () => { if (on && cv.clientHeight) fit(); });
     if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => { if (on && cv.clientHeight && lastSize !== cv.clientWidth + 'x' + cv.clientHeight) fit(); }).observe(cv);
@@ -217,7 +263,25 @@ const V = (() => {
     const beams = batch(geo.box, new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }), 110, 21);
     const barBack = batch(geo.plane, new T.MeshBasicMaterial({ color: A.lin('#1c1425'), transparent: true, opacity: .92, depthTest: false, depthWrite: false, toneMapped: false }), 110, 40);
     const barFill = batch(geo.plane, new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }), 110, 41);
-    const batches = [blobs, rings, flats, waves, runes, glows, beams, barBack, barFill];
+    const visionTex=A.texture(64,64,g=>{g.clearRect(0,0,64,64);g.beginPath();g.moveTo(32,5);g.lineTo(59,32);g.lineTo(32,59);g.lineTo(5,32);g.closePath();g.fillStyle='#11121fe8';g.fill();g.strokeStyle='#ffffff';g.lineWidth=5;g.stroke();g.beginPath();g.arc(32,32,7,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();});
+    const visionMarks=batch(geo.plane,new T.MeshBasicMaterial({map:visionTex,transparent:true,depthTest:false,depthWrite:false,toneMapped:false}),72,39);
+    const batches = [blobs, rings, flats, waves, runes, glows, beams, barBack, barFill, visionMarks];
+    const visionRay=new T.Ray(),visionPoint=new T.Vector3(),visionHit=new T.Vector3(),visionDir=new T.Vector3();
+    let occlusionChecks=0;
+    function markHidden(u,o,x,z){
+      if(!window.CDCamera38?.markersAllowed()||cinematicShot||u.hp<=0)return;
+      let hits=0;
+      for(const fraction of [.20,.45,.70]){
+        visionPoint.set(x,Math.max(3,o.height*fraction),z);
+        let limit=Infinity;if(baseCamera.isOrthographicCamera){baseCamera.getWorldDirection(visionDir).negate();limit=visionDir.dot(camBase)-visionDir.dot(visionPoint);}else{visionDir.copy(camBase).sub(visionPoint);limit=visionDir.length();visionDir.normalize();}
+        visionRay.set(visionPoint,visionDir);
+        for(const b of occluders){if(b.t.hp<=0)continue;occlusionChecks++;if(visionRay.intersectBox(b.box,visionHit)){const d=visionHit.distanceTo(visionPoint);if(d>.1&&d<limit-.1){hits++;break;}}}
+      }
+      if(hits<2)return;
+      const pY=Math.max(5,o.height*.55);visionPoint.set(x,pY,z);
+      const height=baseCamera.isOrthographicCamera?2*cameraHalfHeight:2*Math.max(1,visionDir.copy(camBase).sub(visionPoint).dot(visionHit.set(0,0,1).applyQuaternion(camBaseQ)))*Math.tan(camBaseFov*Math.PI/360);
+      const size=Math.max(8,Math.min(28,height*15/Math.max(1,cv.clientHeight)));billboard(visionMarks,x,pY,z,size,size,u.bonus?GOLD:TEAM_LIGHT[u.team]);
+    }
 
     // Writers for the three quad orientations.
     function ground(b, x, z, sx, sz, color, spin = 0, y = .3) {
@@ -554,7 +618,7 @@ const V = (() => {
       seenFx = new WeakSet(); evi = 0; finalMode = false; shake = 0; pausedFrames = 0;
       slowSeconds = fastSeconds = 0; frames = 0; elapsed = 0; work = 0; fps = 0; peakCalls = 0; peakTriangles = 0;
       on = true; last = performance.now();
-      window.CDCamera38?.enter(state);refreshTowerBounds();cinematicShot=false;fit();
+      inspection=null;introAt=0;window.CDCamera38?.enter(state);refreshTowerBounds();cinematicShot=false;fit();
       R.shadowMap.needsUpdate = true;
     }
     const unitOpts = () => ({ shadows: q.unitShadows && !shadowReduced });
@@ -564,20 +628,20 @@ const V = (() => {
       last = start;
       // Behind the pause menu nothing moves: draw a couple of frames for the overlay, then rest the GPU.
       // (A pause set without the menu, as in the test scripts, keeps the visuals alive.)
-      const frozen = !!(state.paused && state.menu);
-      if (frozen && !dirty && pausedFrames > 2) return;
+      const frozen = !!(state.paused && state.menu && !state.done);
+      if (frozen && !dirty && pausedFrames > 2 && !introAt) return;
       pausedFrames = frozen ? pausedFrames + 1 : 0;
       dirty = false;
       const gameDt = frozen ? 0 : dt, alpha = Number.isFinite(state.alpha) ? state.alpha : 1;
       if (lastSize !== cv.clientWidth + 'x' + cv.clientHeight && cv.clientHeight) fit();
-      cinematicShot=finishCamera(state);camQ.copy(cam.quaternion);
+      cinematicShot=showInspection(state)||openingCamera(state,start)||finishCamera(state);camQ.copy(cam.quaternion);
       window.CDCitadel38?.readFrame(state);env.update(time, state);
       const card = state.sel >= 0 && CARDS[state.hand[state.sel]];
       zone.visible = !!card && !card.sp && !state.done;
       if (zone.visible) zone.material.opacity = .07 + .035 * Math.sin(time * 4);
       if (!card || state.done) aim.visible = false;
       else if (aim.visible) aim.scale.setScalar(aimSize * (1 + .06 * Math.sin(time * 7)));
-      for (const b of batches) b.reset();
+      for (const b of batches) b.reset();occlusionChecks=0;
 
       // Units: interpolate between simulation steps, then draw ring, contact shadow and health bar.
       const live = new Set(state.u);
@@ -596,6 +660,7 @@ const V = (() => {
         ground(blobs, x, z, s * 2.5, s * 2.1, WHITE, 0, .1);
         const ringColor = u.bonus ? GOLD : TEAM[u.team], pulse = u.attacking ? 1.25 : 1;
         ground(rings, x, z, s * 2.3, s * 2.3, scaled(ringColor, .95 * pulse), 0, .19);
+        if(!state.done)markHidden(u,o,x,z);
         if (u.hp < u.max && u.hp > 0) {
           const w = u.big || u.bonus ? 24 : 19, ratio = Math.max(0, u.hp / u.max), y = o.height;
           billboard(barBack, x, y, z, w + 2.4, 4.6, WHITE);
@@ -634,14 +699,14 @@ const V = (() => {
 
       // Camera shake (never applied to picking: the camera is restored right after rendering).
       let shaken = false;
-      if (shake > 0 && !frozen && !cinematicShot && (window.CDCamera38?.shakeAllowed() ?? true)) {
+      if (shake > 0 && !frozen && !cinematicShot && state.sel<0 && (window.CDCamera38?.shakeAllowed() ?? true)) {
         shakeT += dt;
         const s = shake * shake * 2.3;
         cam.position.set(camBase.x + Math.sin(shakeT * 61) * s, camBase.y + Math.sin(shakeT * 47 + 1) * s * .6, camBase.z + Math.cos(shakeT * 53) * s);
         cam.updateMatrixWorld();
         shake = Math.max(0, shake - dt * 2.4);
         shaken = true;
-      }
+      } else if(state.sel>=0) shake=0;
       if (R.info && R.info.reset) R.info.reset();
       try { R.render(sc, cam); } finally { if (shaken || cinematicShot) restoreCamera(); }
 
@@ -665,23 +730,24 @@ const V = (() => {
       let next = dpr;
       if (slowSeconds >= 3 && dpr > 1) next = Math.max(1, dpr - .25);
       else if (fastSeconds >= 12 && dpr < maxDpr()) next = Math.min(maxDpr(), dpr + .25);
-      if (next !== dpr) { dpr = next; R.setPixelRatio(dpr); fit(); slowSeconds = fastSeconds = 0; return; }
+      if (next !== dpr) { dpr = next; R.setPixelRatio(dpr); R.setSize(cv.clientWidth,cv.clientHeight,false); slowSeconds = fastSeconds = 0; return; }
       if (slowSeconds >= 5 && dpr <= 1 && !shadowReduced && R.shadowMap.enabled) { shadowReduced = true; R.shadowMap.enabled = false; slowSeconds = fastSeconds = 0; }
       else if (fastSeconds >= 15 && shadowReduced) { shadowReduced = false; R.shadowMap.enabled = true; R.shadowMap.needsUpdate = true; slowSeconds = fastSeconds = 0; }
     }
 
     function pick(e) {
+      if(inspection||introAt)return null;
       const r = cv.getBoundingClientRect();
       if (!r.width || !r.height) return null;
       const p = new T.Vector3();
-      ray.setFromCamera(new T.Vector2((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), cam);
+      ray.setFromCamera(new T.Vector2((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), baseCamera);
       return ray.ray.intersectPlane(groundPlane, p) ? { x: p.x, y: p.z } : null;
     }
     function project(x, z, y = 0) {
-      const r = cv.getBoundingClientRect(), v = new T.Vector3(x, y, z).project(cam);
+      const r = cv.getBoundingClientRect(), v = new T.Vector3(x, y, z).project(baseCamera);
       return { clientX: r.left + (v.x + 1) * r.width / 2, clientY: r.top + (1 - v.y) * r.height / 2, ndcX: v.x, ndcY: v.y, ndcZ: v.z };
     }
-    function stop() { on = false; clearBattle(); towerFitPoints.length=0;cinematicShot=false;window.CDCamera38?.leave(); }
+    function stop() { inspection=null;introAt=0;on = false; clearBattle(); towerFitPoints.length=0;occluders.length=0;cinematicShot=false;window.CDCamera38?.leave(); }
     function stats() {
       return {
         quality, adaptive, dpr, shadowReduced, shadowMode: !R.shadowMap.enabled ? 'off' : R.shadowMap.autoUpdate ? 'dynamic' : 'static',
@@ -696,7 +762,7 @@ const V = (() => {
       if (!loading) loading = Promise.all([ArenaHDModels.preload(), ArenaCharacterModels.preload()]).then(() => { loaded = true; }).catch(e => { loading = null; throw e; });
       return loading;
     }
-    return { ok: true, prepare, begin, frame, pick, project, preview, stop, stats, refitCamera, cameraStats };
+    return { ok: true, prepare, begin, frame, pick, project, preview, stop, stats, refitCamera, cameraStats, inspectCamera, closeInspection, beginIntro, endIntro };
   } catch (error) {
     console.error('Crystal Dominion renderer:', error);
     return { ok: false, error: String(error) };

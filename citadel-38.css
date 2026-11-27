@@ -13,3 +13,25 @@
 #pausemenu>div{max-height:calc(100% - 4px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;min-width:0}
 #pausemenu .camera-38{padding:8px 10px;}
 @media(max-height:650px){#pausemenu{padding:10px}#pausemenu>div{gap:8px;padding:13px}}
+.camera-38 .camera-reset{min-height:42px;border:1px solid #a68b60;background:#31243c;color:#ffe0a2;border-radius:8px;font:inherit;font-weight:700;padding:8px;width:100%}
+/* Ultimate Vision 3.9 — preserve every interactive control; reclaim canvas area without overlays. */
+.vision-compact #hud{min-height:36px;padding:3px 7px;gap:5px}
+.vision-compact #hud .core-stat span{font-size:10px}.vision-compact #hud .core-stat>i{height:5px}
+.vision-compact #time{font-size:18px;min-width:46px}.vision-compact #bar{height:17px;flex-basis:17px;margin-top:2px}
+.vision-compact #bar b{font-size:11px;line-height:15px}
+.vision-compact #hand{padding:3px 5px 4px;gap:5px}.vision-compact #hand .card{min-height:61px;padding:2px 2px 3px;min-width:0}
+.vision-compact #hand .card em{max-width:clamp(32px,10vw,43px);margin-bottom:1px}
+.vision-compact #hand .card .rune-name{font-size:10px}.vision-compact #hand .card .ready-label{font-size:10px}
+.vision-compact #stage::after{background:radial-gradient(ellipse 94% 84% at 50% 50%,transparent 76%,#0d08162a 100%)}
+#vision-inspection,#vision-intro{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;pointer-events:auto;touch-action:none}
+#vision-inspection[hidden],#vision-intro[hidden]{display:none}
+.vision-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;background:#191528ef;color:#f6dca6;font-size:12px}
+#vision-touch{flex:1;min-height:36px;touch-action:none;cursor:grab}
+.vision-inspect-panel{display:grid;gap:5px;padding:8px;background:#191528f2;color:#f1e4d1;border-top:1px solid #b78d58}
+.vision-inspect-panel label{display:grid;grid-template-columns:85px 1fr;align-items:center;font-size:11px;gap:4px}.vision-inspect-panel label:has(output){grid-template-columns:75px 42px 1fr}
+.vision-inspect-panel input[type=range]{width:100%;min-height:28px;margin:0;accent-color:#d8ad70}
+.vision-focus{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+#vision-inspection button,#vision-intro button{color:#ffe3ad;background:#362944;border:1px solid #ad8d61;border-radius:7px;min-height:34px;padding:5px;font:600 11px system-ui,sans-serif}
+.vision-focus button[aria-pressed=true]{background:#615039;border-color:#ffe0a0}
+#vision-intro{justify-content:space-between;align-items:center;padding:12px;background:linear-gradient(#160f2859,transparent 25%,transparent 76%,#160f2859);color:#ffdfa5;font-size:14px;font-weight:800;text-shadow:0 2px 5px #000}
+#vision-intro button{align-self:flex-end;min-height:44px;padding:7px 16px}

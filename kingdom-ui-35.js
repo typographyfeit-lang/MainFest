@@ -87,7 +87,7 @@
   function launchOriginal(e){if(typeof originalPlay==='function')return originalPlay.call(play,e)}
   function finishIntro(){if(intro.hidden||!switching)return;const e=introEvent;cancelIntro();if(!document.hidden&&game.hidden)launchOriginal(e)}
   if(typeof originalPlay==='function')play.onclick=function(e){
-    if(switching||!game.hidden)return;closeHall();K.preload();if(!prefs.intro||motion.matches||typeof V==='undefined'||!V.ok){return launchOriginal(e)}
+    if(switching||!game.hidden)return;closeHall();K.preload();if(window.CDVision39&&!window.CDVision39.legacy&&typeof V!=='undefined'&&V.ok)return launchOriginal(e);if(!prefs.intro||motion.matches||typeof V==='undefined'||!V.ok){return launchOriginal(e)}
     switching=true;introEvent=e;play.disabled=true;intro.hidden=false;modalGuard();$('#kingdom-intro-skip').focus({preventScroll:true});// In the native-media route, retain a real second gesture for Safari.
     let media=false;try{media=window.ArenaAudio?.stats?.().mode==='media'}catch(_){}
     if(!media)introTimer=setTimeout(finishIntro,1650);
