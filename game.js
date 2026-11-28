@@ -110,6 +110,18 @@ function cardEl(id, cls = '', battle = false) {
   const c = CARDS[id], lv = levelOf(id);
   return `<button type="button" class="card rune ${cls}" data-id="${id}" aria-label="${c.n}, уровень ${lv}, перезарядка ${CD[id]} сек. ${c.desc}"><b>${CD[id]}с</b>${lv > 1 ? `<small class="lv">ур.${lv}</small>` : ''}<em>${c.ic}</em><span class="rune-name">${c.n}</span>${battle ? '<span class="ready-label">Готов</span><i class="cooldown-track"><i></i></i>' : ''}</button>`;
 }
+// «Карты» screen only: portrait card with fixed stat slots (battle hand and forge keep cardEl).
+function menuCard(id, cls = '') {
+  const c = CARDS[id], lv = levelOf(id), m = levelMult(lv), owned = S.own.includes(id), cd = CD[id] + 'с';
+  const stats = c.sp
+    ? [['area', c.rad, 'Радиус удара'], ['dmg', Math.round(c.d * m), 'Урон'], ['cd', cd, 'Перезарядка']]
+    : [['hp', Math.round(c.hp * m) + (c.k > 1 ? '<small>×' + c.k + '</small>' : ''), c.k > 1 ? `Здоровье каждого из ${c.k}` : 'Здоровье'], ['dmg', Math.round(c.d * m), 'Урон'], ['cd', cd, 'Перезарядка']];
+  const label = `${c.n}, уровень ${lv}. ${stats.map(([, v, t]) => `${t} ${String(v).replace(/<[^>]+>/g, '')}`).join(', ')}. ${c.desc}${owned ? '' : '. Открывается в Кузнице'}`;
+  return `<button type="button" class="card rune mc ${cls}" data-id="${id}" aria-pressed="${cls.includes('sel')}" aria-label="${label}">` +
+    `<span class="mc-art" aria-hidden="true"><span class="mc-lv">ур.${lv}</span><span class="mc-check"></span>${owned ? '' : '<span class="mc-lock">Кузница</span>'}</span>` +
+    `<span class="rune-name${c.n.length > 11 ? ' long' : ''}">${c.n}</span>` +
+    `<span class="mc-stats" aria-hidden="true">${stats.map(([k, v, t]) => `<span class="mc-stat ${k}" title="${t}"><i></i>${v}</span>`).join('')}</span></button>`;
+}
 function forgeItem(id) {
   const c = CARDS[id], lv = levelOf(id), owned = S.own.includes(id);
   let action, info;
@@ -129,8 +141,9 @@ function forgeItem(id) {
 function ui() {
   $('#tr').textContent = `Побед: ${S.wins}`;
   $('#co').textContent = `Осколки: ${S.coin}`;
-  $('#deck').innerHTML = S.deck.map(id => cardEl(id)).join('');
-  $('#coll').innerHTML = Object.keys(CARDS).filter(id => !S.deck.includes(id)).map(id => cardEl(id, (!S.own.includes(id) ? 'lock ' : '') + (selected === id ? 'sel' : ''))).join('');
+  $('#deck').innerHTML = S.deck.map(id => menuCard(id)).join('');
+  $('#coll').innerHTML = Object.keys(CARDS).filter(id => !S.deck.includes(id)).map(id => menuCard(id, (!S.own.includes(id) ? 'lock ' : '') + (selected === id ? 'sel' : ''))).join('');
+  $('#cards').classList.toggle('picking', !!selected);
   const order = [...S.deck, ...Object.keys(CARDS).filter(id => !S.deck.includes(id))];
   const locked = order.filter(id => !S.own.includes(id)), owned = order.filter(id => S.own.includes(id));
   $('#unlock-list').innerHTML = [...locked, ...owned].map(forgeItem).join('');
