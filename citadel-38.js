@@ -15,78 +15,176 @@
   const cylinder=new T.CylinderGeometry(1,1,1,12), octagonal=new T.CylinderGeometry(1,1,1,8), pillar=new T.CylinderGeometry(1,1,1,8), spike=new T.ConeGeometry(1,1,6), smallRing=new T.TorusGeometry(1,.04,4,24);
   const levels=[0,1,2,3];
   const decals=levels.slice(1).map(stage=>new T.MeshBasicMaterial({map:A.texture(128,128,(g,w,h)=>{const rng=A.rng(3800+stage);for(let i=0;i<stage*3;i++){let x=12+rng()*104,y=8+rng()*50;const path=[[x,y]];for(let j=0;j<3+stage;j++){x+=rng()*20-10;y+=8+rng()*14;path.push([x,y]);}for(const [dx,stroke,width] of [[1,'#e8c5a58a',3], [0,'#221b2bea',1.8+stage*.3]]){g.beginPath();g.lineJoin='round';g.lineCap='round';path.forEach(([px,py],k)=>k?g.lineTo(px+dx,py):g.moveTo(px+dx,py));g.strokeStyle=stroke;g.lineWidth=width;g.stroke();}}}),transparent:true,alphaTest:.14,depthWrite:false,side:T.DoubleSide,toneMapped:false,polygonOffset:true,polygonOffsetFactor:-2}));
-  function architecture(parent,t,part){
-    const team=t.team?1:0,p=palettes[team],core=!!t.king,s=core?1:.45,tc=A.C.team[team],batch=A.modelBatch(parent,`cd38:${team}:${core?'core':'side'}:${part}`);
-    const stone=A.material(p.stone), shade=A.material(p.shade), top=A.material(p.top), metal=A.material(p.metal,'gold'), edge=A.material(p.edge,'gold'), dark=A.material(p.dark), emit=A.material(tc,'glow');
-    const cyl=team?octagonal:cylinder, add=(geo,mat,x,y,z,sx,sy,sz,rx=0,ry=0,rz=0)=>batch.add(geo,mat,x*s,y*s,z*s,sx*s,sy*s,sz*s,rx,ry,rz);
-    const radial=(n,r,fn,phase=0)=>{for(let i=0;i<n;i++){const a=TAU*i/n+phase;fn(Math.sin(a)*r,Math.cos(a)*r,a,i)}};
-    if(part==='base'){
-      add(cyl,shade,0,2.5,0,35.5,5,35.5);add(cyl,metal,0,6,0,32,2,32);
-      add(cyl,top,0,9,0,31,4,31);add(cyl,stone,0,27,0,26,32,26);
-      add(cyl,shade,0,13,0,28,3,28);add(cyl,metal,0,43,0,28.5,3.5,28.5);add(cyl,top,0,47,0,30,5,30);add(cyl,metal,0,50,0,29.5,1.8,29.5);
-      radial(team?4:6,26,(x,z,a)=>{add(G.box,shade,x,28,z,8,29,7,0,a);add(pillar,top,x,27,z,3.1,28,3.1,0,a);add(G.box,metal,x,41,z,9,3,9,0,a);add(G.box,metal,x,15,z,8,2,8,0,a);},team?Math.PI/4:0);
-      // Faceted window frames, inner crystal glass and stone arches. All decoration is inside base footprint.
-      radial(team?4:6,25.9,(x,z,a)=>{add(G.arch,dark,x,28,z,10,20,2,0,a);add(G.arch,metal,x*1.02,28,z*1.02,8.7,18,1,0,a);add(G.arch,emit,x*1.05,28,z*1.05,6.1,14,1,0,a);},team?0:Math.PI/6);
-      if(core){add(cyl,shade,0,55,0,23,7,23);add(cyl,metal,0,60,0,25,3,25);add(cyl,dark,0,62,0,17,2,17);add(cyl,emit,0,63.1,0,13,1,13);}
-      else {add(cyl,shade,0,55,0,26,8,26);add(cyl,metal,0,60,0,28,2.5,28);add(cyl,top,0,62,0,23,3,23);}
-    }else if(part==='crown'){
-      if(core){radial(team?4:6,24,(x,z,a)=>{add(G.bevel,stone,x,62,z,11,14,10,0,a);add(G.box,metal,x,69,z,12,3,11,0,a);add(spike,metal,x,team?77:74,z,team?4.5:3.5,team?14:8,team?4.5:3.5,0,a);add(G.oct,emit,x*.93,67,z*.93,2,3.5,2,0,a);},team?Math.PI/4:0);}
-      else {radial(4,25,(x,z,a)=>{add(G.bevel,top,x,61,z,10,9,9,0,a);add(G.box,metal,x,66,z,11,2,10,0,a);},Math.PI/4);}
-    }else if(part==='detail'){
-      radial(team?8:12,30.5,(x,z,a)=>{add(G.box,metal,x,9,z,3.3,1.2,2.5,0,a);add(G.oct,edge,x,12,z,1.6,2.2,1.6,0,a);});
-      radial(team?4:6,28,(x,z,a)=>{for(const dx of [-2,2]){const c=Math.cos(a),v=Math.sin(a);add(G.box,metal,x+c*dx,28,z-v*dx,.9,23,1.1,0,a);}add(G.oct,emit,x,38,z,2.5,4,1.4,0,a);});
-      radial(team?8:12,29,(x,z,a)=>{add(G.box,shade,x,48,z,6.5,2.8,2,0,a);add(G.box,edge,x,50,z,4.8,1,1.6,0,a);});
-    }else if(part==='ruins'){
-      add(cyl,shade,0,2,0,33,4,33);add(cyl,metal,0,4.5,0,29,1.1,29);
-      const rnd=A.rng(3843+team);for(let i=0;i<11;i++){const a=i*2.399,r=11+17*rnd();add(G.bevel,i%4===0?metal:stone,Math.sin(a)*r,3+rnd()*4,Math.cos(a)*r,5+rnd()*7,4+rnd()*7,5+rnd()*6,rnd()*.6,a,rnd()*.4);}
-      add(G.oct,emit,0,7,0,3.5,5,3.5,.5,.3,.4);
-    }else if(part==='chips'){
-      const rnd=A.rng(3861+team);for(let i=0;i<6;i++){const a=i*TAU/6,r=27+rnd()*4;add(G.bevel,i%3===0?metal:shade,Math.sin(a)*r,2+rnd()*1.5,Math.cos(a)*r,4.5,3.5,5,.2,a,.4);}
+  /* ---- Block Arena 4.0 towers: voxel masonry keep + timber crossbow towers ------------------
+   * Same models for both teams (only banners differ: blue / red). Every part goes through
+   * A.modelBatch, so each tower type is merged once into ≤6 meshes and shared by both teams.
+   * Limits kept from 3.9 so camera, combat and picking are untouched:
+   *   core: footprint ≤ ±42, weapon (bolt) at y=80 over the tower centre (render3d heightOf)
+   *   side: footprint ≤ ±18.5, weapon (bolt) at y=40 over the tower centre                     */
+  const BANNER=['#2563d9','#d2362c'];
+  const bannerCloth=BANNER.map((c,team)=>new T.MeshStandardMaterial({side:T.DoubleSide,roughness:.92,alphaTest:.5,map:A.texture(128,192,(g,w,h)=>{
+    g.fillStyle=c;g.fillRect(0,0,w,h);const sh=g.createLinearGradient(0,0,0,h);sh.addColorStop(0,'rgba(255,255,255,.10)');sh.addColorStop(1,'rgba(0,0,0,.30)');g.fillStyle=sh;g.fillRect(0,0,w,h);
+    for(let x=0;x<w;x+=6){g.fillStyle=x%12?'rgba(0,0,0,.05)':'rgba(255,255,255,.04)';g.fillRect(x,0,3,h)}
+    g.fillStyle='#e6b04f';g.fillRect(0,0,w,12);g.fillRect(0,12,9,h);g.fillRect(w-9,12,9,h);
+    // swallow-tail hem (cut out by alphaTest)
+    g.globalCompositeOperation='destination-out';g.beginPath();g.moveTo(w*.5,h*.80);g.lineTo(w*.22,h);g.lineTo(w*.78,h);g.closePath();g.fill();g.globalCompositeOperation='source-over';
+    // emblem: gold shield with tower mark
+    g.fillStyle='#e6b04f';g.beginPath();g.moveTo(w*.26,h*.22);g.lineTo(w*.74,h*.22);g.lineTo(w*.74,h*.47);g.lineTo(w*.5,h*.64);g.lineTo(w*.26,h*.47);g.closePath();g.fill();
+    g.fillStyle=c;g.fillRect(w*.38,h*.31,w*.24,h*.2);g.fillRect(w*.34,h*.28,w*.08,h*.06);g.fillRect(w*.46,h*.28,w*.08,h*.06);g.fillRect(w*.58,h*.28,w*.08,h*.06);
+  })}));
+  const C40={stone:['#bcae9b','#ab9c89','#c8baa5','#9f907f','#b3a690'],mortar:'#3a333f',cap:'#cfc1ab',moss:['#5f8037','#4d6b2c','#76913f'],wood:'#8d5c36',woodDark:'#6a4327',iron:'#55525c',trim:'#e0aa4c',slot:'#1d1823'};
+  const stoneM=A.material('#ffffff'),mortarM=A.material(C40.mortar),woodM=A.material(C40.wood,'wood'),woodDarkM=A.material(C40.woodDark,'wood'),ironM=A.material(C40.iron,'gold'),trimM=A.material(C40.trim,'gold'),slotM=A.material(C40.slot);
+  function kit(batch,seed){
+    const rng=A.rng(seed),add=(...a)=>batch.add(...a);
+    const tone=()=>C40.stone[Math.floor(rng()*C40.stone.length)];
+    // One wall face of separate bevelled blocks in running bond. Local x runs along the face,
+    // local +z points outward; skip(u,row) leaves holes (gates).
+    function wall(cx,cz,ry,len,y0,rows,rowH,thick,bw,skip,mode='front'){
+      const c=Math.cos(ry),sn=Math.sin(ry);
+      for(let r=0;r<rows;r++){let u=-len/2-(r%2?bw/2:0);
+        while(u<len/2){const a=Math.max(u,-len/2),b=Math.min(u+bw,len/2),w=b-a;if(w>1.2){const m=(a+b)/2;
+          if((!skip||!skip(m,r))&&(mode!=='back'||r===rows-1)){const j=(rng()-.5)*.5;add(mode==='front'?G.bevel:G.box,stoneM,cx+c*m+sn*j,y0+rowH*(r+.5),cz-sn*m+c*j,w-.7,rowH-.7,thick,0,ry,0,tone());}}u+=bw;}}
     }
+    const square=(h,y0,rows,rowH,thick,bw,skipFront)=>{
+      wall(0,h,0,2*h+thick,y0,rows,rowH,thick,bw,skipFront);wall(0,-h,Math.PI,2*h+thick,y0,rows,rowH,thick,bw,null,'back');
+      wall(h,0,Math.PI/2,2*h-thick,y0,rows,rowH,thick,bw,null,'side');wall(-h,0,-Math.PI/2,2*h-thick,y0,rows,rowH,thick,bw,null,'side');
+      add(G.box,mortarM,0,y0+rows*rowH/2,0,2*h-thick*.9,rows*rowH-.2,2*h-thick*.9);   // dark core shows in mortar joints
+    };
+    const moss=(h,y,n,size)=>{for(let i=0;i<n;i++){const side=i%4,u=(rng()-.5)*2*h,o=h+rng()*1.2;const x=side<2?u:(side===2?o:-o),z=side<2?(side?-o:o):u;
+      add(G.box,stoneM,x,y+rng()*.8,z,size*(1+rng()),size*.55,size*(.8+rng()*.6),0,rng()*3,0,C40.moss[i%3]);}};
+    // Timber beam with the grain along its length: geometry x is the long axis.
+    const beam=(x,y,z,len,w,h,ry=0,rz=0,m=woodM)=>add(G.bevel,m,x,y,z,len,h,w,0,ry,rz);
+    const post=(x,y,z,len,w,m=woodM)=>add(G.bevel,m,x,y,z,len,w,w,0,0,Math.PI/2);
+    return {rng,add,tone,wall,square,moss,beam,post};
+  }
+  function coreParts(parent,part){
+    const batch=A.modelBatch(parent,'bt40:core:'+part),k=kit(batch,4011+part.length),{add,wall,square,moss,beam,post}=k;
+    const H=29,TOP=51;
+    if(part==='base'){
+      // wide plinth of large blocks
+      square(32.5,0,2,4.6,7,13);add(G.box,stoneM,0,9.05,0,63,.3,63,0,0,0,C40.cap);
+      moss(34,0,24,2.2);moss(30.5,9.2,14,1.8);
+      // squat keep, gate recessed into the +z wall (faces the camera for both teams)
+      square(H,9.2,6,7,5,11,(u,r)=>Math.abs(u)<9.5&&r<3);
+      add(G.box,slotM,0,19.6,27.4,17.5,21,1.2);                                             // gate recess
+      for(const x of [-5.6,0,5.6])add(G.bevel,woodDarkM,x,19.6,28.2,20.4,1.2,5.3,0,0,Math.PI/2); // door planks, vertical grain
+      for(const x of [-10.8,10.8])for(let r=0;r<3;r++)add(G.bevel,stoneM,x,9.2+7*r+3.5,32,3.6,6.4,4.5,0,0,0,C40.cap); // jamb stones
+      beam(0,31.6,32.6,26,5.8,3.6);                                                          // timber lintel, projects 3u
+      // corbel ring + wooden roof deck (reads from above as planks inside stone)
+      for(const [x,z,ry,l,m] of [[0,H+1.2,0,64,'front'],[0,-H-1.2,Math.PI,64,'side'],[H+1.2,0,Math.PI/2,56,'side'],[-H-1.2,0,-Math.PI/2,56,'side']])wall(x,z,ry,l,TOP,1,2.6,6,11,null,m);
+      for(let i=0;i<10;i++)beam(0,TOP+1.2,-25.7+i*5.7,55,5.2,1.1);
+      // corner turrets project out of every corner
+      for(const x of [-28,28])for(const z of [-28,28]){
+        for(const [dx,dz,ry,m] of [[0,7.4,0,z>0?'front':'side'],[0,-7.4,Math.PI,'back'],[7.4,0,Math.PI/2,'side'],[-7.4,0,-Math.PI/2,'side']])wall(x+dx,z+dz,ry,ry%Math.PI?11.4:18.2,0,6,10.6,3.4,9.1,null,m);
+        add(G.box,mortarM,x,32,z,13,63.8,13);add(G.box,stoneM,x,64.15,z,15.2,.6,15.2,0,0,0,C40.cap);
+        for(const [sx,sz] of [[0,1],[1,0]])add(G.box,slotM,x+(sx?Math.sign(x)*9.1:0),40,z+(sz?Math.sign(z)*9.1:0),sx?1:1.6,8,sz?1:1.6);
+      }
+      // central donjon carrying the ballista platform (bolt at y=80)
+      square(11,TOP+1.6,3,6,4,8.5);add(G.bevel,woodM,0,71.6,0,25,1.6,25,0,0,0);
+      post(0,73.2,0,3.4,4.6);
+      // banner arm over the gate
+      beam(0,58.8,34,11,2.6,2.6,Math.PI/2);beam(0,58.8,38.8,24,1.6,1.6,0,0,ironM);
+      // flag masts on the two front turrets
+      for(const x of [-28,28])post(x,72.5,28,17,1.8);
+    }else if(part==='crown'){
+      const merl=(cx,cz,ry,len,n,y,w,h,d)=>{const c=Math.cos(ry),sn=Math.sin(ry);for(let i=0;i<n;i++){const u=-len/2+len*(i+.5)/n;add(G.bevel,stoneM,cx+c*u,y+h/2,cz-sn*u,w,h,d,0,ry,0,k.tone());}};
+      merl(0,32.2,0,44,4,TOP+2.6,6.4,6.6,3.6);merl(0,-32.2,Math.PI,44,4,TOP+2.6,6.4,6.6,3.6);merl(32.2,0,Math.PI/2,46,4,TOP+2.6,6.4,6.6,3.6);merl(-32.2,0,-Math.PI/2,46,4,TOP+2.6,6.4,6.6,3.6);
+      for(const x of [-28,28])for(const z of [-28,28]){
+        // turret corbels stick out, then merlons
+        for(const [dx,dz,ry] of [[0,8.4,0],[0,-8.4,Math.PI],[8.4,0,Math.PI/2],[-8.4,0,-Math.PI/2]]){const c=Math.cos(ry),sn=Math.sin(ry);for(const u of [-5,0,5])add(ry===0?G.bevel:G.box,stoneM,x+dx+c*u,62.6,z+dz-sn*u,4.6,2.8,2.6,0,ry,0,C40.cap);
+          for(const u of [-4.4,4.4])add(G.bevel,stoneM,x+dx+c*u,67.6,z+dz-sn*u,5,6.4,2.8,0,ry,0,k.tone());}
+      }
+      merl(0,11.6,0,20,3,TOP+19.6,4.4,4,2.4);merl(0,-11.6,Math.PI,20,3,TOP+19.6,4.4,4,2.4);
+    }else if(part==='detail'){
+      for(const x of [-5.6,0,5.6])for(const y of [13.5,25])add(G.box,ironM,x,y,29.1,4.6,1,.6);     // door bands
+      for(const x of [-12.9,12.9])add(G.box,ironM,x,31.6,35.6,1,4,.8);                            // lintel straps
+      for(const x of [-28,28])for(const z of [-28,28])moss(7.4,0,4,1.6);
+      for(let i=0;i<6;i++){const a=i*1.05;add(G.bevel,stoneM,Math.sin(a)*34.5,1,Math.cos(a)*34.5,4,2,3,0,a,0,C40.moss[i%3]);}
+    }else if(part==='ruins'||part==='chips'){
+      legacy(parent,1,part);return;
+    }
+    batch.flush();
+  }
+  function sideParts(parent,part){
+    const batch=A.modelBatch(parent,'bt40:side:'+part),k=kit(batch,4211+part.length),{add,wall,square,moss,beam,post}=k;
+    if(part==='base'){
+      square(12,0,1,3,4,8);add(G.box,stoneM,0,3.1,0,24,.25,24,0,0,0,C40.cap);moss(13,0,12,1.6);
+      for(let r=0;r<4;r++){const h=9.6-r*.3;square(h,3.2+r*5.6,1,5.6,3.4,7.4);}                      // gently tapered shaft
+      for(const [x,z,ry] of [[0,9.4,0],[0,-9.4,Math.PI],[9.4,0,Math.PI/2],[-9.4,0,-Math.PI/2]])add(G.box,slotM,x*1.05,14,z*1.05,1.3,6,1.3,0,ry,0); // arrow slits
+      // joists project past the deck, deck planks, diagonal braces
+      for(const o of [-6.5,6.5]){beam(o,26.4,0,35,2.4,2,Math.PI/2);beam(0,26.4,o,35,2.4,2);}
+      for(let i=0;i<6;i++)beam(0,28.1,-12.75+i*5.1,30,4.8,1.2,0,0,i%2?woodM:woodDarkM);
+      for(const o of [-7,7]){add(G.bevel,woodDarkM,o,21.3,12,9.6,1.8,1.8,0,Math.PI/2,2.048);add(G.bevel,woodDarkM,o,21.3,-12,9.6,1.8,1.8,0,Math.PI/2,1.093);
+                             add(G.bevel,woodDarkM,12,21.3,o,9.6,1.8,1.8,0,0,1.093);add(G.bevel,woodDarkM,-12,21.3,o,9.6,1.8,1.8,0,0,2.048);}
+      post(0,32,0,7,3.2);                                                                         // crossbow mount
+    }else if(part==='crown'){
+      for(const x of [-14,14])for(const z of [-14,14])post(x,31.6,z,5.6,1.7);
+      for(const o of [-14,14]){beam(0,33.7,o,28,1,1);beam(o,33.7,0,28,1,1,Math.PI/2);}
+    }else if(part==='detail'){
+      for(const o of [-6.5,6.5])for(const e of [-17.2,17.2]){add(G.box,ironM,o,26.4,e,2.8,2.4,.5);add(G.box,ironM,e,26.4,o,.5,2.4,2.8);} // iron joist caps
+      moss(10,3.3,6,1.2);
+    }else if(part==='ruins'||part==='chips'){
+      legacy(parent,.45,part);return;
+    }
+    batch.flush();
+  }
+  // Rubble/debris from 3.9 (unchanged look, now shared by both teams).
+  function legacy(parent,s,part){
+    const batch=A.modelBatch(parent,`bt40:${s}:${part}`),stone=A.material('#a89a88'),shade=A.material('#7d7064'),metal=ironM,add=(geo,mat,x,y,z,sx,sy,sz,rx=0,ry=0,rz=0)=>batch.add(geo,mat,x*s,y*s,z*s,sx*s,sy*s,sz*s,rx,ry,rz);
+    if(part==='ruins'){add(cylinder,shade,0,2,0,33,4,33);const rnd=A.rng(3843);for(let i=0;i<11;i++){const a=i*2.399,r=11+17*rnd();add(G.bevel,i%4===0?metal:stone,Math.sin(a)*r,3+rnd()*4,Math.cos(a)*r,5+rnd()*7,4+rnd()*7,5+rnd()*6,rnd()*.6,a,rnd()*.4);}add(G.bevel,woodDarkM,8,5,-6,16,2.4,2.4,.2,.7,.3);}
+    else {const rnd=A.rng(3861);for(let i=0;i<6;i++){const a=i*TAU/6,r=(s===1?33:13.5)/s+rnd()*2;add(G.bevel,i%3===0?metal:shade,Math.sin(a)*r,2+rnd()*1.5,Math.cos(a)*r,4.5,3.5,5,.2,a,.4);}}
+    batch.flush();
+  }
+  // Shared crossbow (side towers) / ballista (core, ×1.6). Front = local +z; the bolt groove
+  // passes through the pivot axis at bolt height, so tower shots leave from the weapon.
+  const BOLT_Y=5.2;
+  function crossbow(parent){
+    const batch=A.modelBatch(parent,'bt40:xbow'),add=(...a)=>batch.add(...a);
+    add(G.box,ironM,0,.6,0,6.4,1.2,6.4);add(G.bevel,woodDarkM,0,2.4,0,2.4,3,2.4);
+    add(G.bevel,woodM,0,BOLT_Y-1.2,1.5,16,2.2,2.6,0,Math.PI/2,0);                                 // stock, grain along it
+    for(const sx of [-1,1]){add(G.bevel,woodDarkM,sx*4.7,BOLT_Y-.6,7.7,9.6,1.6,1.4,0,sx*.22,0);   // bow arms swept back
+      add(G.box,ironM,sx*9.2,BOLT_Y-.6,5.8,1.2,2.2,1.2);}
+    add(G.box,slotM,0,BOLT_Y-.6,5.6,18.2,.35,.35);                                                // string
+    add(G.box,ironM,0,BOLT_Y-.6,9.6,3.2,2.6,1.2);                                                 // front stirrup
+    add(G.box,ironM,0,BOLT_Y,3.6,.8,.8,13);add(G.oct,trimM,0,BOLT_Y,10.6,1.1,1.1,2.2);            // bolt + head
+    add(G.box,ironM,0,BOLT_Y-1.6,-5.8,4.6,2.6,1.6);                                               // winch
     batch.flush();
   }
   function create(t){
     const core=!!t.king,team=t.team?1:0,tc=A.C.team[team],s=core?1:.45;
     const root=new T.Group(),intact=new T.Group(),ruins=new T.Group(),crown=new T.Group(),detail=new T.Group(),chips=new T.Group();
     root.position.set(t.x,0,t.y);root.add(intact,ruins);intact.add(crown,detail,chips);
-    architecture(intact,t,'base');architecture(crown,t,'crown');architecture(detail,t,'detail');architecture(chips,t,'chips');architecture(ruins,t,'ruins');
+    const parts=core?coreParts:sideParts;parts(intact,'base');parts(crown,'crown');parts(detail,'detail');parts(chips,'chips');parts(ruins,'ruins');
     ruins.visible=false;chips.visible=false;
-    // Four wall decals share textures; the three stages never allocate geometry at runtime.
+    // Crack decals on the four wall faces (textures shared; no runtime allocation per stage).
     const cracks=new T.InstancedMesh(G.plane,decals[0],4), tmp=new T.Object3D();cracks.frustumCulled=false;cracks.renderOrder=3;cracks.castShadow=false;cracks.visible=false;
-    for(let i=0;i<4;i++){const a=i*Math.PI/2;tmp.position.set(Math.sin(a)*26.9*s,28*s,Math.cos(a)*26.9*s);tmp.rotation.set(0,a,0);tmp.scale.set(23*s,27*s,1);tmp.updateMatrix();cracks.setMatrixAt(i,tmp.matrix)}cracks.instanceMatrix.needsUpdate=true;intact.add(cracks);
+    const face=core?31.9:9.9,cy=core?35:14,cw=core?40:15,ch=core?30:20;
+    for(let i=0;i<4;i++){const a=i*Math.PI/2;tmp.position.set(Math.sin(a)*face,cy,Math.cos(a)*face);tmp.rotation.set(0,a,0);tmp.scale.set(cw,ch,1);tmp.updateMatrix();cracks.setMatrixAt(i,tmp.matrix)}cracks.instanceMatrix.needsUpdate=true;intact.add(cracks);
     A.contact(root,0,0,core?87:37,core?87:37,.085);
     const light=A.lightPool(intact,tc,0,0,core?74:36,core?74:36,.17,.14);
-    const banners=[A.banner(intact,team,0,30*s,27.6*s,core?22:9,core?32:14)];
-    banners[0].castShadow=false;
-    let orb=null,ring=null,mage=null,magePivot=null,staffGlow=null;
-    if(core){orb=A.crystal(intact,team,0,85,0,23,32,true);orb.root.traverse(o=>{o.castShadow=false});ring=A.mesh(intact,smallRing,A.material(tc,'glow'),0,64.5,0,17,17,17,-Math.PI/2,0,0,false);}
-    else {
-      // The actual existing rigged Mage GLB, not a static statuette. Cosmetic scale only.
-      magePivot=new T.Group();magePivot.position.y=28.6;magePivot.scale.setScalar(.57);magePivot.rotation.y=team?0:Math.PI;intact.add(magePivot);
-      try{mage=ArenaCharacterModels.instantiate('mage',team,magePivot,{shadows:false,level:1});mage.pose('Idle',0,1,true);}catch(e){console.warn('Citadel mage fallback:',e.message);orb=A.crystal(intact,team,0,41,0,12,19,true);orb.root.traverse(o=>{o.castShadow=false});}
-      staffGlow=A.glow(intact,tc,0,49,0,18,.25);staffGlow.material.opacity=.08;
-    }
-    const hp=A.health(root,team,core?40:28,core?114:59),peak=core?107:54;
-    let dead=false,collapse=0,stage=-1,attack=0,flinch=0,angle=team?0:Math.PI,lastHp=t.hp,lastTier=-1,tick=0,elapsed=0;
-    stats.built++;stats.active++;if(mage)stats.mages++;
-    return {t,root,peak,fitBounds:{half:core?42:19,height:core?122:62},isDead:()=>dead,isCollapsing:()=>dead&&collapse<1,dispose(){if(mage)mage.dispose();stats.active=Math.max(0,stats.active-1);},update(time,dt,cam,hasAttack){
-      const tier=budget();stats.detail=tier;if(tier!==lastTier){lastTier=tier;detail.visible=tier===2;crown.visible=tier>0&&stage<3;}
+    // Team banners: big one over the gate, tilted ~35° toward the camera so it reads from above, gonfalons on the front turrets.
+    const banners=[];
+    const flag=(x,y,z,w,h,tilt)=>{const b=A.banner(intact,team,x,y,z,w,h);b.material=bannerCloth[team];b.rotation.x=tilt;b.castShadow=false;banners.push(b);return b;};
+    if(core){flag(0,49.8,34.2,25,18,-.62);flag(-28,76.6,29.4,8.5,10,-.62);flag(28,76.6,29.4,8.5,10,-.62);}
+    else flag(0,31,12.4,11,9,-1.1);   // draped over the front deck rail, faces the camera
+    // Weapon pivot: bolt exactly at the shot origin (render3d heightOf: core 80, side 40).
+    const pivot=new T.Group(),kick=new T.Group(),ws=core?1.6:1;pivot.position.y=(core?80:40)-BOLT_Y*ws;pivot.scale.setScalar(ws);pivot.add(kick);intact.add(pivot);crossbow(kick);
+    let angle=team?0:Math.PI;pivot.rotation.y=angle;
+    const hp=A.health(root,team,core?40:28,core?100:52),peak=core?90:46;
+    let dead=false,collapse=0,stage=-1,attack=0,lastTier=-1,elapsed=0;
+    stats.built++;stats.active++;stats.crossbows=(stats.crossbows||0)+1;
+    return {t,root,peak,fitBounds:{half:core?42:19,height:core?122:62},weapon:pivot,isDead:()=>dead,isCollapsing:()=>dead&&collapse<1,dispose(){stats.active=Math.max(0,stats.active-1);},update(time,dt,cam,hasAttack){
+      const tier=budget();stats.detail=tier;if(tier!==lastTier){lastTier=tier;detail.visible=tier===2;crown.visible=stage<3;}
       if(t.hp<=0){if(!dead){dead=true;ruins.visible=true;ruins.scale.setScalar(.72);stage=4;stats.stageChanges++;}
         collapse=Math.min(1,collapse+dt/.72);const k=collapse,e=k*k;intact.position.y=-peak*.66*e;intact.scale.y=1-.46*e;intact.rotation.z=motion.matches?0:Math.sin(k*22)*.028*(1-k);ruins.scale.setScalar(.72+.28*k);if(k===1)intact.visible=false;A.updateHealth(hp,0,cam,false);return;}
       const r=Math.max(0,Math.min(1,t.hp/t.max)),next=r<=.25?3:r<=.5?2:r<=.75?1:0;
-      if(next!==stage){stage=next;stats.stageChanges++;cracks.visible=stage>0;cracks.material=decals[Math.max(0,stage-1)];chips.visible=stage>=2;banners[0].visible=stage<3;crown.visible=tier>0&&stage<3;if(orb)orb.body.material.emissiveIntensity=[.33,.23,.15,.07][stage];}
-      if(t.hp<lastHp)flinch=.18;lastHp=t.hp;flinch=Math.max(0,flinch-dt);
-      if(hasAttack){attack=.54;stats.attacks++;if(mage)mage.pose('Attack',0,1,true);}
-      attack=Math.max(0,attack-dt);const flash=Math.max(0,attack/.54);elapsed+=dt;tick+=dt;
+      if(next!==stage){stage=next;stats.stageChanges++;cracks.visible=stage>0;cracks.material=decals[Math.max(0,stage-1)];chips.visible=stage>=2;for(const b of banners)b.visible=stage<3;crown.visible=stage<3;}
+      if(hasAttack){attack=.3;stats.attacks++;}
+      attack=Math.max(0,attack-dt);const flash=attack/.3;elapsed+=dt;
       light.material.opacity=(.1+.07*r)*(1+flash*1.3);
-      if(orb){orb.root.rotation.y=motion.matches?0:elapsed*.40;orb.root.position.y=orb.baseY+(motion.matches?0:Math.sin(elapsed*2.2)*(stage===3?.65:1.1));const v=1+(motion.matches?0:flash*.09);orb.root.scale.setScalar(v);if(stage===3)orb.body.material.emissiveIntensity=.07+.045*(.5+.5*Math.sin(elapsed*11));}
-      if(ring)ring.rotation.z=motion.matches?0:elapsed*.18;
-      if(mage&&magePivot){const tar=targetMap.get(t);if(tar&&attack>0){const want=Math.atan2(tar.x-t.x,tar.z-t.y);angle+=Math.atan2(Math.sin(want-angle),Math.cos(want-angle))*Math.min(1,dt*14);}
-        magePivot.rotation.y=angle;const interval=tier===0?1/12:tier===1?1/20:1/30;
-        if(tick>=interval||hasAttack){mage.pose(attack>0?'Attack':flinch>0?'Hit':'Idle',motion.matches&&!hasAttack?0:tick,1);tick=0;}
-      }
-      if(staffGlow)staffGlow.material.opacity=tier>0?.05+flash*.28:0;
-      if(tier>0&&!motion.matches&&banners[0].visible)A.waveBanner(banners[0],elapsed);
+      const tar=targetMap.get(t);if(tar){const want=Math.atan2(tar.x-t.x,tar.z-t.y);angle+=Math.atan2(Math.sin(want-angle),Math.cos(want-angle))*Math.min(1,dt*(attack>0?18:6));pivot.rotation.y=angle;}
+      kick.position.z=motion.matches?0:-flash*flash*2.2;
+      if(tier>0&&!motion.matches)for(const b of banners)if(b.visible)A.waveBanner(b,elapsed+b.position.x*.05);
       A.updateHealth(hp,r,cam,r<1);
     }};
   }
