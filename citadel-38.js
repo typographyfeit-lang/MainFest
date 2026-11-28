@@ -105,26 +105,59 @@
     }
     batch.flush();
   }
+  // Side tower 4.2: a small fortress next to the keep (~80% of its height, ~55% of its width — the widest that stays on screen).
+  // Octagonal plan: the front (+z) face plus the two diagonal faces turn toward the 74° camera, so
+  // roof, front wall and a side face are all visible; every vertex stays inside the unit keep-out
+  // circle (rad 16 + 12 = 28) and the outer edge stays on screen with the current camera.
+  // Tiers: wide stone base (apothem 20.4) → tall walls (17.2) → overhanging deck (20.2) + crossbow.
+  const SIDE_BOLT=60;                                  // must match render3d.js heightOf(side, attacker)
+  const shade=(hex,f)=>'#'+[1,3,5].map(i=>Math.round(parseInt(hex.slice(i,i+2),16)*f).toString(16).padStart(2,'0')).join('');
+  const OCT=Math.tan(Math.PI/8)*2;                     // side length / apothem of a regular octagon
   function sideParts(parent,part){
-    const batch=A.modelBatch(parent,'bt40:side:'+part),k=kit(batch,4211+part.length),{add,wall,square,moss,beam,post}=k;
+    const batch=A.modelBatch(parent,'bt42:side:'+part),k=kit(batch,4411+part.length),{add,beam,post}=k;
+    const BASE=20.4,BASE_T=4.2,BASE_H=9.2,WALL=17.2,WALL_T=3.2,ROWS=6,ROWH=6.4,DECK=47.8,DA=20.2;
+    const faces=[...Array(8)].map((_,i)=>{const a=i*Math.PI/4;return {i,a,sx:Math.sin(a),cz:Math.cos(a),mode:i===0||i===1||i===7?'front':i===2||i===6?'side':'back'};});
+    const octFill=(ap,y,h,mat,col=null)=>{const r=ap/Math.cos(Math.PI/8);add(octagonal,mat,0,y,0,r,h,r,0,Math.PI/8,0,col);};   // true octagon, flat face toward +z
+    // one octagon ring of separate blocks; skip(face,u,row) leaves real recesses
+    const ring=(ap,t,y0,rows,rowH,bw,skip,toneOf)=>{for(const f of faces){const c=ap-t/2,len=OCT*ap+.3;
+      for(let r=0;r<rows;r++){if(f.mode==='back'&&r<rows-1)continue;let u=-len/2-(r%2?bw/2:0);
+        while(u<len/2){const a0=Math.max(u,-len/2),b0=Math.min(u+bw,len/2),w=b0-a0,m=(a0+b0)/2;
+          if(w>1.2&&!(skip&&skip(f,m,r))){const ca=Math.cos(f.a),sa=Math.sin(f.a),j=(k.rng()-.5)*.4;
+            add(f.mode==='front'?G.bevel:G.box,stoneM,f.sx*(c+j)+ca*m,y0+rowH*(r+.5),f.cz*(c+j)-sa*m,w-.6,rowH-.6,t,0,f.a,0,toneOf?toneOf(r):k.tone());}
+          u+=bw;}}}};
     if(part==='base'){
-      square(12,0,1,3,4,8);add(G.box,stoneM,0,3.1,0,24,.25,24,0,0,0,C40.cap);moss(13,0,12,1.6);
-      for(let r=0;r<4;r++){const h=9.6-r*.3;square(h,3.2+r*5.6,1,5.6,3.4,7.4);}                      // gently tapered shaft
-      for(const [x,z,ry] of [[0,9.4,0],[0,-9.4,Math.PI],[9.4,0,Math.PI/2],[-9.4,0,-Math.PI/2]])add(G.box,slotM,x*1.05,14,z*1.05,1.3,6,1.3,0,ry,0); // arrow slits
-      // joists project past the deck, deck planks, diagonal braces
-      for(const o of [-6.5,6.5]){beam(o,26.4,0,35,2.4,2,Math.PI/2);beam(0,26.4,o,35,2.4,2);}
-      for(let i=0;i<6;i++)beam(0,28.1,-12.75+i*5.1,30,4.8,1.2,0,0,i%2?woodM:woodDarkM);
-      for(const o of [-7,7]){add(G.bevel,woodDarkM,o,21.3,12,9.6,1.8,1.8,0,Math.PI/2,2.048);add(G.bevel,woodDarkM,o,21.3,-12,9.6,1.8,1.8,0,Math.PI/2,1.093);
-                             add(G.bevel,woodDarkM,12,21.3,o,9.6,1.8,1.8,0,0,1.093);add(G.bevel,woodDarkM,-12,21.3,o,9.6,1.8,1.8,0,0,2.048);}
-      post(0,32,0,7,3.2);                                                                         // crossbow mount
+      // 1 · wide stone base, two courses of big blocks + sunlit ledge
+      ring(BASE,BASE_T,0,2,BASE_H/2,7.4);octFill(BASE-BASE_T+.2,BASE_H/2,BASE_H-.2,mortarM);
+      for(const f of faces)add(G.bevel,stoneM,f.sx*(BASE-1.3),BASE_H+.35,f.cz*(BASE-1.3),OCT*BASE*.97,.9,2.6,0,f.a,0,C40.cap);
+      octFill(BASE-2.4,BASE_H+.2,.4,stoneM,shade(C40.cap,.9));
+      for(let i=0;i<10;i++){const f=faces[[0,1,7,2,6][i%5]],u=(k.rng()-.5)*OCT*BASE*.8,o=BASE-2.6-k.rng()*1.5;     // moss on the ledge
+        add(G.box,stoneM,f.sx*o+Math.cos(f.a)*u,BASE_H+.6,f.cz*o-Math.sin(f.a)*u,2.4+k.rng()*2,.6,1.6,0,f.a,0,C40.moss[i%3]);}
+      // 2 · tall walls; the top two courses are baked darker = shadow under the deck
+      ring(WALL,WALL_T,BASE_H+.2,ROWS,ROWH,5.6,
+        (f,u,r)=>(f.i===0&&r>=2&&r<=3&&Math.abs(u)<3.6)||((f.i===1||f.i===7)&&r===3&&Math.abs(u)<1.6),
+        r=>r===ROWS-1?shade(k.tone(),.56):r===ROWS-2?shade(k.tone(),.84):k.tone());
+      octFill(WALL-WALL_T+.1,BASE_H+.2+ROWS*ROWH/2,ROWS*ROWH-.2,mortarM);
+      const ly=BASE_H+.2+ROWH*3;                                                                    // front loophole
+      add(G.box,slotM,0,ly,WALL-WALL_T-.1,1.4,10.4,.5);add(G.box,slotM,0,ly+1.3,WALL-WALL_T-.1,5.2,1.3,.5);
+      add(G.bevel,stoneM,0,ly-ROWH-.1,WALL+.9,9.4,1.4,2.4,0,0,0,C40.cap);add(G.bevel,stoneM,0,ly+ROWH+.2,WALL+.9,10,1.6,2.4,0,0,0,C40.cap);
+      // timber posts on the octagon vertices (vertical grain) cover the masonry seams
+      const vr=WALL/Math.cos(Math.PI/8)+.4;
+      for(let i=0;i<8;i++){const a=(i+.5)*Math.PI/4;add(G.bevel,woodDarkM,Math.sin(a)*vr,BASE_H+.2+ROWS*ROWH/2,Math.cos(a)*vr,ROWS*ROWH+.4,3,3,0,a,Math.PI/2);}
+      // 3 · fighting deck: dark joists + fascia (side), light planks (top), 3.3u overhang
+      for(const o of [-8,0,8])beam(o,DECK+.8,0,2*DA+1.6,2,1.6,Math.PI/2,0,woodDarkM);
+      for(let i=0;i<9;i++){const z=-17.2+i*4.3,half=Math.min(DA-1,1.4142*(DA-1)-Math.abs(z)-2.15);
+        add(G.bevel,woodM,0,DECK+2.2,z,2*half,1.2,4.2,0,0,0,i%2?'#b27c4e':'#a8724a');}
+      for(const f of faces)beam(f.sx*(DA-.6),DECK+1.5,f.cz*(DA-.6),OCT*DA+.5,1.2,3,f.a,0,woodDarkM);
+      post(0,DECK+3.9,0,2.4,4.2);                                                                     // crossbow mount
+      post(-13,DECK+11.4,-13,16,1.4);                                                             // pennant pole (flag in create)
     }else if(part==='crown'){
-      for(const x of [-14,14])for(const z of [-14,14])post(x,31.6,z,5.6,1.7);
-      for(const o of [-14,14]){beam(0,33.7,o,28,1,1);beam(o,33.7,0,28,1,1,Math.PI/2);}
+      for(const f of faces)add(G.bevel,stoneM,f.sx*(DA-2.2),DECK+5,f.cz*(DA-2.2),5.4,3.6,2.4,0,f.a,0,k.tone());  // low merlons
     }else if(part==='detail'){
-      for(const o of [-6.5,6.5])for(const e of [-17.2,17.2]){add(G.box,ironM,o,26.4,e,2.8,2.4,.5);add(G.box,ironM,e,26.4,o,.5,2.4,2.8);} // iron joist caps
-      moss(10,3.3,6,1.2);
+      for(const o of [-8,0,8])for(const e of [-DA-1.3,DA+1.3])add(G.box,ironM,o,DECK+.8,e,2.2,1.8,.4);
+      const vr=WALL/Math.cos(Math.PI/8)+.4;
+      for(const i of [7,0])for(const y of [BASE_H+8,BASE_H+30]){const a=(i+.5)*Math.PI/4;add(G.box,ironM,Math.sin(a)*(vr+1.55),y,Math.cos(a)*(vr+1.55),3.4,.8,.3,0,a,0);}
     }else if(part==='ruins'||part==='chips'){
-      legacy(parent,.45,part);return;
+      legacy(parent,.62,part);return;
     }
     batch.flush();
   }
@@ -132,7 +165,7 @@
   function legacy(parent,s,part){
     const batch=A.modelBatch(parent,`bt40:${s}:${part}`),stone=A.material('#a89a88'),shade=A.material('#7d7064'),metal=ironM,add=(geo,mat,x,y,z,sx,sy,sz,rx=0,ry=0,rz=0)=>batch.add(geo,mat,x*s,y*s,z*s,sx*s,sy*s,sz*s,rx,ry,rz);
     if(part==='ruins'){add(cylinder,shade,0,2,0,33,4,33);const rnd=A.rng(3843);for(let i=0;i<11;i++){const a=i*2.399,r=11+17*rnd();add(G.bevel,i%4===0?metal:stone,Math.sin(a)*r,3+rnd()*4,Math.cos(a)*r,5+rnd()*7,4+rnd()*7,5+rnd()*6,rnd()*.6,a,rnd()*.4);}add(G.bevel,woodDarkM,8,5,-6,16,2.4,2.4,.2,.7,.3);}
-    else {const rnd=A.rng(3861);for(let i=0;i<6;i++){const a=i*TAU/6,r=(s===1?33:13.5)/s+rnd()*2;add(G.bevel,i%3===0?metal:shade,Math.sin(a)*r,2+rnd()*1.5,Math.cos(a)*r,4.5,3.5,5,.2,a,.4);}}
+    else {const rnd=A.rng(3861);for(let i=0;i<6;i++){const a=i*TAU/6,r=(s===1?33:19)/s+rnd()*2;add(G.bevel,i%3===0?metal:shade,Math.sin(a)*r,2+rnd()*1.5,Math.cos(a)*r,4.5,3.5,5,.2,a,.4);}}
     batch.flush();
   }
   // Shared crossbow (side towers) / ballista (core, ×1.6). Front = local +z; the bolt groove
@@ -158,22 +191,22 @@
     ruins.visible=false;chips.visible=false;
     // Crack decals on the four wall faces (textures shared; no runtime allocation per stage).
     const cracks=new T.InstancedMesh(G.plane,decals[0],4), tmp=new T.Object3D();cracks.frustumCulled=false;cracks.renderOrder=3;cracks.castShadow=false;cracks.visible=false;
-    const face=core?31.9:9.9,cy=core?35:14,cw=core?40:15,ch=core?30:20;
+    const face=core?31.9:17.5,cy=core?35:28,cw=core?40:13,ch=core?30:30;
     for(let i=0;i<4;i++){const a=i*Math.PI/2;tmp.position.set(Math.sin(a)*face,cy,Math.cos(a)*face);tmp.rotation.set(0,a,0);tmp.scale.set(cw,ch,1);tmp.updateMatrix();cracks.setMatrixAt(i,tmp.matrix)}cracks.instanceMatrix.needsUpdate=true;intact.add(cracks);
-    A.contact(root,0,0,core?87:37,core?87:37,.085);
-    const light=A.lightPool(intact,tc,0,0,core?74:36,core?74:36,.17,.14);
+    A.contact(root,0,0,core?87:46,core?87:46,.085);
+    const light=A.lightPool(intact,tc,0,0,core?74:46,core?74:46,.17,.14);
     // Team banners: big one over the gate, tilted ~35° toward the camera so it reads from above, gonfalons on the front turrets.
     const banners=[];
     const flag=(x,y,z,w,h,tilt)=>{const b=A.banner(intact,team,x,y,z,w,h);b.material=bannerCloth[team];b.rotation.x=tilt;b.castShadow=false;banners.push(b);return b;};
     if(core){flag(0,49.8,34.2,25,18,-.62);flag(-28,76.6,29.4,8.5,10,-.62);flag(28,76.6,29.4,8.5,10,-.62);}
-    else flag(0,31,12.4,11,9,-1.1);   // draped over the front deck rail, faces the camera
-    // Weapon pivot: bolt exactly at the shot origin (render3d heightOf: core 80, side 40).
-    const pivot=new T.Group(),kick=new T.Group(),ws=core?1.6:1;pivot.position.y=(core?80:40)-BOLT_Y*ws;pivot.scale.setScalar(ws);pivot.add(kick);intact.add(pivot);crossbow(kick);
+    else flag(-9.1,62.6,-13,7.5,8,-.9);   // pennant on the rear corner pole, tilted to the camera
+    // Weapon pivot: bolt exactly at the shot origin (render3d heightOf: core 80, side 60).
+    const pivot=new T.Group(),kick=new T.Group(),ws=core?1.6:1.25;pivot.position.y=(core?80:SIDE_BOLT)-BOLT_Y*ws;pivot.scale.setScalar(ws);pivot.add(kick);intact.add(pivot);crossbow(kick);
     let angle=team?0:Math.PI;pivot.rotation.y=angle;
-    const hp=A.health(root,team,core?40:28,core?100:52),peak=core?90:46;
+    const hp=A.health(root,team,core?40:28,core?100:74),peak=core?90:64;
     let dead=false,collapse=0,stage=-1,attack=0,lastTier=-1,elapsed=0;
     stats.built++;stats.active++;stats.crossbows=(stats.crossbows||0)+1;
-    return {t,root,peak,fitBounds:{half:core?42:19,height:core?122:62},weapon:pivot,isDead:()=>dead,isCollapsing:()=>dead&&collapse<1,dispose(){stats.active=Math.max(0,stats.active-1);},update(time,dt,cam,hasAttack){
+    return {t,root,peak,fitBounds:{half:core?42:23,height:core?122:77},weapon:pivot,isDead:()=>dead,isCollapsing:()=>dead&&collapse<1,dispose(){stats.active=Math.max(0,stats.active-1);},update(time,dt,cam,hasAttack){
       const tier=budget();stats.detail=tier;if(tier!==lastTier){lastTier=tier;detail.visible=tier===2;crown.visible=stage<3;}
       if(t.hp<=0){if(!dead){dead=true;ruins.visible=true;ruins.scale.setScalar(.72);stage=4;stats.stageChanges++;}
         collapse=Math.min(1,collapse+dt/.72);const k=collapse,e=k*k;intact.position.y=-peak*.66*e;intact.scale.y=1-.46*e;intact.rotation.z=motion.matches?0:Math.sin(k*22)*.028*(1-k);ruins.scale.setScalar(.72+.28*k);if(k===1)intact.visible=false;A.updateHealth(hp,0,cam,false);return;}

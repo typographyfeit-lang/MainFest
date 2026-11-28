@@ -113,8 +113,8 @@ const V = (() => {
       towerFitPoints.length=0;occluders.length=0;
       for(const o of towers){
         // Conservative inner opaque masonry box, not the crystal, flags or transparent halo.
-        const h=o.t.rad*.78;
-        occluders.push({t:o.t,box:new T.Box3(new T.Vector3(o.t.x-h,1,o.t.y-h),new T.Vector3(o.t.x+h,o.t.king?60:27,o.t.y+h))});
+        const h=o.t.king?o.t.rad*.78:16;
+        occluders.push({t:o.t,box:new T.Box3(new T.Vector3(o.t.x-h,1,o.t.y-h),new T.Vector3(o.t.x+h,o.t.king?60:47,o.t.y+h))});
         const b=o.fitBounds;
         if(b)for(const dx of [-b.half,b.half])for(const dz of [-b.half,b.half])for(const y of [0,b.height])towerFitPoints.push(new T.Vector3(o.t.x+dx,y,o.t.y+dz));
         // The static mesh bounding box is measured once at battle start, with a conservative
@@ -431,7 +431,7 @@ const V = (() => {
 
     function unitPos(u) { const v = units.get(u); return v ? { x: v.vx, z: v.vz } : { x: u.x, z: u.y }; }
     function heightOf(o, attacker) {
-      if (o.king !== undefined) return o.king ? (attacker ? 80 : 64) : (attacker ? 40 : 32);
+      if (o.king !== undefined) return o.king ? (attacker ? 80 : 64) : (attacker ? 60 : 50);   // side: crossbow bolt at 60 (citadel-38 SIDE_BOLT)
       return attacker ? 18 : o.big ? 17 : 11;
     }
     function onSimFx(f, attackers) {
