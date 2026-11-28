@@ -72,7 +72,7 @@
       const sh=state?.shrine,owner=sh?.owner??-1,urgency=sh&&sh.next<=5?clamp(1-sh.next/5,0,1):0;
       const sum=(sh?.awards?.[0]||0)+(sh?.awards?.[1]||0);if(sum>awardSum)burstAge=0;awardSum=sum;burstAge+=dt;
       if(owner!==prevOwner){prevOwner=owner;const c=owner===0?'#7deeff':owner===1?'#d5a0ff':'#ffcf84';runemat.color.copy(lin(c));particleMat.color.copy(lin(c))}
-      rune.rotation.z=animated?t*.16:0;runemat.opacity=.46+urgency*.35;particles.visible=activeN>0;particles.count=activeN;
+      rune.rotation.z=animated?t*.16:0;runemat.opacity=.24+urgency*.5;particles.visible=activeN>0&&(urgency>0||burstAge<1.6);   // 4.4: swirl only before/at the awardparticles.count=activeN;
       if(due&&moving){for(let i=0;i<activeN;i++){const a=i*TAU/activeN+t*(.25+urgency*.5),h=((i/activeN+t*.24)%1),r=8+12*h;tmp.position.set(180+Math.cos(a)*r,17+h*32,280+Math.sin(a)*r);tmp.rotation.set(a,t+i,0);tmp.scale.setScalar((.65+urgency*.55)*(1-.5*h));tmp.updateMatrix();particles.setMatrixAt(i,tmp.matrix)}particles.instanceMatrix.needsUpdate=true}
       wave.visible=animated&&burstAge<1.25;const k=clamp(burstAge/1.25,0,1);if(wave.visible){wave.scale.setScalar(16+76*k);waveMat.opacity=.72*(1-k)*(1-k)}
       // Low mode still shows waterfall material, static flags and shrine signals. Rich mode adds mist and sway.
