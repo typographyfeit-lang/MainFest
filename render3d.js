@@ -179,16 +179,21 @@ const V = (() => {
     }
     function beginIntro(state){if(!on||!state?.paused||state.done||!window.CDCamera38?.introAllowed())return false;introAt=performance.now();wake();return true;}
     function endIntro(){introAt=0;restoreCamera();wake();}
-    // Separate cinematic camera with a smooth in/out envelope. Gameplay projection is never modified.
+    // 4.6 ending: when a core falls, push in on ITS ruins starting from the exact gameplay pose (frame 1 =
+    // current camera), 1.7 s smoothstep, no FOV change, no pull-back, no cut; then hold. The ruins settle in
+    // the upper part of the frame so the result card (shown low) leaves them visible. Gameplay camera untouched.
+    const finishLook = new T.Vector3(), finishAim = new T.Vector3(), finishEnd = new T.Vector3(), finishDir = new T.Vector3();
     function finishCamera(state){
-      if(!state.done||!window.CDCamera38?.cinemaAllowed()||state.finishAge<.08||state.finishAge>=1.08)return false;
-      const target=state.tw.find(t=>t.king&&t.hp<=0)||state.tw.find(t=>t.king&&t.team===(state.result>0?0:1));if(!target||!state.result)return false;
-      const k=clamp01((state.finishAge-.08)/1),ease=Math.sin(Math.PI*k)**2;
-      const focus=camTarget.clone().lerp(new T.Vector3(target.x,38,target.y),ease*.82);
+      if(!state.done||reducedMotion)return false;
+      const target=state.tw.find(t=>t.king&&t.hp<=0);if(!target)return false;
+      const k=clamp01(state.finishAge/1.7),e=k*k*(3-2*k);
       cam=baseCamera.isOrthographicCamera?shotOrtho:shotPerspective;cam.copy(baseCamera,false);
-      cam.position.copy(camBase).lerp(new T.Vector3(target.x+55,205,target.y+215),ease*.72);cam.lookAt(focus);
-      if(cam.isOrthographicCamera){const f=1-ease*.39;cam.left*=f;cam.right*=f;cam.top*=f;cam.bottom*=f;}
-      else cam.fov=camBaseFov+(34-camBaseFov)*ease;
+      finishLook.set(target.x,14,target.y+62);
+      finishDir.copy(camBase).sub(finishLook).normalize();
+      finishEnd.copy(finishLook).addScaledVector(finishDir,baseCamera.isOrthographicCamera?camBase.distanceTo(finishLook):560);
+      cam.position.lerpVectors(camBase,finishEnd,e);
+      finishAim.lerpVectors(camTarget,finishLook,e);cam.lookAt(finishAim);
+      if(cam.isOrthographicCamera){const f=1-.58*e;cam.left*=f;cam.right*=f;cam.top*=f;cam.bottom*=f;}
       cam.updateProjectionMatrix();cam.updateMatrixWorld(true);return true;
     }
     addEventListener('resize', () => { if (on && cv.clientHeight) fit(); });

@@ -35,3 +35,6 @@
 .vision-focus button[aria-pressed=true]{background:#615039;border-color:#ffe0a0}
 #vision-intro{justify-content:space-between;align-items:center;padding:12px;background:linear-gradient(#160f2859,transparent 25%,transparent 76%,#160f2859);color:#ffdfa5;font-size:14px;font-weight:800;text-shadow:0 2px 5px #000}
 #vision-intro button{align-self:flex-end;min-height:44px;padding:7px 16px}
+
+/* 4.6: result card sits low over a gradient, so the ruins the camera pushed in on stay visible above it */
+#res{align-items:flex-end;padding-bottom:calc(16px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#0c081900 0%,#0c081900 40%,#0c0819a8 64%,#0c0819dc 100%)}

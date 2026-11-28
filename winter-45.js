@@ -127,7 +127,7 @@
     for (const z of [-11, 571]) for (const x of [45, 315]) { const h = (z > 0 ? 31 : 42) + 3.6; batch.add(G.bevel, snowMat, x, h + .9, z, 24.6, 2.2, 23.6, 0, 0, 0, null, false); batch.add(lump, snowMat, x + (rng() - .5) * 6, h + 2, z + (rng() - .5) * 6, 6, 2.2, 5, 0, 0, 0, null, false); }
     // drifts piled against the inner wall faces (low, wide, bluish where shaded)
     for (let x = 8; x <= 352; x += 22 + rng() * 10) { batch.add(lump, rng() < .5 ? snowMat : snowShadeMat, x, 0, 4 + rng() * 3, 9 + rng() * 6, 3.4 + rng() * 2, 5 + rng() * 2, 0, rng(), 0, null, false); batch.add(lump, snowMat, x + 5, 0, 556 - rng() * 3, 8 + rng() * 5, 3 + rng() * 1.6, 5, 0, rng(), 0, null, false); }
-    for (const x of [6, 354]) for (let z = 20; z <= 540; z += 26 + rng() * 14) batch.add(lump, rng() < .6 ? snowMat : snowShadeMat, x, 0, z, 5 + rng() * 2, 3 + rng() * 2, 10 + rng() * 6, 0, 0, 0, null, false);
+    for (const x of [6, 354]) for (let z = 20; z <= 540; z += 26 + rng() * 14) if (Math.abs(z - 280) > 26) batch.add(lump, rng() < .6 ? snowMat : snowShadeMat, x, 0, z, 5 + rng() * 2, 3 + rng() * 2, 10 + rng() * 6, 0, 0, 0, null, false);
     for (const [x, z, r] of PATCHES) for (let i = 0; i < 3; i++) { const a = rng() * TAU; batch.add(lump, snowMat, x + Math.cos(a) * r * .55, 0, z + Math.sin(a) * r * .55, r * .32, 2.2, r * .24, 0, a, 0, null, false); }
     // garlanded fir at the enemy gate (seen every match), two small snowy firs on the back corners
     fir(root, batch, 114, 98, 60, true);
@@ -143,9 +143,22 @@
     const crystal = seal && (seal.getObjectByName('Reforged shrine crystal') || seal.children.find(o => o.isMesh && o.geometry === G.oct && o.position.y > 20));
     const halo = seal && seal.children.find(o => o.isSprite && o.position.y > 20);
     let shadow = null, wave = null, waveMat = null, icePool = null;
+    let gem = null;
     if (crystal) {
-      crystal.scale.set(9.5, 24, 9.5);   // slim: its waist must not hide the air gap on the 74° camera
-      const m = crystal.material; m.vertexColors = false; m.flatShading = true; m.transparent = true; m.opacity = .88; m.roughness = .16; m.metalness = .08; m.needsUpdate = true;
+      crystal.visible = false;                                            // replaced by the 4.6 shrine crystal below
+      gem = new T.Group(); gem.name = 'Shrine crystal 4.6'; seal.add(gem);
+      const R = 12.6, UP = 34, DOWN = 30, N = 6, pos = [];                 // hexagonal bipyramid, ~1/3 larger than 3.9
+      for (let i = 0; i < N; i++) { const a0 = i / N * Math.PI * 2, a1 = (i + 1) / N * Math.PI * 2, p0 = [Math.sin(a0) * R, 0, Math.cos(a0) * R], p1 = [Math.sin(a1) * R, 0, Math.cos(a1) * R];
+        pos.push(...p0, ...p1, 0, UP, 0, ...p1, ...p0, 0, -DOWN, 0); }
+      const shellGeo = new T.BufferGeometry(); shellGeo.setAttribute('position', new T.Float32BufferAttribute(pos, 3)); shellGeo.computeVertexNormals();
+      const shell = new T.Mesh(shellGeo, new T.MeshStandardMaterial({ color: A.lin('#34d6cf'), emissive: A.lin('#0b6f78'), emissiveIntensity: .32, roughness: .08, metalness: .15, flatShading: true, transparent: true, opacity: .62, side: T.DoubleSide, depthWrite: false }));
+      shell.renderOrder = 9;
+      const core = new T.Mesh(shellGeo, new T.MeshStandardMaterial({ color: A.lin('#1c4fd8'), emissive: A.lin('#123fb8'), emissiveIntensity: .85, roughness: .2, metalness: .1, flatShading: true }));
+      core.scale.set(.55, .62, .55);
+      const edge = []; for (let i = 0; i < N; i++) { const a = i / N * Math.PI * 2; edge.push(Math.sin(a) * R * 1.01, 0, Math.cos(a) * R * 1.01, 0, UP * 1.005, 0); }
+      const edgeGeo = new T.BufferGeometry(); edgeGeo.setAttribute('position', new T.Float32BufferAttribute(edge, 3));
+      const rims = new T.LineSegments(edgeGeo, new T.LineBasicMaterial({ color: A.lin('#effdff'), transparent: true, opacity: .9, toneMapped: false })); rims.renderOrder = 10;
+      gem.add(core, shell, rims);
       icePool = A.lightPool(seal, '#8fd4ff', 0, 0, 34, 34, .8, 3.1); icePool.renderOrder = 6;   // faint icy light around the shadow
       shadow = A.mesh(seal, G.plane, new T.MeshBasicMaterial({ map: A.shadowTex, color: 0x000000, transparent: true, depthWrite: false, opacity: .95, polygonOffset: true, polygonOffsetFactor: -3 }), 0, 3.3, 0, 11, 11, 1, -Math.PI / 2, 0, 0, false);
       shadow.renderOrder = 7;
@@ -163,15 +176,14 @@
       const lv = level(), sh = state && state.shrine, own = sh ? sh.owner : -1;
       if (crystal) {
         // high hover: lowest facet ≈ y 91, so on the 74° phone camera a clear band of air separates it from its shadow
-        const bob = motion.matches ? 0 : Math.sin(t * 1.25) * 3, y = 115 + bob;
-        crystal.position.y = y; crystal.rotation.y = motion.matches ? .4 : t * .32; crystal.rotation.z = motion.matches ? 0 : Math.sin(t * .9) * .05;
+        const bob = motion.matches ? 0 : Math.sin(t * 1.25) * 3, y = 122 + bob;
+        gem.position.y = y; gem.rotation.y = motion.matches ? .4 : t * .3; gem.rotation.z = motion.matches ? 0 : Math.sin(t * .9) * .04;
         if (own !== owner) { // capture: one team-coloured wave, then the thin ownership rim (environment.js) remains
           if (own >= 0 && owner !== -9) { waveAge = 0; waveMat.color.copy(teamCol[own]); stats.captures++; }
           owner = own; tint.copy(iceGlow); if (own >= 0) tint.lerp(teamCol[own], .45);
         }
-        crystal.material.color.copy(ice); crystal.material.emissive.copy(tint); crystal.material.emissiveIntensity = .38;
         if (halo) { halo.position.y = y; halo.scale.setScalar(36); halo.material.color.copy(tint); halo.material.opacity = .14; }
-        const lift = (y - 112) / 6; shadow.scale.setScalar(11 - lift * 1.3); shadow.material.opacity = .95 - lift * .1; icePool.material.opacity = .7 + .08 * Math.sin(t * 1.25);
+        const lift = (y - 119) / 6; shadow.scale.setScalar(11 - lift * 1.3); shadow.material.opacity = .95 - lift * .1; icePool.material.opacity = .7 + .08 * Math.sin(t * 1.25);
         waveAge += dt; wave.visible = waveAge < 1.15;
         if (wave.visible) { const k = waveAge / 1.15, r = 8 + 48 * (1 - (1 - k) * (1 - k)); wave.scale.set(r, r, 1); waveMat.opacity = .95 * (1 - k); }
       }

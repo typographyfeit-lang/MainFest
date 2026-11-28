@@ -6,6 +6,10 @@
 /* ------------------------------------------------------------------ constants */
 const W = 360, H = 560, RY = 280, DEPLOY = 322;
 const SHRINE = { x: 180, y: 280, rad: 54, period: 30 };
+// 4.6 lava rift across the middle: ground units cross only on the two crystal drawbridges.
+// One state per bridge drives both the deck (render) and route choice (sim), so nobody walks on air.
+const RIFT = { y: 280, half: 14 }, BRIDGE_W = 56, BRIDGE_X = [90, 270];
+const BRIDGE_T = { first: 15, between: 10, warn: 1, part: 1.2, apart: 4, join: 1.2 };
 const VERSION = '3.1';
 const FIXED = 1 / 30;            // simulation step, seconds (rendering interpolates between steps)
 const MATCH = 180;               // match length, seconds
@@ -18,7 +22,7 @@ const MAX_LEVEL = 5;
 const LEVEL_STEP = .07;          // +7 % health and damage per rune level
 const UPGRADE_COST = [0, 0, 80, 160, 240, 320];   // shards to reach level N
 const UNLOCK_COST = 100;
-const RESULT_DELAY = 1100;       // ms: let the last tower collapse before the result card
+const RESULT_DELAY = 2500;       // ms: camera pushes in on the ruins (1.7 s), holds, then the result card
 
 const $ = s => document.querySelector(s);
 const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
@@ -206,9 +210,62 @@ function structures() { return [tower(0, 53, 391, false), tower(0, 307, 391, fal
 function core(team) { return G.tw.find(t => t.team === team && t.king); }
 function ratio(team) { const t = core(team); return Math.max(0, t.hp) / t.max; }
 const alive = team => G.u.filter(u => u.team === team && u.hp > 0).length;
+const inRift = (y, r) => Math.abs(y - RIFT.y) < RIFT.half + r * .6;
+const deckClosed = b => b.state === 'open' || b.state === 'warn' || b.state === 'clear';
+const enterable = b => b.state === 'open';
+function deckAt(x, r) { if (!G || !G.br) return null; for (const b of G.br) if (deckClosed(b) && Math.abs(x - b.x) <= BRIDGE_W / 2 - r * .5) return b; return null; }
+function onBridge(b) { return G.u.some(u => u.hp > 0 && inRift(u.y, u.rad) && Math.abs(u.x - b.x) < BRIDGE_W / 2 + u.rad * .5); }
+// Direction a unit on a deck walks: across if it started crossing on purpose, otherwise back to the nearer bank.
+const deckDir = u => u.crossing ? u.crossDir : (u.y < RIFT.y ? -1 : 1);
+// Two lanes per deck (keep right for the walking direction): opposite streams pass side by side.
+const laneX = (b, u, dir) => clamp(b.x + (dir < 0 ? 1 : -1) * BRIDGE_W / 4, b.x - BRIDGE_W / 2 + u.rad, b.x + BRIDGE_W / 2 - u.rad);
+// open → warn (1 s amber seam, no new entries) → clear (wait for units on the deck) → part → apart (4 s) → join → open.
+// Strictly one bridge at a time: the other stays 'open' for the whole cycle.
+function bridgeStep(dt) {
+  const br = G.br;
+  if (br.every(b => b.state === 'open')) { G.brWait -= dt; if (G.brWait <= 0) { const b = br[G.brNext]; b.state = 'warn'; b.t = 0; } return; }
+  for (const b of br) {
+    if (b.state === 'open') continue;
+    b.t += dt;
+    if (b.state === 'warn' && b.t >= BRIDGE_T.warn) { b.state = 'clear'; b.t = 0; }
+    if (b.state === 'clear' && !onBridge(b)) { b.state = 'part'; b.t = 0; G.ev.push({ type: 'bridge', x: b.x, open: false }); }
+    if (b.state === 'part') { b.gap = Math.min(1, b.t / BRIDGE_T.part); if (b.t >= BRIDGE_T.part) { b.state = 'apart'; b.t = 0; b.gap = 1; } }
+    if (b.state === 'apart' && b.t >= BRIDGE_T.apart) { b.state = 'join'; b.t = 0; }
+    if (b.state === 'join') { b.gap = Math.max(0, 1 - b.t / BRIDGE_T.join); if (b.t >= BRIDGE_T.join) { b.state = 'open'; b.t = 0; b.gap = 0; G.brNext = 1 - G.brNext; G.brWait = BRIDGE_T.between; G.ev.push({ type: 'bridge', x: b.x, open: true }); } }
+  }
+}
+// Where a ground unit should actually walk on its way to (x, y): straight if both are on the same bank,
+// otherwise to the head of an open bridge, then across it. Units already on a deck always finish crossing.
+function waypoint(u, x, y) {
+  if (!G.br) return [x, y];
+  const edge = RIFT.half + u.rad + 1;
+  if (inRift(u.y, u.rad)) {
+    const b = deckAt(u.x, u.rad);
+    if (b) { const dir = deckDir(u); return [laneX(b, u, dir), RIFT.y + dir * (edge + 3)]; }
+    return [x, y];
+  }
+  const su = u.y < RIFT.y ? -1 : 1, sd = y < RIFT.y ? -1 : 1;
+  u.crossing = false;
+  if (su === sd && !inRift(y, u.rad)) { u.br = -1; return [x, y]; }
+  let b = G.br[u.br];
+  if (!b || !enterable(b)) {
+    let best = Infinity; b = null;
+    G.br.forEach((c, i) => { if (!enterable(c)) return; const cost = Math.abs(u.x - c.x) + Math.abs(x - c.x); if (cost < best) { best = cost; b = c; u.br = i; } });
+  }
+  if (!b) return [u.x, RIFT.y + su * edge];              // no open bridge (never happens: the other one is always open)
+  const ex = laneX(b, u, -su);
+  u.crossDir = -su;
+  if (Math.abs(u.x - ex) < 1.5 && Math.abs(u.y - (RIFT.y + su * edge)) < 6) { u.crossing = true; return [ex, RIFT.y - su * (edge + 3)]; }
+  return [ex, RIFT.y + su * edge];
+}
 function constrain(u, oldX = u.x, oldY = u.y) {
   const rad = u.rad || 12;
   u.x = clamp(u.x, rad, W - rad); u.y = clamp(u.y, rad, H - rad);
+  if (G && G.br && inRift(u.y, rad) && !deckAt(u.x, rad)) {
+    const was = inRift(oldY, rad) ? deckAt(oldX, rad) : null;
+    if (was) u.x = clamp(u.x, was.x - BRIDGE_W / 2 + rad * .5, was.x + BRIDGE_W / 2 - rad * .5);
+    else u.y = RIFT.y + (oldY < RIFT.y ? -1 : 1) * (RIFT.half + rad * .6 + .01);
+  }
   for (const t of G.tw) {
     if (t.hp <= 0) continue;
     const min = t.rad + rad, dx = u.x - t.x, dy = u.y - t.y, d = Math.hypot(dx, dy);
@@ -283,7 +340,8 @@ function start() {
     cool: [Object.fromEntries(S.deck.map(id => [id, 0])), Object.fromEntries(ai.map(id => [id, 0]))],
     mult: [Object.fromEntries(S.deck.map(id => [id, levelMult(levelOf(id))])), Object.fromEntries(ai.map(id => [id, botLevel]))],
     rage: [0, 0], finalOn: false, aiPush: null,
-    shrine: { next: 30, owner: -1, contested: false, charge: 0, candidate: -1, pulse: 0, lastAward: -1, awards: [0, 0] }
+    shrine: { next: 30, owner: -1, contested: false, charge: 0, candidate: -1, pulse: 0, lastAward: -1, awards: [0, 0] },
+    br: BRIDGE_X.map(x => ({ x, state: 'open', t: 0, gap: 0 })), brNext: 0, brWait: BRIDGE_T.first
   };
   $('#game').hidden = false; $('#res').hidden = true; $('#pausemenu').hidden = true;
   hand(); V.begin(G); upd();
@@ -446,7 +504,7 @@ function loop(now) {
     G.alpha = clamp(G.acc / FIXED, 0, 1);
   }
   V.frame(G); upd();
-  if (G.done) { G.finishAge += dt; if (G.finishAge >= 1.4) return; }
+  if (G.done) { G.finishAge += dt; if (G.finishAge >= 3.4) return; }
   raf = requestAnimationFrame(loop);
 }
 // No accumulated permanent advantage: exclusive presence for 1.5 seconds, contested = neutral.
@@ -466,7 +524,7 @@ function shrineStep(dt) {
     const winner = s.owner;
     s.lastAward = -1; s.pulse = .7;
     if (winner >= 0 && alive(winner) < UNIT_LIMIT) {
-      spawn('colossus', winner, 180, 280 + (winner ? 23 : -23), { bonus: true });
+      spawn('colossus', winner, 180, 280 + (winner ? 1 : -1) * (RIFT.half + 22), { bonus: true });
       s.awards[winner]++; s.lastAward = winner; s.pulse = 2;
       G.fx.push({ k: 'c', x: 180, y: 280, r: SHRINE.rad, l: .32, card: 'shrine', team: winner });
       if (G.ev) G.ev.push({ type: 'guardian', team: winner });
@@ -577,10 +635,12 @@ function step(dt) {
     }
   }
   if (core(0).hp <= 0 || core(1).hp <= 0 || G.t <= 1e-7) { end(); return; }
+  bridgeStep(dt);
   shrineStep(dt);
 }
 // Detour around intact structures rather than pushing directly into them.
 function move(u, x, y, dt) {
+  [x, y] = waypoint(u, x, y);
   const dx = x - u.x, dy = y - u.y, d = Math.hypot(dx, dy);
   if (d < .001) return;
   let nx = dx / d, ny = dy / d;
@@ -607,6 +667,8 @@ function move(u, x, y, dt) {
 function act(u, dt) {
   if (u.hp <= 0) return;
   u.cd -= dt; u.attacking = false;
+  // On a bridge deck nobody stops to fight: finish the crossing first, so the deck can clear for its cycle.
+  if (G.br && inRift(u.y, u.rad) && deckAt(u.x, u.rad)) { const b = deckAt(u.x, u.rad), dir = deckDir(u); move(u, laneX(b, u, dir), RIFT.y + dir * (RIFT.half + u.rad + 4), dt); return; }
   let target = null, bd = Infinity;
   const center = u.path === 'center' && !u.bonus, flank = u.path === 'left' || u.path === 'right', before = u.team ? u.y < 325 : u.y > 235;
   // Attack near opponents; central squads do not abandon the shrine for remote targets.
@@ -630,8 +692,8 @@ function act(u, dt) {
     return;
   }
   if (center) {
-    if (target && target.king === undefined && dist(target, SHRINE) < 75) { move(u, target.x, target.y, dt); return; }
-    const x = 180 + (u.x < 180 ? -13 : 13), y = 280 + (u.team ? -20 : 20);
+    if (target && target.king === undefined && dist(target, SHRINE) < 75 && (target.y < RIFT.y) === (u.y < RIFT.y)) { move(u, target.x, target.y, dt); return; }
+    const x = 180 + (u.x < 180 ? -13 : 13), y = 280 + (u.team ? -1 : 1) * (RIFT.half + u.rad + 4);
     if (Math.hypot(u.x - x, u.y - y) > 10) move(u, x, y, dt);
     return;
   }
