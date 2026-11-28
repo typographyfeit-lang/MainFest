@@ -141,5 +141,73 @@
 <script src="kingdom-ui-35.js?v=39"></script>
 <script src="royal-ui-37.js?v=37"></script>
 <script src="citadel-ui-38.js?v=39"></script>
+<script>
+/* ------------------------------------------------------------------------- *
+ * Бой: камера ближе на 25%  (патч 3.9-zoom125, живёт целиком в index.html)
+ *
+ * Авто-подбор кадра в render3d.js не трогаем: наклон (pitch) и FOV остаются
+ * теми же, что выбрал штатный солвер, — уменьшается только дистанция посадки
+ * камеры. Поэтому V.pick() и отрисовка пользуются одной и той же матрицей,
+ * и боец по-прежнему встаёт точно под палец.
+ * ------------------------------------------------------------------------- */
+(() => {
+  'use strict';
+  const ZOOM = 1.25;                      // 1.25 = на 25% ближе
+  const api = window.CDCamera38;
+  if (!api || typeof api.view !== 'function') return;
+
+  const baseView = api.view.bind(api);
+  let pin = null;                         // {pitch, fov, k} — включённый зум
+
+  api.view = aspect => {
+    const v = baseView(aspect);
+    if (v.legacy || !pin) return v;
+    return { ...v, pitch: pin.pitch, fov: pin.fov, automatic: false, margin: v.margin * pin.k };
+  };
+
+  // Линейный размер арены на экране: ~1/дистанция (перспектива), 1/halfHeight (план).
+  const screenScale = s => s.projection === 'orthographic'
+    ? 1 / s.halfHeight
+    : 1 / (s.distance * Math.tan(s.fov * Math.PI / 360));
+
+  let busy = false;
+  function calibrate() {
+    if (busy || typeof V === 'undefined' || !V.ok || !V.refitCamera) return;
+    busy = true;
+    try {
+      pin = null;
+      V.refitCamera();
+      let s = V.cameraStats(), fits = s.fitCount;
+      if (!s.available || s.settings?.legacy || !Number.isFinite(screenScale(s))) { pin = null; return; }
+      const base = screenScale(s), target = base * ZOOM;
+      pin = { pitch: s.pitch, fov: s.fov ?? 22, k: ZOOM };
+      for (let i = 0; i < 6; i++) {
+        V.refitCamera();
+        s = V.cameraStats();
+        if (s.fitCount === fits) { pin = null; return; }   // бой не идёт — fit() не вызывается
+        fits = s.fitCount;
+        const got = screenScale(s);
+        if (!Number.isFinite(got) || got <= 0) { pin = null; return; }
+        if (Math.abs(got / target - 1) < 0.001) break;
+        pin.k *= target / got;                             // k почти линеен по масштабу
+      }
+      api.zoomApplied = +(screenScale(V.cameraStats()) / base).toFixed(4);
+    } finally { busy = false; }
+  }
+  api.zoomTarget = ZOOM;
+  api.zoomApplied = null;
+  api.recalibrateZoom = calibrate;
+
+  if (typeof V !== 'undefined' && V.ok && typeof V.begin === 'function') {
+    const begin = V.begin;
+    V.begin = state => { const r = begin(state); calibrate(); return r; };
+  }
+  let timer = 0;
+  const later = () => { clearTimeout(timer); timer = setTimeout(calibrate, 120); };
+  addEventListener('resize', later);
+  addEventListener('orientationchange', later);
+  document.addEventListener('cd-camera-38-change', later);
+})();
+</script>
 </body>
 </html>
