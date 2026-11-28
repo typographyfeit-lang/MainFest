@@ -13,7 +13,7 @@
 
 /* portrait (≈ two thirds of the card): atlas order guard archer colossus imp mage / hounds swarm brute meteor spark */
 #cards .mc .mc-art{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:8px;border:1px solid #c9a25c;
-  background:url('card.webp') var(--p,0 0)/500% 200% no-repeat,radial-gradient(circle at 50% 36%,var(--g1,#5e5a7c) 0,var(--g2,#2c283d) 72%);
+  background:url('cards.swebp') var(--p,0 0)/500% 200% no-repeat,radial-gradient(circle at 50% 36%,var(--g1,#5e5a7c) 0,var(--g2,#2c283d) 72%);
   box-shadow:inset 0 0 0 1px #00000055,inset 0 -26px 22px -18px #000b}
 #cards .mc[data-id="guard"]{--p:0% 0%}#cards .mc[data-id="archer"]{--p:25% 0%}#cards .mc[data-id="colossus"]{--p:50% 0%}#cards .mc[data-id="imp"]{--p:75% 0%}#cards .mc[data-id="mage"]{--p:100% 0%}
 #cards .mc[data-id="hounds"]{--p:0% 100%}#cards .mc[data-id="swarm"]{--p:25% 100%}#cards .mc[data-id="brute"]{--p:50% 100%}#cards .mc[data-id="meteor"]{--p:75% 100%;--g1:#6b3a26;--g2:#2b1712}#cards .mc[data-id="spark"]{--p:100% 100%;--g1:#2f4f7a;--g2:#141c33}
